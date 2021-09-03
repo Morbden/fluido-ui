@@ -1,5 +1,8 @@
 # dependencies
 /node_modules
+/components
+/*.d.ts
+/*.js
 *.pnp*
 
 # testing

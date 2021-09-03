@@ -2,6 +2,8 @@ import { Button_ } from './styled'
 
 interface Props {}
 
-export default function Button({}: Props) {
-  return <Button_>ok</Button_>
+const Button: React.FC<Props> = ({ children, ...props }) => {
+  return <Button_ {...props}>{children}</Button_>
 }
+
+export default Button

@@ -6,11 +6,12 @@
     "esModuleInterop": true,
     "declaration": true,
     "isolatedModules": true,
+    "jsx": "react-jsx",
     "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "target": "ES6",
     "outDir": "."
   },
