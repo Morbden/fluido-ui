@@ -11,6 +11,7 @@
 tsconfig.json
 .gitignore
 *lock.json
+.vscode
 
 # misc
 .DS_Store
