@@ -1,15 +1,16 @@
 # dependencies
 /node_modules
-/components
 /*.d.ts
 /*.js
 *.pnp*
+*lock.json
 
 # testing
 /coverage
 *.test*
 
 # production
+/components
 /out
 /build
 /dist
