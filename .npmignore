@@ -1,0 +1,23 @@
+# dependencies
+/node_modules
+*.pnp*
+
+# testing
+/coverage
+*.test*
+
+# development
+/src
+tsconfig.json
+.gitignore
+package-lock.json
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+*.log*
+
+# local env files
+*.env*
