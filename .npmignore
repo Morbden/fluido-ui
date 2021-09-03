@@ -10,7 +10,7 @@
 /src
 tsconfig.json
 .gitignore
-package-lock.json
+*lock.json
 
 # misc
 .DS_Store

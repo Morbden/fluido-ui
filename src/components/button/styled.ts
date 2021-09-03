@@ -6,6 +6,5 @@ interface AttrsProps {}
 
 export const Button_ = styled.div.attrs<Props, AttrsProps>(({}) => ({
   className: `
-    
   `,
 }))``

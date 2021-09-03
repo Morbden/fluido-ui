@@ -8,6 +8,9 @@
     "**/Thumbs.db": true,
     "*.js": true,
     "*.d.ts": true,
-    "components/**": true
+    "components/**": true,
+    "effects/**": true,
+    "hooks/**": true,
+    "layouts/**": true
   }
 }

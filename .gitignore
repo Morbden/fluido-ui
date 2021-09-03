@@ -10,10 +10,13 @@
 *.test*
 
 # production
-/components
 /out
 /build
 /dist
+/components
+/effects
+/hooks
+/layouts
 
 # misc
 .DS_Store
