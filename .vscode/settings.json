@@ -9,8 +9,9 @@
     "index.js": true,
     "index.d.ts": true,
     "components/**": true,
+    "containers/**": true,
     "effects/**": true,
     "hooks/**": true,
-    "layouts/**": true
+    "settings/**": true
   }
 }

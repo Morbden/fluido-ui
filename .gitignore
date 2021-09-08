@@ -16,7 +16,8 @@ index.js
 /components
 /effects
 /hooks
-/layouts
+/containers
+/settings
 
 # misc
 .DS_Store

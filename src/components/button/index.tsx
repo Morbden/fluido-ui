@@ -2,8 +2,12 @@ import { Button_ } from './styled'
 
 interface Props {}
 
-const Button: React.FC<Props> = ({ children, ...props }) => {
-  return <Button_ {...props}>{children}</Button_>
-}
+type Component = React.FC<Props> & typeof Button_
 
-export default Button
+export const Button: Component = ({ children, ...props }) => {
+  return (
+    <Button_ className='btn' {...props}>
+      {children}
+    </Button_>
+  )
+}
