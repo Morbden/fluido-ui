@@ -21,8 +21,7 @@
       "ui-hooks/*": ["hooks/*"],
       "ui-settings/*": ["settings/*"],
       "ui-types/*": ["types/*"],
-      "ui-utilities/*": ["utilities/*"],
-      "ui-utilities": ["utilities"]
+      "ui-utilities/*": ["utilities/*"]
     }
   },
   "exclude": ["node_modules"],

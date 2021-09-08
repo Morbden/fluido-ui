@@ -1,49 +1,22 @@
-import {
-  Breakpoint,
-  Breakpoints,
-  DefaultTheme,
-  Length,
-} from 'ui-types/containers'
-
-const breakpoints: Breakpoints = {
-  xs: '24em',
-  sm: '30em',
-  md: '48em',
-  lg: '62em',
-  xl: '80em',
-  '2xl': '96em',
-  '3xl': '120em',
-  '4xl': '132em',
-}
+import { Breakpoint, DefaultTheme, Length } from 'ui-types/containers'
+import { BREAKPOINTS, THEME } from './constants'
 
 export function getBreakpoint(bp: string | Breakpoint, theme?: DefaultTheme) {
-  if (bp in breakpoints) {
+  if (bp in BREAKPOINTS) {
     return (
       (theme?.breakpoints && theme.breakpoints[bp as Breakpoint]) ||
-      breakpoints[bp as Breakpoint]
+      BREAKPOINTS[bp as Breakpoint]
     )
   }
   return bp as string
 }
-
-export function validateValue(value: any) {
-  return value !== null && value !== undefined
-}
-
-const THEME: DefaultTheme = {}
 
 export function getComputedLength(
   property: string,
   length: Length | undefined | null,
   theme: DefaultTheme = THEME,
 ) {
-  if (
-    (typeof length !== 'number' &&
-      typeof length !== 'string' &&
-      typeof length !== 'object') ||
-    typeof length === null
-  )
-    return
+  if (length === null || length === undefined) return ''
   if (typeof length === 'number') return `${property}: ${length * 0.25}rem;`
   if (typeof length === 'string') return `${property}: ${length};`
 
