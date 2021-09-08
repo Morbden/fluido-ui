@@ -1,14 +1,7 @@
-import { StyledProps } from 'ui-types/goober'
 import { Button_ } from './styled'
 
-interface Props extends StyledProps {
-  title?: string
-}
+interface Props {}
 
 export const Button: React.FC<Props> = ({ children, ...props }) => {
-  return (
-    <Button_ className='btn2' {...props}>
-      {children}
-    </Button_>
-  )
+  return <Button_ {...props}>{children}</Button_>
 }
