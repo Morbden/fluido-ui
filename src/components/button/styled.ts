@@ -6,8 +6,8 @@ interface AttrsProps {}
 
 export const Button_ = styled.div.attrs<Props, AttrsProps>(({}) => ({
   className: `
-  bg-black
   text-white
+  bg-purple-900
   p-4
   `,
 }))``
