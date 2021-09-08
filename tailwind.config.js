@@ -3,12 +3,15 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   mode: 'jit',
-  purge: [
-    './components/**/*.{js}',
-    './effects/**/*.{js}',
-    './hooks/**/*.{js}',
-    './layouts/**/*.{js}',
-  ],
+  purge: {
+    enable: true,
+    content: [
+      './components/**/*.{js}',
+      './effects/**/*.{js}',
+      './hooks/**/*.{js}',
+      './layouts/**/*.{js}',
+    ],
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
