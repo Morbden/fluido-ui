@@ -13,6 +13,6 @@
     "effects/**": true,
     "hooks/**": true,
     "settings/**": true,
-    "type/**": true
+    "types/**": true
   }
 }
