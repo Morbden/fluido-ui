@@ -1,8 +1,17 @@
-import { extractCss } from 'goober'
 import { minify } from 'csso'
+import { extractCss as extractCssGoober } from 'goober'
 
 const DEV_MODE = process.env.NODE_ENV !== 'production'
-const css = extractCss()
-export const SSRStyle: React.FC = ({}) => {
-  return <style id='_goober'>{DEV_MODE ? css : minify(css).css}</style>
+
+export const extractCss = () => {
+  const css = extractCssGoober()
+  return DEV_MODE ? css : minify(css).css
+}
+
+interface Props {
+  css: string
+}
+
+export const SSRStyle: React.FC<Props> = ({ css }) => {
+  return <style id='_goober' dangerouslySetInnerHTML={{ __html: css }} />
 }

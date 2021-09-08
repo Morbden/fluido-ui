@@ -2,7 +2,6 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "declaration": true,
     "isolatedModules": true,
@@ -13,7 +12,16 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES6",
-    "outDir": "."
+    "outDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "ui-components/*": ["src/components/*"],
+      "ui-containers/*": ["src/containers/*"],
+      "ui-effects/*": ["src/effects/*"],
+      "ui-hooks/*": ["src/hooks/*"],
+      "ui-settings/*": ["src/settings/*"],
+      "ui-types/*": ["src/types/*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx"]

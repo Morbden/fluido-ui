@@ -1,4 +1,5 @@
 import { styled } from 'goober'
+import { StyledProps } from 'ui-types/goober'
 
 interface Props extends StyledProps {
   padding?: number

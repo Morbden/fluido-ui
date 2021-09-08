@@ -12,6 +12,7 @@
     "containers/**": true,
     "effects/**": true,
     "hooks/**": true,
-    "settings/**": true
+    "settings/**": true,
+    "type/**": true
   }
 }
