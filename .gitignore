@@ -19,6 +19,7 @@ index.js
 /containers
 /settings
 /types
+/utilities
 
 # misc
 .DS_Store
