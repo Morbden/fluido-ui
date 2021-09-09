@@ -2,7 +2,7 @@ import { Configuration } from 'webpack'
 import { join } from 'path'
 
 export function webpackPresetConfig(config: Configuration) {
-  const gooberAlias = {
+  const alias = {
     goober: [join(process.cwd(), 'node_modules/goober')],
     react: [join(process.cwd(), 'node_modules/react')],
     'react-dom': [join(process.cwd(), 'node_modules/react-dom')],
@@ -13,9 +13,9 @@ export function webpackPresetConfig(config: Configuration) {
     config.resolve = {}
   }
   if (!config.resolve.alias) {
-    config.resolve.alias = gooberAlias
+    config.resolve.alias = alias
   } else {
-    Object.assign(config.resolve.alias, gooberAlias)
+    Object.assign(config.resolve.alias, alias)
   }
 
   return config

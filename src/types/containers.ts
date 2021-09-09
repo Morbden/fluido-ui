@@ -77,7 +77,8 @@ export type FluiComponent<
       Props,
       AsComponent
     >,
-  ): JSX.Element
+    ...args: any[]
+  ): JSX.Element | React.ReactElement | null
 
   displayName?: string
   propTypes?: React.WeakValidationMap<any>
