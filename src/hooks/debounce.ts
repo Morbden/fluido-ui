@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 export const useDebounce = (
   cb: React.EffectCallback,
-  timeInMillis: number = 1000,
+  timeInMillis: number,
+  dependencies: any[],
 ) => {
-  const [change, setChange] = useState(false)
-
   useEffect(() => {
     const id = setTimeout(cb, timeInMillis)
     return () => clearTimeout(id)
-  }, [change])
-
-  return () => setChange((v) => !v)
+  }, dependencies)
 }
