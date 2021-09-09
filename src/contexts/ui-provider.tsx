@@ -11,7 +11,10 @@ interface ProviderProps {
 }
 
 export const FluiProvider: React.FC<ProviderProps> = ({ children, theme }) => {
-  const validTheme = useMemo(() => theme || THEME, [theme])
+  const validTheme = useMemo(
+    () => (theme ? { ...THEME, ...theme } : THEME),
+    [theme],
+  )
 
   return <Context.Provider value={validTheme}>{children}</Context.Provider>
 }
