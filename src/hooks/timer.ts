@@ -27,9 +27,5 @@ export const useTimer = (precision: number = 2, step: number = 1000) => {
 }
 
 // useDebounce
-// useTimeout
-// useInterval
 // useOutsideClick
 // usePopper
-// useIsMounted
-// useCallOnce
