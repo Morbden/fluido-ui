@@ -1,3 +1,4 @@
+export * from './array-state'
 export * from './boolean'
 export * from './call-once'
 export * from './debounce-state'
