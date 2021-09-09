@@ -21,8 +21,10 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@popperjs/core": "^2.10.1",
     "csso": "^4.2.0",
-    "goober": "^2.0.41"
+    "goober": "^2.0.41",
+    "react-popper": "^2.2.5"
   },
   "peerDependencies": {
     "framer-motion": "^4.x.x",
