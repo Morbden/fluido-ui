@@ -26,7 +26,8 @@
   },
   "peerDependencies": {
     "framer-motion": "^4.x.x",
-    "react": ">=16.8.0 <=17.x.x"
+    "react": ">=16.8.0 <=17.x.x",
+    "react-dom": ">=16.8.0 <=17.x.x"
   },
   "devDependencies": {
     "@types/csso": "^4.2.0",

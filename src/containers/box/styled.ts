@@ -2,7 +2,7 @@ import { styled } from 'goober'
 import { getComputedLength } from 'ui-utilities/computed'
 import { Length, StyledProps } from 'ui-types/containers'
 
-interface Props extends StyledProps {
+export interface BoxProps extends StyledProps {
   p?: Length
   pt?: Length
   pr?: Length
@@ -12,7 +12,7 @@ interface Props extends StyledProps {
   px?: Length
 }
 
-export const Box_ = styled('div')<Props>`
+export const Box_ = styled('div')<BoxProps>`
   ${({ p, theme }) => getComputedLength('padding', p, theme)}
   ${({ pt, theme }) => getComputedLength('padding-top', pt, theme)}
   ${({ pr, theme }) => getComputedLength('padding-right', pr, theme)}

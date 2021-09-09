@@ -14,9 +14,10 @@ index.js
 /build
 /dist
 /components
+/containers
+/contexts
 /effects
 /hooks
-/containers
 /settings
 /types
 /utilities
