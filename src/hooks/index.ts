@@ -12,3 +12,9 @@ export * from './timeout'
 export * from './timer'
 export * from './update-effect'
 export * from 'react-popper'
+export * from 'use-double-tap'
+
+import { useHotkeys } from 'react-hotkeys-hook'
+import useResizeObserver from 'use-resize-observer'
+
+export { useHotkeys, useResizeObserver }
