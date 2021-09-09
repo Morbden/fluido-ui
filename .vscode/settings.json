@@ -10,6 +10,7 @@
     "index.d.ts": true,
     "components/**": true,
     "containers/**": true,
+    "contexts/**": true,
     "effects/**": true,
     "hooks/**": true,
     "settings/**": true,

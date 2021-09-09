@@ -17,6 +17,7 @@
     "paths": {
       "ui-components/*": ["components/*"],
       "ui-containers/*": ["containers/*"],
+      "ui-contexts/*": ["contexts/*"],
       "ui-effects/*": ["effects/*"],
       "ui-hooks/*": ["hooks/*"],
       "ui-settings/*": ["settings/*"],
