@@ -28,12 +28,12 @@ const replacerData = (data: TypedMap, dataKey: string) => {
               parseNumberType(media.base),
             )
           } else {
-            data[`@media ${k}`] = {
+            data[`@media ${k}`] = Object.assign(data[`@media ${k}`] || {}, {
               [dataKey]: originalDataValue.replace(
                 replacer,
                 parseNumberType(media[k]),
               ),
-            }
+            })
           }
         }
       }

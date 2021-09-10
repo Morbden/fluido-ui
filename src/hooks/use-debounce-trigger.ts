@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 
-export const useDebounceTrigger = (
-  cb: React.EffectCallback,
-  timeInMillis: number = 1000,
+export interface useDebounceTriggerFunction {
+  (cb: React.EffectCallback, timeInMillis?: number): void
+}
+
+export const useDebounceTrigger: useDebounceTriggerFunction = (
+  cb,
+  timeInMillis = 1000,
 ) => {
   const [change, setChange] = useState(false)
 

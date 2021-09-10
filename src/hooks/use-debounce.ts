@@ -1,9 +1,13 @@
 import { useEffect } from 'react'
 
-export const useDebounce = (
-  cb: React.EffectCallback,
-  timeInMillis: number,
-  dependencies: any[],
+export interface useDebounceFunction {
+  (cb: React.EffectCallback, timeInMillis: number, dependencies: any[]): void
+}
+
+export const useDebounce: useDebounceFunction = (
+  cb,
+  timeInMillis,
+  dependencies,
 ) => {
   useEffect(() => {
     const id = setTimeout(cb, timeInMillis)

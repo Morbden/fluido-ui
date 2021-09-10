@@ -3,7 +3,6 @@ import { Length, StyledProps } from 'ui-types/styled'
 
 export interface BoxProps {
   p?: Length
-  padding?: Length
   pt?: Length
   pr?: Length
   pb?: Length
@@ -13,6 +12,7 @@ export interface BoxProps {
 }
 
 export const Box_ = styled('div')<BoxProps & StyledProps>`
-  padding: $p 1rem $p 1rem;
-  color: $theme-colors-primary-500;
+  padding: $p;
+  padding-top: $pt;
+  padding-bottom: $pb;
 `

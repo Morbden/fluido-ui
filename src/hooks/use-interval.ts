@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 
-export const useInterval = (
-  cb: React.EffectCallback,
-  timeInMillis: number = 1000,
-) => {
+export interface useIntervalFunction {
+  (cb: React.EffectCallback, timeInMillis?: number): void
+}
+
+export const useInterval: useIntervalFunction = (cb, timeInMillis = 1000) => {
   useEffect(() => {
     const id = setInterval(cb, timeInMillis)
     return () => clearInterval(id)

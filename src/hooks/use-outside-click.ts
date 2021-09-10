@@ -6,16 +6,24 @@ import {
   useLayoutEffect,
   useRef,
 } from 'react'
-import { useForkRef } from './use-fork-ref'
+import { useForkRef, AnyRef } from './use-fork-ref'
 
-export const useOutsideClick = (
-  handler: MouseEventHandler | PointerEventHandler,
-  block: boolean = false,
-  ref?: any,
+export interface useClickOutsideFunction {
+  <T extends Element>(
+    handler: MouseEventHandler | PointerEventHandler,
+    block?: boolean,
+    ref?: AnyRef<T>,
+  ): (node: T) => void
+}
+
+export const useClickOutside: useClickOutsideFunction = (
+  handler,
+  block = false,
+  ref,
 ) => {
-  const validRef = useRef<Element>()
+  const validRef = useRef<any>()
   const savedHandler = useRef<MouseEventHandler | PointerEventHandler>()
-  const mainRef = useForkRef(validRef, ref)
+  const mainRef = useForkRef(validRef, ref as any)
   const memoizedCallback = useCallback((e: any) => {
     if (
       validRef &&

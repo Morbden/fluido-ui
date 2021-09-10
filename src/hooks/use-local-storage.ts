@@ -1,13 +1,13 @@
-import { useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useState } from 'react'
 
-export interface useLocalStorageProps {
+export interface useLocalStorageFunction {
   <T = undefined>(key: string, initValue: T): [
     value: T,
-    setValue: React.Dispatch<React.SetStateAction<T>>
+    setValue: React.Dispatch<React.SetStateAction<T>>,
   ]
 }
 
-export const useLocalStorage: useLocalStorageProps = (key, initValue) => {
+export const useLocalStorage: useLocalStorageFunction = (key, initValue) => {
   const [value, setValue] = useState(initValue)
 
   useLayoutEffect(() => {

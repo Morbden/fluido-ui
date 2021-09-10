@@ -1,16 +1,22 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 
-function setRef(ref: any, value: any) {
+export type AnyRef<T> = ((node: T) => void) | React.MutableRefObject<T>
+
+export interface useForkRefFunction {
+  <T extends Element>(...refs: AnyRef<T>[]): (node: T) => void
+}
+
+const setRef = <T extends Element>(ref: AnyRef<T>, value: T) => {
   if (typeof ref === 'function') {
     ref(value)
-  } else if (ref) {
+  } else {
     ref.current = value
   }
 }
 
-export const useForkRef = (...refs: any[]) => {
+export const useForkRef: useForkRefFunction = (...refs) => {
   return useMemo(
-    () => (refValue: any) => refs.forEach((r) => setRef(r, refValue)),
+    () => (refValue) => refs.forEach((r) => setRef(r, refValue)),
     refs,
   )
 }

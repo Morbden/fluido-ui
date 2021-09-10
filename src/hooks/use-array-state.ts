@@ -1,54 +1,48 @@
 import { useState } from 'react'
 
-export const useArrayState = <T = undefined>(
-  initial: T[],
-): [
-  T[],
-  {
-    push: (...values: T[]) => void
-    remove: (start: number, size?: number) => void
-    clear: (replace?: T[]) => void
-    set: (index: number, value: T) => void
-    filter: (f: (value: T, index: number, list: T[]) => T[]) => void
-  },
-] => {
-  const [array, setArray] = useState(initial)
+export interface useArrayStateFunction {
+  <T = undefined>(initial: T[]): [
+    T[],
+    {
+      push: (...values: T[]) => void
+      remove: (start: number, size?: number) => void
+      clear: (replace?: T[]) => void
+      set: (index: number, value: T) => void
+      filter: (f: (value: T, index: number, list: T[]) => T[]) => void
+    },
+  ]
+}
 
-  const handlePush = (...values: T[]) => {
-    setArray((l) => [...l, ...values])
-  }
-  const handleRemove = (start: number, size: number = 1) => {
-    setArray((l) => {
-      l.splice(start, size)
-      return [...l]
-    })
-  }
-  const handleClear = (replace?: T[]) => {
-    setArray(replace || [])
-  }
-  const handleSet = (index: number, value: T) => {
-    setArray((l) => {
-      l.splice(index, 1, value)
-      return [...l]
-    })
-  }
-  const handleFilter = (
-    filter: (value: T, index: number, list: T[]) => T[],
-  ) => {
-    setArray((l) => {
-      const fl = l.filter(filter)
-      return [...fl]
-    })
-  }
+export const useArrayState: useArrayStateFunction = (initial) => {
+  const [array, setArray] = useState(initial)
 
   return [
     array,
     {
-      push: handlePush,
-      remove: handleRemove,
-      clear: handleClear,
-      set: handleSet,
-      filter: handleFilter,
+      push: (...values) => {
+        setArray((l) => [...l, ...values])
+      },
+      remove: (start, size = 1) => {
+        setArray((l) => {
+          l.splice(start, size)
+          return [...l]
+        })
+      },
+      clear: (replace) => {
+        setArray(replace || [])
+      },
+      set: (index, value) => {
+        setArray((l) => {
+          l.splice(index, 1, value)
+          return [...l]
+        })
+      },
+      filter: (filter) => {
+        setArray((l) => {
+          const fl = l.filter(filter)
+          return [...fl]
+        })
+      },
     },
   ]
 }

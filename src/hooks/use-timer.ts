@@ -1,16 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 
-export const useTimer = (
-  precision: number = 2,
-  step: number = 1000,
-): [
-  number,
-  {
-    start: VoidFunction
-    stop: VoidFunction
-    restart: VoidFunction
-  },
-] => {
+export interface useTimerFunction {
+  (precision?: number, step?: number): [
+    number,
+    {
+      start: VoidFunction
+      stop: VoidFunction
+      restart: VoidFunction
+    },
+  ]
+}
+
+export const useTimer: useTimerFunction = (precision = 2, step = 1000) => {
   const [value, setValue] = useState(0)
   const [start, setStart] = useState(false)
   const pres = useMemo(() => Math.pow(10, precision || 0), [precision])

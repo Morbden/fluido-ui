@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
-export const useBoolean = (): [
-  boolean,
-  { on: VoidFunction; off: VoidFunction; toggle: VoidFunction },
-] => {
+export interface useBooleanFunction {
+  (): [boolean, { on: VoidFunction; off: VoidFunction; toggle: VoidFunction }]
+}
+
+export const useBoolean: useBooleanFunction = () => {
   const [value, setValue] = useState(false)
 
   return [
