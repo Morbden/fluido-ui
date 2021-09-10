@@ -1,6 +1,17 @@
 import { useState } from 'react'
 
-export const useArrayState = <T = undefined>(initial: T[]) => {
+export const useArrayState = <T = undefined>(
+  initial: T[],
+): [
+  T[],
+  {
+    push: (...values: T[]) => void
+    remove: (start: number, size?: number) => void
+    clear: (replace?: T[]) => void
+    set: (index: number, value: T) => void
+    filter: (f: (value: T, index: number, list: T[]) => T[]) => void
+  },
+] => {
   const [array, setArray] = useState(initial)
 
   const handlePush = (...values: T[]) => {

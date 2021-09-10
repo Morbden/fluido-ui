@@ -6,7 +6,7 @@ import {
   useLayoutEffect,
   useRef,
 } from 'react'
-import { useForkRef } from './fork-ref'
+import { useForkRef } from './use-fork-ref'
 
 export const useOutsideClick = (
   handler: MouseEventHandler | PointerEventHandler,
