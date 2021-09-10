@@ -7,7 +7,7 @@ export const useBoolean = () => {
     value,
     {
       on: () => setValue(true),
-      off: () => setValue(true),
+      off: () => setValue(false),
       toggle: () => setValue((v) => !v),
     },
   ]
