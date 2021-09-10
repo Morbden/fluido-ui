@@ -1,7 +1,6 @@
-import { Breakpoints, DefaultTheme } from 'ui-types/containers'
+import { Breakpoints, DefaultTheme } from 'ui-types/styled'
 
 export const BREAKPOINTS: Breakpoints = {
-  xs: '24em',
   sm: '30em',
   md: '48em',
   lg: '62em',
@@ -11,4 +10,4 @@ export const BREAKPOINTS: Breakpoints = {
   '4xl': '132em',
 }
 
-export const THEME: DefaultTheme = {}
+export const THEME: DefaultTheme = {} as any

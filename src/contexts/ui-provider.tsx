@@ -1,8 +1,8 @@
 import { createContext, useContext, useMemo } from 'react'
-import { DefaultTheme } from 'ui-types/containers'
+import { DefaultTheme } from 'ui-types/styled'
 import { THEME } from 'ui-utilities/constants'
 
-const Context = createContext<DefaultTheme>({})
+const Context = createContext<DefaultTheme>({} as any)
 
 export const useTheme = () => useContext(Context)
 

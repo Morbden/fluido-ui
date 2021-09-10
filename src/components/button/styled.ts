@@ -1,4 +1,4 @@
-import { styled } from 'goober'
+import { styled } from 'ui-styled/styled'
 
 interface Props {}
 

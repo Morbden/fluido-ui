@@ -21,6 +21,7 @@
       "ui-effects/*": ["effects/*"],
       "ui-hooks/*": ["hooks/*"],
       "ui-settings/*": ["settings/*"],
+      "ui-styled/*": ["styled/*"],
       "ui-types/*": ["types/*"],
       "ui-utilities/*": ["utilities/*"]
     }

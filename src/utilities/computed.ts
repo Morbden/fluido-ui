@@ -1,4 +1,4 @@
-import { Breakpoint, DefaultTheme, Length } from 'ui-types/containers'
+import { Breakpoint, DefaultTheme, Length } from 'ui-types/styled'
 import { BREAKPOINTS, THEME } from './constants'
 
 export function getBreakpoint(bp: string | Breakpoint, theme?: DefaultTheme) {

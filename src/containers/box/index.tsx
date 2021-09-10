@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import { useTheme } from 'ui-contexts/ui-provider'
-import { FluiComponent } from 'ui-types/containers'
+import { FluiComponent } from 'ui-types/styled'
 import { BoxProps, Box_ } from './styled'
 
 interface Props {
