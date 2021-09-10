@@ -1,6 +1,7 @@
 import { TypedMap } from 'ui-types/styled'
 
 const REGEX_PROP_TAG = /\$[a-zA-Z][0-9a-zA-Z\-]*/g
+const REGEX_THEME_PROP_TAG = /\$theme(\-[0-9a-zA-Z]+)+/g
 
 const parseNumberType = (number: string | number) =>
   typeof number === 'number' ? `${number * 0.25}rem` : number

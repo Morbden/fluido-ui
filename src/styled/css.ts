@@ -11,14 +11,7 @@ export const cssBase = <T extends Function | string>(
   template: TemplateStringsArray,
   ...args: T[]
 ) => {
-  return hash(
-    compile(template, args, ctx.p),
-    ctx.p,
-    getSheet(),
-    ctx.g,
-    ctx.o,
-    ctx.k,
-  )
+  return hash(compile(template, args, ctx.p), ctx.p, getSheet(), ctx.g, ctx.o)
 }
 
 /**
@@ -37,13 +30,4 @@ const glob = <T extends Function | string>(
   ...args: T[]
 ) => cssBase({ g: true }, template, ...args)
 
-/**
- * `keyframes` function for defining animations
- * @type {Function}
- */
-const keyframes = <T extends Function | string>(
-  template: TemplateStringsArray,
-  ...args: T[]
-) => cssBase({ k: true }, template, ...args)
-
-export { css, glob, keyframes }
+export { css, glob }

@@ -29,7 +29,6 @@ export let hash = (
   sheet: Text,
   global: boolean,
   append: boolean,
-  keyframes: boolean,
 ) => {
   // Trazer objeto `css` para padronização
   const data =
@@ -45,21 +44,20 @@ export let hash = (
   // Recupera `className` pelo hash do estilo
   const className =
     cacheCompiled[hashCompiled] ||
-    (cacheCompiled[hashCompiled] = createClassName(stringifiedCompiled))
+    (cacheCompiled[hashCompiled] = createClassName(hashCompiled))
 
   // Se a classe não contem nada
   if (!cacheClassName[className]) {
     // Passar para estilo e armazenar no cache
     cacheClassName[className] = parseObjToString(
-      // Checar se é `keyframe`
-      keyframes ? { ['@keyframes ' + className]: parsed } : parsed,
+      parsed,
       // Checar se é `css` global
       global ? '' : '.' + className,
     )
   }
 
   // Atualizar o stylesheet
-  update(cacheClassName[className], sheet, append)
+  update(Object.values(cacheClassName).join('\n'), sheet, append)
 
   return className
 }
