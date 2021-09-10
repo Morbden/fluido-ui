@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
-export const useBoolean = () => {
+export const useBoolean = (): [
+  boolean,
+  { on: VoidFunction; off: VoidFunction; toggle: VoidFunction },
+] => {
   const [value, setValue] = useState(false)
 
   return [
