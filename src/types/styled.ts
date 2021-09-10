@@ -25,7 +25,7 @@ export type Optional<T> = {
   [P in keyof T]?: T[P]
 }
 
-export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 
 export interface Breakpoints {
   sm: string
@@ -34,13 +34,55 @@ export interface Breakpoints {
   xl: string
   '2xl': string
   '3xl': string
-  '4xl': string
+}
+
+export interface ColorWeight {
+  50?: string
+  100?: string
+  200?: string
+  300?: string
+  400?: string
+  500?: string
+  600?: string
+  700?: string
+  800?: string
+  900?: string
+}
+
+export interface Colors {
+  blue: ColorWeight
+  [key: string]: ColorWeight
+}
+
+export interface FontSizes {
+  xs?: string
+  sm?: string
+  md?: string
+  lg?: string
+  xl?: string
+  '2xl'?: string
+  '3xl'?: string
+  '4xl'?: string
+  '5xl'?: string
+  '6xl'?: string
+  '7xl'?: string
+  '8xl'?: string
+  '9xl'?: string
+}
+
+export interface Typography {
+  fontFamily?: string[]
+  fontSize?: FontSizes
+  fontWeight?: string
+  letterSpace?: string
+  lineHeight?: string
 }
 
 export interface DefaultTheme {
   breakpoints: Breakpoints
-  colors: []
-  typography: []
+  colors: TypedMap<ColorWeight>
+  typography: TypedMap<Typography>
+  [key: string]: any
 }
 
 export type BaseDefaultTheme = Optional<DefaultTheme>
