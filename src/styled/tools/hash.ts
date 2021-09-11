@@ -1,9 +1,10 @@
 import sha256 from 'crypto-js/sha256'
 import { TypedMap } from 'ui-types/generics'
-import { parseObjToString, parseStringToObj } from './parse'
 import { createClassName } from './classname'
-import { update } from './update'
+import { getSheetFixed } from './get-sheet'
+import { parseObjToString, parseStringToObj } from './parse'
 import { patternParser } from './pattern-parser'
+import { update } from './update'
 
 /**
  * Parse cache
@@ -25,14 +26,17 @@ const stringify = (data: TypedMap) => {
  */
 export let hash = (
   compiled: string | TypedMap,
-  props: TypedMap,
-  sheet: Text,
+  props: TypedMap | undefined,
   global: boolean,
-  append: boolean,
 ) => {
+  // Trazer objeto `css` para padronização e propriedades
+  const data =
+    typeof compiled === 'object' ? compiled : parseStringToObj(compiled)
+  // Compilar os patterns exclusivos
+  const parsed = patternParser(data, props || {})
+
   // Transforma o `objeto` css em `string`
-  const stringifiedCompiled =
-    typeof compiled === 'object' ? stringify(compiled) : compiled
+  const stringifiedCompiled = stringify(parsed)
   // Hash para comparação
   const hashCompiled = sha256(stringifiedCompiled).toString()
 
@@ -44,21 +48,15 @@ export let hash = (
 
   // Se contem atualização a ser feita
   if (canParse) {
-    // Trazer objeto `css` para padronização
-    const data =
-      typeof compiled === 'object' ? compiled : parseStringToObj(compiled)
-    // Compilar os patterns exclusivos
-    const parsed = patternParser(data, props)
-
     // Passar para estilo e armazenar no cache
     cacheClassName[className] = parseObjToString(
       parsed,
       // Checar se é `css` global
       global ? '' : '.' + className,
     )
-
     // Atualizar o stylesheet
-    update(Object.values(cacheClassName).join('\n'), sheet, append)
+    const fSheet = getSheetFixed()
+    update(cacheClassName, fSheet)
   }
 
   return className

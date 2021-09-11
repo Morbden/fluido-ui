@@ -1,7 +1,6 @@
-import { hash } from './tools/hash'
-import { compile } from './tools/compile'
-import { getSheet } from './tools/get-sheet'
 import { TypedMap } from 'ui-types/generics'
+import { compile } from './tools/compile'
+import { hash } from './tools/hash'
 
 /**
  * Compilador de css
@@ -11,7 +10,8 @@ export const cssBase = <T extends Function | string>(
   template: TemplateStringsArray,
   ...args: T[]
 ) => {
-  return hash(compile(template, args, ctx.p), ctx.p, getSheet(), ctx.g, ctx.o)
+  const compiled = compile(template, args, ctx.p)
+  return hash(compiled, ctx.p, ctx.g)
 }
 
 /**

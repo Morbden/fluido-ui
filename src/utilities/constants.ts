@@ -55,9 +55,12 @@ export const THEME: DefaultTheme = {
 
 export const THEME_DICTIONARY: TypedMap<string> = {
   breakpoints: 'bkp',
+  breakpoint: 'bkp',
   colors: 'clr',
+  color: 'clr',
   fontFamily: 'ff',
   fonts: 'fts',
+  font: 'fts',
   fontSize: 'fs',
   fontWeight: 'fw',
   letterSpace: 'ls',

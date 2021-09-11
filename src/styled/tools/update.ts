@@ -1,10 +1,15 @@
 import { minify } from 'csso'
-import { getSheet } from './get-sheet'
+import { TypedMap } from 'ui-types/generics'
+import { getSheetFixed, getSheetTheme } from './get-sheet'
+
 /**
  * Extracts and wipes the cache
  */
-export const extractCss = (target?: Element) => {
-  const sheet = getSheet(target)
+export const extractCss = (theme: boolean = false) => {
+  let sheet: Text
+  if (theme) sheet = getSheetTheme()
+  else sheet = getSheetFixed()
+
   const out = sheet.data || ''
   sheet.data = ''
   return out
@@ -13,6 +18,6 @@ export const extractCss = (target?: Element) => {
 /**
  * Updates the target and keeps a local cache
  */
-export const update = (css: string, sheet: Text, append: boolean) => {
-  sheet.data = minify(css).css
+export const update = (cache: TypedMap<string>, sheet: Text) => {
+  sheet.data = minify(Object.values(cache).join('')).css
 }

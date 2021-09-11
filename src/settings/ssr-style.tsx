@@ -1,7 +1,21 @@
+import { STYLE_ID_FIXED, STYLE_ID_THEME } from 'ui-styled/tools/get-sheet'
+
 interface Props {
-  css: string
+  css?: string
+  cssTheme?: string
 }
 
-export const SSRStyle: React.FC<Props> = ({ css }) => {
-  return <style id='_goober' dangerouslySetInnerHTML={{ __html: css }} />
+export const SSRStyle: React.FC<Props> = ({ css, cssTheme }) => {
+  return (
+    <>
+      <style
+        id={STYLE_ID_THEME}
+        dangerouslySetInnerHTML={{ __html: cssTheme || ' ' }}
+      />
+      <style
+        id={STYLE_ID_FIXED}
+        dangerouslySetInnerHTML={{ __html: css || ' ' }}
+      />
+    </>
+  )
 }

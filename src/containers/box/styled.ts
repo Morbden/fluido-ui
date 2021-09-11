@@ -14,6 +14,11 @@ export interface BoxProps {
 export const Box_ = styled('div')<BoxProps & StyledProps>`
   padding: $p;
   padding-top: $pt;
+  padding-right: $pr;
   padding-bottom: $pb;
-  background-color: $thm-clr-blue-600;
+  padding-left: $pl;
+  padding-right: $px;
+  padding-left: $px;
+  padding-top: $py;
+  padding-bottom: $py;
 `

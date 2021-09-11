@@ -12,11 +12,9 @@ const replacerData = (data: TypedMap, dataKey: string) => {
   const iteration = ([pattern, value]: [string, any]) => {
     const replacer = new RegExp(`\\$${pattern}`, 'g')
 
-    if (value === null || value === undefined) {
-      data[dataKey] = data[dataKey].replace(replacer, 'initial')
-    } else if (['number', 'string'].includes(typeof value)) {
-      data[dataKey] = data[dataKey].replace(replacer, parseNumberType(value))
-    } else if (typeof value === 'object') {
+    if (!data[dataKey]) return
+
+    if (typeof value === 'object') {
       const originalDataValue = data[dataKey]
       delete data[dataKey]
 
@@ -41,6 +39,10 @@ const replacerData = (data: TypedMap, dataKey: string) => {
       }
     } else if (typeof value === 'function') {
       iteration([pattern, value()])
+    } else if ('%DEL%' === value) {
+      delete data[dataKey]
+    } else {
+      data[dataKey] = data[dataKey].replace(replacer, parseNumberType(value))
     }
   }
 
@@ -67,8 +69,9 @@ export const patternParser = (data: TypedMap, props: TypedMap) => {
     // Mapear padrões e seus valores
     const entries = matches.map<[string, any]>((m) => {
       let val: any
+      const key = m.substr(1)
       if (REGEX_THEME_PROP_TAG.test(m)) {
-        let variable: string = m.substr(1)
+        let variable: string = key
         if (!REGEX_THEME_MIN.test(m)) {
           variable = variable
             .split('-')
@@ -76,9 +79,9 @@ export const patternParser = (data: TypedMap, props: TypedMap) => {
             .join('-')
         }
         val = `var(--flui${variable})`
-      } else val = props[m.substr(1)]
+      } else val = props[key] || '%DEL%'
 
-      return [m.substr(1), val]
+      return [key, val]
     })
 
     entries.forEach(replacerData(result, cssProp))

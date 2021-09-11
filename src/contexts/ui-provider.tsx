@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { getSheetTheme } from 'ui-styled/tools/get-sheet'
 import { TypedMap } from 'ui-types/generics'
 import { BaseDefaultTheme, DefaultTheme } from 'ui-types/styled'
 import { THEME } from 'ui-utilities/constants'
@@ -66,41 +67,24 @@ const themeParser = (
 }
 
 export const FluiProvider: React.FC<ProviderProps> = ({ children, theme }) => {
-  const [contentTheme, setContentTheme] = useState('')
   const themeRef = useRef<BaseDefaultTheme>()
-  const diff = !equal(themeRef.current, theme)
+  const diff = !equal(themeRef.current || {}, theme)
 
-  const validTheme = useMemo(
-    () =>
-      theme
-        ? deepmerge(THEME, theme, { arrayMerge: arrayMergeReplace })
-        : THEME,
-    [diff],
-  )
+  const validTheme = useMemo(() => {
+    themeRef.current = theme
 
-  useEffect(() => {
+    return theme
+      ? deepmerge(THEME, theme, { arrayMerge: arrayMergeReplace })
+      : THEME
+  }, [diff])
+
+  if (diff) {
     const parsed = themeParser(validTheme)
-    setContentTheme(
-      ':root{' + parsed.map<string>(([k, p]) => `${k}:${p};`).join('') + '}\n',
-    )
-  }, [validTheme])
+    const data =
+      ':root{' + parsed.map<string>(([k, p]) => `${k}:${p};`).join('') + '}\n'
+    const sheet = getSheetTheme()
+    sheet.data = data
+  }
 
-  useLayoutEffect(() => {
-    if (!contentTheme) return
-
-    const styleTheme: HTMLStyleElement =
-      document.head.querySelector('#_fluithm') ||
-      document.head.appendChild(
-        Object.assign(document.createElement('style'), {
-          id: '_fluithm',
-          innerHTML: ' ',
-        }),
-      )
-
-    const sheet = styleTheme.firstChild as Text
-    sheet.data = contentTheme
-  }, [contentTheme])
-
-  themeRef.current = theme
   return <Context.Provider value={validTheme}>{children}</Context.Provider>
 }

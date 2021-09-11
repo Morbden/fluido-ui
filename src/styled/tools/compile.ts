@@ -40,8 +40,9 @@ export const compile = <T extends Function | string>(
       }
 
       return out + next + (result || '')
+    } else if (typeof tail !== 'object') {
+      return out + next + (tail || '')
     }
-
-    return out + next + (tail || '')
+    return out + next
   }, '')
 }

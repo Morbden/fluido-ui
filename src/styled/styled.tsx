@@ -9,7 +9,7 @@ import { cssBase } from './css'
 export const styled: StyledFactory = (tag) => {
   return (templates, ...args) => {
     return memo(
-      forwardRef<any, any>((props, ref) => {
+      forwardRef<any, any>(function (props, ref) {
         const { as, className, children, ..._props } = props
         _props.ref = ref
 
@@ -27,7 +27,7 @@ export const styled: StyledFactory = (tag) => {
             if (
               !/^(data|on|aria)/.test(k) &&
               !attrs.includes(k) &&
-              !htmlElementAttributes['*']
+              !htmlElementAttributes['*'].includes(k)
             ) {
               delete _props[k]
             }
