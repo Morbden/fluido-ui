@@ -10,8 +10,10 @@ import {
   useRef,
   useState,
 } from 'react'
-import { BaseDefaultTheme, DefaultTheme, TypedMap } from 'ui-types/styled'
-import { THEME, THEME_DICTIONARY } from 'ui-utilities/constants'
+import { TypedMap } from 'ui-types/generics'
+import { BaseDefaultTheme, DefaultTheme } from 'ui-types/styled'
+import { THEME } from 'ui-utilities/constants'
+import { parseThemeSentence } from 'ui-utilities/parsers'
 
 interface ProviderProps {
   theme?: BaseDefaultTheme
@@ -23,14 +25,6 @@ export const useTheme = () => useContext(Context)
 
 const arrayMergeReplace = (_: any, src: any, __: any) => src
 
-const parseSentence = (val: string): string => {
-  if (val in THEME_DICTIONARY) {
-    return THEME_DICTIONARY[val]
-  } else {
-    return val.replace(/[A-Z]/g, '-$&').toLowerCase()
-  }
-}
-
 const themeParser = (
   theme: TypedMap,
   root: boolean = true,
@@ -39,7 +33,7 @@ const themeParser = (
   if (root) list.push(['--fluithm-clr-op', '1'])
 
   for (const k in theme) {
-    const sentence = parseSentence(k)
+    const sentence = parseThemeSentence(k)
     const base = root ? `--fluithm-${sentence}` : '-' + sentence
     const val = theme[k]
     if (typeof val === 'object' && !Array.isArray(val)) {

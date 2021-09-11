@@ -1,16 +1,10 @@
 import React from 'react'
-
-export interface TypedMap<T = any> {
-  [key: string]: T
-}
-
-export interface TypedFunction<A = any, R = any> {
-  (arg: A): R
-}
-
-export interface TypedReturnFunction<R = any> {
-  (): R
-}
+import {
+  Optional,
+  TypedFunction,
+  TypedMap,
+  TypedReturnFunction,
+} from './generics'
 
 export type Length =
   | number
@@ -20,10 +14,6 @@ export type Length =
       media?: TypedMap<number | string>
       container?: TypedMap<number | string>
     }
-
-export type Optional<T> = {
-  [P in keyof T]?: T[P]
-}
 
 export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 

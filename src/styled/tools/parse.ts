@@ -1,5 +1,5 @@
 import { prefix } from './prefix'
-import { TypedMap } from 'ui-types/styled'
+import { TypedMap } from 'ui-types/generics'
 
 const SR = /([^,])+/g
 const NEW_RULE =

@@ -1,4 +1,4 @@
-import { TypedMap } from 'ui-types/styled'
+import { TypedMap } from 'ui-types/generics'
 
 const REGEX_PROP_TAG = /\$[a-zA-Z][0-9a-zA-Z\-]*/g
 const REGEX_THEME_PROP_TAG = /\$theme(\-[0-9a-zA-Z]+)+/g

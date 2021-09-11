@@ -1,7 +1,7 @@
 import { hash } from './tools/hash'
 import { compile } from './tools/compile'
 import { getSheet } from './tools/get-sheet'
-import { TypedMap } from 'ui-types/styled'
+import { TypedMap } from 'ui-types/generics'
 
 /**
  * Compilador de css

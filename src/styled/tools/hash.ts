@@ -1,5 +1,5 @@
 import sha256 from 'crypto-js/sha256'
-import { TypedMap } from 'ui-types/styled'
+import { TypedMap } from 'ui-types/generics'
 import { parseObjToString, parseStringToObj } from './parse'
 import { createClassName } from './classname'
 import { update } from './update'
