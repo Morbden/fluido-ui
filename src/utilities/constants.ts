@@ -62,4 +62,5 @@ export const THEME_DICTIONARY: TypedMap<string> = {
   fontWeight: 'fw',
   letterSpace: 'ls',
   lineHeight: 'lh',
+  theme: 'thm',
 }

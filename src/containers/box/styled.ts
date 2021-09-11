@@ -15,4 +15,5 @@ export const Box_ = styled('div')<BoxProps & StyledProps>`
   padding: $p;
   padding-top: $pt;
   padding-bottom: $pb;
+  background-color: $thm-clr-blue-600;
 `

@@ -1,7 +1,9 @@
+import { parseThemeSentence } from 'ui-utilities/parsers'
 import { TypedMap } from 'ui-types/generics'
 
 const REGEX_PROP_TAG = /\$[a-zA-Z][0-9a-zA-Z\-]*/g
-const REGEX_THEME_PROP_TAG = /\$theme(\-[0-9a-zA-Z]+)+/g
+const REGEX_THEME_PROP_TAG = /^\$the?me?(\-[0-9a-zA-Z]+)+/
+const REGEX_THEME_MIN = /^thm/
 
 const parseNumberType = (number: string | number) =>
   typeof number === 'number' ? `${number * 0.25}rem` : number
@@ -63,10 +65,21 @@ export const patternParser = (data: TypedMap, props: TypedMap) => {
     if (!matches.length) continue
 
     // Mapear padrões e seus valores
-    const entries = matches.map<[string, any]>((m) => [
-      m.substr(1),
-      props[m.substr(1)],
-    ])
+    const entries = matches.map<[string, any]>((m) => {
+      let val: any
+      if (REGEX_THEME_PROP_TAG.test(m)) {
+        let variable: string = m.substr(1)
+        if (!REGEX_THEME_MIN.test(m)) {
+          variable = variable
+            .split('-')
+            .map<string>(parseThemeSentence)
+            .join('-')
+        }
+        val = `var(--flui${variable})`
+      } else val = props[m.substr(1)]
+
+      return [m.substr(1), val]
+    })
 
     entries.forEach(replacerData(result, cssProp))
   }
