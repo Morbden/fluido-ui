@@ -30,34 +30,36 @@ export let hash = (
   global: boolean,
   append: boolean,
 ) => {
-  // Trazer objeto `css` para padronização
-  const data =
-    typeof compiled === 'object' ? compiled : parseStringToObj(compiled)
-
-  // Compilar os patterns exclusivos
-  const parsed = patternParser(data, props)
-
   // Transforma o `objeto` css em `string`
-  const stringifiedCompiled = stringify(parsed)
+  const stringifiedCompiled =
+    typeof compiled === 'object' ? stringify(compiled) : compiled
+  // Hash para comparação
   const hashCompiled = sha256(stringifiedCompiled).toString()
 
   // Recupera `className` pelo hash do estilo
+  const canParse = !cacheCompiled[hashCompiled]
   const className =
     cacheCompiled[hashCompiled] ||
     (cacheCompiled[hashCompiled] = createClassName(hashCompiled))
 
-  // Se a classe não contem nada
-  if (!cacheClassName[className]) {
+  // Se contem atualização a ser feita
+  if (canParse) {
+    // Trazer objeto `css` para padronização
+    const data =
+      typeof compiled === 'object' ? compiled : parseStringToObj(compiled)
+    // Compilar os patterns exclusivos
+    const parsed = patternParser(data, props)
+
     // Passar para estilo e armazenar no cache
     cacheClassName[className] = parseObjToString(
       parsed,
       // Checar se é `css` global
       global ? '' : '.' + className,
     )
-  }
 
-  // Atualizar o stylesheet
-  update(Object.values(cacheClassName).join('\n'), sheet, append)
+    // Atualizar o stylesheet
+    update(Object.values(cacheClassName).join('\n'), sheet, append)
+  }
 
   return className
 }

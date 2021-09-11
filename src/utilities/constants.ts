@@ -1,4 +1,4 @@
-import { Breakpoints, Colors, DefaultTheme } from 'ui-types/styled'
+import { Breakpoints, Colors, DefaultTheme, TypedMap } from 'ui-types/styled'
 
 export const BREAKPOINTS: Breakpoints = {
   sm: '640px',
@@ -27,7 +27,7 @@ export const COLORS: Colors = {
 export const THEME: DefaultTheme = {
   breakpoints: BREAKPOINTS,
   colors: COLORS,
-  typography: {
+  fonts: {
     display: {
       fontFamily: ['system-ui', 'sans-serif'],
       fontWeight: '500',
@@ -50,4 +50,15 @@ export const THEME: DefaultTheme = {
       },
     },
   },
+}
+
+export const THEME_DICTIONARY: TypedMap<string> = {
+  breakpoints: 'bkp',
+  colors: 'clr',
+  fontFamily: 'ff',
+  fonts: 'fts',
+  fontSize: 'fs',
+  fontWeight: 'fw',
+  letterSpace: 'ls',
+  lineHeight: 'lh',
 }

@@ -21,6 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@ctrl/tinycolor": "^3.4.0",
     "@popperjs/core": "^2.10.1",
     "crypto-js": "^4.1.1",
     "csso": "^4.2.0",

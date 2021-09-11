@@ -70,7 +70,7 @@ export interface FontSizes {
   '9xl'?: string
 }
 
-export interface Typography {
+export interface Font {
   fontFamily?: string[]
   fontSize?: FontSizes
   fontWeight?: string
@@ -81,7 +81,7 @@ export interface Typography {
 export interface DefaultTheme {
   breakpoints: Breakpoints
   colors: TypedMap<ColorWeight>
-  typography: TypedMap<Typography>
+  fonts: TypedMap<Font>
   [key: string]: any
 }
 
