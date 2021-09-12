@@ -1,5 +1,6 @@
 import { minify } from 'csso'
 import { TypedMap } from 'ui-types/generics'
+import { cssReset } from './css-reset'
 import { getSheetFixed, getSheetTheme } from './get-sheet'
 
 /**
@@ -19,5 +20,15 @@ export const extractCss = (theme: boolean = false) => {
  * Updates the target and keeps a local cache
  */
 export const update = (cache: TypedMap<string>, sheet: Text) => {
-  sheet.data = minify(Object.values(cache).join('')).css
+  const data = cssReset + Object.values(cache).join('')
+
+  if (
+    typeof process !== 'object' ||
+    !process.env.NODE_ENV ||
+    process.env.NODE_ENV === 'production'
+  ) {
+    sheet.data = minify(data).css
+  } else {
+    sheet.data = data
+  }
 }

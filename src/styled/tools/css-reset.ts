@@ -1,3 +1,4 @@
+export const cssReset = `
 :root,
 body {
   font-family: 'system-ui', 'sans-serif';
@@ -71,3 +72,4 @@ hr.vertical {
   min-width: 1px;
   margin: 0 1rem;
 }
+`
