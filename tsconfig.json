@@ -16,14 +16,23 @@
     "baseUrl": "src",
     "paths": {
       "ui-components/*": ["components/*"],
+      "ui-components": ["components"],
       "ui-containers/*": ["containers/*"],
+      "ui-containers": ["containers"],
       "ui-contexts/*": ["contexts/*"],
+      "ui-contexts": ["contexts"],
       "ui-effects/*": ["effects/*"],
+      "ui-effects": ["effects"],
       "ui-hooks/*": ["hooks/*"],
+      "ui-hooks": ["hooks"],
       "ui-settings/*": ["settings/*"],
+      "ui-settings": ["settings"],
       "ui-styled/*": ["styled/*"],
+      "ui-styled": ["styled"],
       "ui-types/*": ["types/*"],
-      "ui-utilities/*": ["utilities/*"]
+      "ui-types": ["types"],
+      "ui-utilities/*": ["utilities/*"],
+      "ui-utilities": ["utilities"]
     }
   },
   "exclude": ["node_modules"],

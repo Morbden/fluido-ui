@@ -5,8 +5,12 @@ const REGEX_PROP_TAG = /\$[a-zA-Z][0-9a-zA-Z\-]*/g
 const REGEX_THEME_PROP_TAG = /^\$the?me?(\-[0-9a-zA-Z]+)+/
 const REGEX_THEME_MIN = /^thm/
 
-const parseNumberType = (number: string | number) =>
-  typeof number === 'number' ? `${number * 0.25}rem` : number
+const parseNumberType = (val: string | number | (string | number)[]): string =>
+  Array.isArray(val)
+    ? val.map(parseNumberType).join(' ')
+    : typeof val === 'number'
+    ? `${val * 0.25}rem`
+    : val
 
 const replacerData = (data: TypedMap, dataKey: string) => {
   const iteration = ([pattern, value]: [string, any]) => {
@@ -14,7 +18,7 @@ const replacerData = (data: TypedMap, dataKey: string) => {
 
     if (!data[dataKey]) return
 
-    if (typeof value === 'object') {
+    if (typeof value === 'object' && !Array.isArray(value)) {
       const originalDataValue = data[dataKey]
       delete data[dataKey]
 
