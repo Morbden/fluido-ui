@@ -11,7 +11,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
   ({ children, gap, ...props }, ref) => {
     const theme = useTheme()
     return (
-      <Stack_ gap={theme.spaces.md} ref={ref} {...props}>
+      <Stack_ gap={gap || theme.spaces.xl} ref={ref} {...props}>
         {children}
       </Stack_>
     )
