@@ -29,7 +29,7 @@ export interface BoxProps_ {
   /** One or two values for CSS `padding-block`. Shorthand for `padding-block-start` plus `padding-block-end`
    * @default null
    */
-  pbl?: Length
+  pbl?: Length | [Length, Length]
   /** Value for CSS `padding-block-start`
    * @default null
    */
