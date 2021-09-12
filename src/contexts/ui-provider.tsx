@@ -1,20 +1,10 @@
 import { TinyColor } from '@ctrl/tinycolor'
 import equal from 'deep-equal'
 import deepmerge from 'deepmerge'
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { createContext, useContext, useMemo, useRef } from 'react'
 import { getSheetTheme } from 'ui-styled/tools/get-sheet'
-import { TypedMap } from 'ui-types/generics'
-import { BaseDefaultTheme, DefaultTheme } from 'ui-types'
-import { THEME } from 'ui-utilities/constants'
-import { parseThemeSentence } from 'ui-utilities/parsers'
+import { BaseDefaultTheme, DefaultTheme, TypedMap } from 'ui-types'
+import { parseThemeSentence, THEME } from 'ui-utilities'
 
 interface ProviderProps {
   theme?: BaseDefaultTheme
