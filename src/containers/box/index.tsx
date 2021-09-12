@@ -1,15 +1,15 @@
 import { forwardRef } from 'react'
 import { useTheme } from 'ui-contexts/ui-provider'
 import { FluiComponent } from 'ui-types/styled'
-import { BoxProps, Box_ } from './styled'
+import { BoxProps_, Box_ } from './styled'
 
-interface Props {
+export interface BoxProps extends BoxProps_ {
   motion?: boolean
 }
 
-type Type = FluiComponent<'div', Props & BoxProps>
+export type BoxType = FluiComponent<'div', BoxProps>
 
-export const Box = forwardRef<HTMLDivElement, Props & BoxProps>(
+export const Box = forwardRef<HTMLDivElement, BoxProps>(
   ({ children, ...props }, ref) => {
     const theme = useTheme()
 
@@ -19,4 +19,4 @@ export const Box = forwardRef<HTMLDivElement, Props & BoxProps>(
       </Box_>
     )
   },
-) as Type
+) as BoxType

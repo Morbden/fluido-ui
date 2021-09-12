@@ -1,4 +1,6 @@
-export var htmlElementAttributes = {
+import { TypedMap } from 'ui-types/generics'
+
+export const htmlElementAttributes: TypedMap<string[]> = {
   '*': [
     'accesskey',
     'autocapitalize',

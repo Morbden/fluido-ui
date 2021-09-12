@@ -119,6 +119,7 @@ export type MergeWithAs<
 > = RightJoinProps<CP, AP> &
   RightJoinProps<AsP, AP> & {
     as?: AsC
+    className?: string
   }
 
 export type FluiComponent<C extends TagType, P extends object = {}> = {
@@ -126,7 +127,7 @@ export type FluiComponent<C extends TagType, P extends object = {}> = {
     props: MergeWithAs<
       React.ComponentProps<C>,
       React.ComponentProps<AsC>,
-      P,
+      React.PropsWithChildren<P>,
       AsC
     >,
     ...args: any[]

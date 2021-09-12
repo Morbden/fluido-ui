@@ -1,4 +1,5 @@
 import { forwardRef, memo } from 'react'
+import { TypedMap } from 'ui-types/generics'
 import { StyledFactory } from 'ui-types/styled'
 import { htmlElementAttributes } from 'ui-utilities/html-attrs'
 import { cssBase } from './css'
@@ -8,41 +9,52 @@ import { cssBase } from './css'
  */
 export const styled: StyledFactory = (tag) => {
   return (templates, ...args) => {
-    return memo(
-      forwardRef<any, any>(function (props, ref) {
-        const { as, className, children, ..._props } = props
-        _props.ref = ref
+    return function StyledComponent({
+      as: asComp,
+      className,
+      children,
+      ...props
+    }) {
+      const _props: TypedMap = props
 
-        const cssClassName = cssBase({ p: _props }, templates, ...args)
-        // Tipo de nó
-        const Node: any = as || tag
+      const cssClassName = cssBase({ p: _props }, templates, ...args)
 
-        // Limpar propriedades
-        if (!as || typeof as === 'string') {
-          const key: keyof typeof htmlElementAttributes = as || tag
-          const attrs: string[] =
-            key in htmlElementAttributes ? htmlElementAttributes[key] : []
+      const purge: string =
+        (typeof asComp === 'string' && asComp) ||
+        (typeof tag === 'string' && tag) ||
+        ''
 
-          for (const k in _props) {
-            if (
-              !/^(data|on|aria)/.test(k) &&
-              !attrs.includes(k) &&
-              !htmlElementAttributes['*'].includes(k)
-            ) {
-              delete _props[k]
-            }
+      // Limpar propriedades
+      if (purge) {
+        const attrs: string[] = htmlElementAttributes[purge] || []
+
+        for (const k in _props) {
+          if (
+            !/^(data|on|aria)/.test(k) &&
+            !attrs.includes(k) &&
+            !htmlElementAttributes['*'].includes(k)
+          ) {
+            delete _props[k]
           }
         }
+      }
 
-        return (
-          <Node
-            ref={ref}
-            className={cssClassName + ((className && ' ' + className) || '')}
-            {..._props}>
-            {children}
-          </Node>
-        )
-      }),
-    )
+      let Node: any
+
+      if (asComp && tag && typeof tag !== 'string') {
+        Node = tag
+        _props.as = asComp
+      } else {
+        Node = asComp || tag
+      }
+
+      return (
+        <Node
+          className={cssClassName + ((className && ' ' + className) || '')}
+          {..._props}>
+          {children}
+        </Node>
+      )
+    }
   }
 }
