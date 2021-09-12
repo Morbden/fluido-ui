@@ -64,4 +64,7 @@ export const Box_ = styled('div')<BoxProps_ & StyledProps>`
   padding-block: $pbl;
   padding-block-start: $pbs;
   padding-block-end: $pbe;
+  padding-inline: $pil;
+  padding-inline-start: $pis;
+  padding-inline-end: $pie;
 `
