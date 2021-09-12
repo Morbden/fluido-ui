@@ -1,4 +1,4 @@
-import { useTheme } from 'ui-contexts/ui-provider'
+import { useTheme } from 'ui-contexts'
 import { forwardRef } from 'react'
 import { FluiComponent } from 'ui-types'
 import { StackProps_, Stack_ } from './styled'
