@@ -1,4 +1,4 @@
-import { styled } from 'ui-styled/styled'
+import { styled } from 'ui-styled'
 
 interface Props {}
 

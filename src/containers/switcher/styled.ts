@@ -1,5 +1,5 @@
 import { Box, BoxProps } from '../box'
-import { styled } from 'ui-styled/styled'
+import { styled } from 'ui-styled'
 
 export interface SwitcherProps_ extends BoxProps {}
 

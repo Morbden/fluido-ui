@@ -12,7 +12,7 @@ import {
 } from 'react'
 import { getSheetTheme } from 'ui-styled/tools/get-sheet'
 import { TypedMap } from 'ui-types/generics'
-import { BaseDefaultTheme, DefaultTheme } from 'ui-types/styled'
+import { BaseDefaultTheme, DefaultTheme } from 'ui-types'
 import { THEME } from 'ui-utilities/constants'
 import { parseThemeSentence } from 'ui-utilities/parsers'
 

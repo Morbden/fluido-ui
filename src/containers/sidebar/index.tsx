@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { SidebarProps_, Sidebar_ } from './styled'
 
 export interface SidebarProps extends SidebarProps_ {}

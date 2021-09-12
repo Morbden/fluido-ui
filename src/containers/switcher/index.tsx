@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { SwitcherProps_, Switcher_ } from './styled'
 
 export interface SwitcherProps extends SwitcherProps_ {}

@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { StackProps_, Stack_ } from './styled'
 
 export interface StackProps extends StackProps_ {}

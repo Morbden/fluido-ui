@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { FrameProps_, Frame_ } from './styled'
 
 export interface FrameProps extends FrameProps_ {}

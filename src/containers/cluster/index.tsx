@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { ClusterProps_, Cluster_ } from './styled'
 
 export interface ClusterProps extends ClusterProps_ {}
