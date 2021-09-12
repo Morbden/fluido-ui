@@ -3,7 +3,7 @@ import { parseObjToString } from './parse'
 const CLASS_REGEX = /^flui/
 
 /**
- * Compilador de estilo para `string`
+ * Compiler for dynamic data from `objects` and `functions`
  */
 export const compile = <T extends Function | string>(
   str: TemplateStringsArray,

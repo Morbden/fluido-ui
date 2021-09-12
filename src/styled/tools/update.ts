@@ -17,7 +17,9 @@ export const extractCss = (theme: boolean = false) => {
 }
 
 /**
- * Updates the target and keeps a local cache
+ * Updates the sheet with cached CSS
+ *
+ * In production mode or in browser, CSS will be minified
  */
 export const update = (cache: TypedMap<string>, sheet: Text) => {
   const data = cssReset + Object.values(cache).join('')

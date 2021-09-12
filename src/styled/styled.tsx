@@ -1,11 +1,10 @@
-import { forwardRef, memo } from 'react'
-import { TypedMap } from 'ui-types/generics'
 import { StyledFactory } from 'ui-types'
+import { TypedMap } from 'ui-types/generics'
 import { htmlElementAttributes } from 'ui-utilities/html-attrs'
 import { cssBase } from './css'
 
 /**
- * Fabrica de geração do styled
+ * Styled factory
  */
 export const styled: StyledFactory = (tag) => {
   return (templates, ...args) => {

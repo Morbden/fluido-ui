@@ -53,7 +53,11 @@ const replacerData = (data: TypedMap, dataKey: string) => {
   return iteration
 }
 
-export const patternParser = (data: TypedMap, props: TypedMap) => {
+export const patternParser = (
+  data: TypedMap,
+  props: TypedMap,
+  sub: boolean = false,
+) => {
   const result: TypedMap = { ...data }
 
   for (const cssProp in result) {
@@ -61,7 +65,24 @@ export const patternParser = (data: TypedMap, props: TypedMap) => {
     // Se o valor não for `string` é um `object`
     if (typeof value !== 'string') {
       // Repassar `object`
-      result[cssProp] = patternParser(result[cssProp], props)
+      const buffer: TypedMap = patternParser(value, props, true)
+      if (sub || cssProp[0] === '@') {
+        result[cssProp] = buffer
+        continue
+      }
+
+      delete result[cssProp]
+      let pure: TypedMap | undefined
+      for (const k in buffer) {
+        if (typeof buffer[k] !== 'object') {
+          pure = Object.assign(pure || {}, { [k]: buffer[k] })
+          continue
+        }
+        result[k] = Object.assign(result[k] || {}, { [cssProp]: buffer[k] })
+      }
+      if (pure) {
+        result[cssProp] = pure
+      }
       continue
     }
 

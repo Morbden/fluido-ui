@@ -22,7 +22,7 @@ const stringify = (data: TypedMap) => {
 }
 
 /**
- * Gera o `className` necessário
+ * Generate the required `className`
  */
 export let hash = (
   compiled: string | TypedMap,

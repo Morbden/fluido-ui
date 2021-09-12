@@ -3,7 +3,7 @@ import { compile } from './tools/compile'
 import { hash } from './tools/hash'
 
 /**
- * Compilador de css
+ * CSS base compiler
  */
 export const cssBase = <T extends Function | string>(
   ctx: TypedMap,
@@ -15,7 +15,7 @@ export const cssBase = <T extends Function | string>(
 }
 
 /**
- * Compilador de css puro
+ * CSS loader for external components
  */
 const css = <T extends Function | string>(
   template: TemplateStringsArray,
@@ -23,7 +23,7 @@ const css = <T extends Function | string>(
 ) => cssBase({}, template, ...args)
 
 /**
- * CSS Global
+ * Global CSS
  */
 const glob = <T extends Function | string>(
   template: TemplateStringsArray,
