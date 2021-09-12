@@ -37,7 +37,7 @@ export interface BoxProps_ {
   /** One or two values for CSS `padding-block`. Shorthand for `padding-block-start` plus `padding-block-end`
    * @default null
    */
-  pbl?: Length
+  pbl?: Length | [Length, Length]
   /** Value for CSS `padding-block-start`
    * @default null
    */
@@ -70,10 +70,10 @@ export const Box_ = styled('div')<BoxProps_ & StyledProps>`
   padding-left: $px;
   padding-top: $py;
   padding-bottom: $py;
-  padding-inline: $pil;
-  padding-inline-start: $pis;
-  padding-inline-end: $pie;
   padding-block: $pbl;
   padding-block-start: $pbs;
   padding-block-end: $pbe;
+  padding-inline: $pil;
+  padding-inline-start: $pis;
+  padding-inline-end: $pie;
 `

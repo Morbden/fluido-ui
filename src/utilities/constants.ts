@@ -1,5 +1,5 @@
 import { TypedMap } from 'ui-types/generics'
-import { Breakpoints, Colors, DefaultTheme } from 'ui-types/styled'
+import { Breakpoints, Colors, DefaultTheme, Spaces } from 'ui-types/styled'
 
 export const BREAKPOINTS: Breakpoints = {
   sm: '640px',
@@ -25,9 +25,19 @@ export const COLORS: Colors = {
   },
 }
 
+export const SPACES: Spaces = {
+  xs: 0.5,
+  sm: 1,
+  md: 2,
+  lg: 2.5,
+  xl: 3,
+  '2xl': 4,
+}
+
 export const THEME: DefaultTheme = {
   breakpoints: BREAKPOINTS,
   colors: COLORS,
+  spaces: SPACES,
   fonts: {
     display: {
       fontFamily: ['system-ui', 'sans-serif'],

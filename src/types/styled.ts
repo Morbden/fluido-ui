@@ -26,6 +26,15 @@ export interface Breakpoints {
   '3xl': string
 }
 
+export interface Spaces {
+  xs: Length
+  sm: Length
+  md: Length
+  lg: Length
+  xl: Length
+  '2xl': Length
+}
+
 export interface ColorWeight {
   50?: string
   100?: string
