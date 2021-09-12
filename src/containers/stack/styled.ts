@@ -1,6 +1,6 @@
 import { Box, BoxProps } from '../box'
-import { styled } from 'ui-styled/styled'
-import { Length } from 'ui-types/styled'
+import { styled } from 'ui-styled'
+import { Length } from 'ui-types'
 
 export interface StackProps_ extends BoxProps {
   gap?: Length
