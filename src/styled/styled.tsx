@@ -1,6 +1,6 @@
 import { forwardRef, memo } from 'react'
 import { TypedMap } from 'ui-types/generics'
-import { StyledFactory } from 'ui-types/styled'
+import { StyledFactory } from 'ui-types'
 import { htmlElementAttributes } from 'ui-utilities/html-attrs'
 import { cssBase } from './css'
 

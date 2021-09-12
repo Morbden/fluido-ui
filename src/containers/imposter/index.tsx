@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { ImposterProps_, Imposter_ } from './styled'
 
 export interface ImposterProps extends ImposterProps_ {}

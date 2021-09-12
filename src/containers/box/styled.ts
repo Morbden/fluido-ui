@@ -1,5 +1,5 @@
-import { styled } from 'ui-styled/styled'
-import { Length, StyledProps } from 'ui-types/styled'
+import { styled } from 'ui-styled'
+import { Length, StyledProps } from 'ui-types'
 
 export interface BoxProps_ {
   /** One, two, three or four values for CSS `padding` shorthand
@@ -26,14 +26,6 @@ export interface BoxProps_ {
    * @default null
    */
   pl?: Length
-  /** Single value for CSS `padding-top` plus `padding-bottom`
-   * @default null
-   */
-  py?: Length
-  /** Single value for CSS `padding-left` plus `padding-right`
-   * @default null
-   */
-  px?: Length
   /** One or two values for CSS `padding-block`. Shorthand for `padding-block-start` plus `padding-block-end`
    * @default null
    */
@@ -66,10 +58,9 @@ export const Box_ = styled('div')<BoxProps_ & StyledProps>`
   padding-right: $pr;
   padding-bottom: $pb;
   padding-left: $pl;
-  padding-right: $px;
-  padding-left: $px;
-  padding-top: $py;
-  padding-bottom: $py;
+  padding-inline: $pil;
+  padding-inline-start: $pis;
+  padding-inline-end: $pie;
   padding-block: $pbl;
   padding-block-start: $pbs;
   padding-block-end: $pbe;

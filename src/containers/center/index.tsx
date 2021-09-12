@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { CenterProps_, Center_ } from './styled'
 
 export interface CenterProps extends CenterProps_ {}

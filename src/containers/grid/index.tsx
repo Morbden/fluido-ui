@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { GridProps_, Grid_ } from './styled'
 
 export interface GridProps extends GridProps_ {}

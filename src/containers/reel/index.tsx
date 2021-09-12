@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { FluiComponent } from 'ui-types/styled'
+import { FluiComponent } from 'ui-types'
 import { ReelProps_, Reel_ } from './styled'
 
 export interface ReelProps extends ReelProps_ {}
