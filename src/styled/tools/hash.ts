@@ -40,6 +40,9 @@ export let hash = (
   // Hash para comparação
   const hashCompiled = sha256(stringifiedCompiled).toString()
 
+  stringifiedCompiled.includes('box-sizing: content-box;') &&
+    console.log(compiled)
+
   // Recupera `className` pelo hash do estilo
   const canParse = !cacheCompiled[hashCompiled]
   const className =

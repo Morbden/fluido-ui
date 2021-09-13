@@ -3,12 +3,12 @@ import { TypedMap } from 'ui-types/generics'
 
 const REGEX_PROP_TAG = /\$[a-z][0-9a-z\-]*/gi
 const REGEX_FUNC_TAG =
-  /#[a-z][0-9a-z\-]*\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%]+\s*(?:[,\+\-\*\/]|==|<=?|>=?|!=)?\s*)+\)|[0-9a-z\.\-%]+)+,?\s*)*)+\)/gi
+  /#[a-z][0-9a-z\-]*\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%]+\s*(?:[,\+\-\*\/])?\s*)+\)|[0-9a-z\.\-%]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)/gi
 const REGEX_FUNC_TYPES = /\#(if|f(all)?b(ack)?)/i
 const REGEX_FUNC_TYPES_CLEAR = /\#(if|f(all)?b(ack)?)\(/i
 const REGEX_THEME_PROP_TAG = /^\$the?me?(\-[0-9a-z]+)+/i
 const REGEX_THEME_MIN = /^\$thm/i
-const REGEX_IF_SIGNAL = /(==|<=?|>=?|!=)/g
+const REGEX_IF_SIGNAL = /\s*(==|<=?|>=?|!=)\s*/g
 
 const parseNumberType = (val: string | number | (string | number)[]): string =>
   Array.isArray(val)
@@ -177,7 +177,6 @@ export const patternParser = (
           delete result[cssProp]
         }
       } else if (/^#if/i.test(func)) {
-        console.log(contentMatch)
         if (contentMatch[0] === 'true') {
           result[cssProp] = result[cssProp].replace(func, contentMatch[1])
         } else if (contentMatch[0] === '%DEL%') {
@@ -187,10 +186,30 @@ export const patternParser = (
             delete result[cssProp]
           }
         } else {
-          const signals = contentMatch[0].match(REGEX_IF_SIGNAL)
-          const values = contentMatch[0].split(REGEX_IF_SIGNAL)
-
-          console.log(signals, values)
+          const signal = (
+            (contentMatch[0].match(REGEX_IF_SIGNAL) || [])[0] || ''
+          ).trim()
+          const vs = contentMatch[0].split(REGEX_IF_SIGNAL)
+          if (vs.length !== 3 || !signal) {
+            delete result[cssProp]
+          } else if (
+            (signal === '==' && vs[0] === vs[2]) ||
+            (signal === '!=' && vs[0] !== vs[2]) ||
+            (signal === '>' && parseFloat(vs[0]) > parseFloat(vs[2])) ||
+            (signal === '>=' && parseFloat(vs[0]) >= parseFloat(vs[2])) ||
+            (signal === '<' && parseFloat(vs[0]) < parseFloat(vs[2])) ||
+            (signal === '<=' && parseFloat(vs[0]) <= parseFloat(vs[2]))
+          ) {
+            console.log(signal, 'YEAH')
+            result[cssProp] = result[cssProp].replace(func, contentMatch[1])
+          } else {
+            if (contentMatch[2]) {
+              result[cssProp] = result[cssProp].replace(func, contentMatch[2])
+            } else {
+              delete result[cssProp]
+            }
+          }
+          console.log(signal, vs)
         }
       }
     })
