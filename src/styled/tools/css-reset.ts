@@ -22,6 +22,8 @@ body {
   box-sizing: border-box;
   -webkit-tap-highlight: transparent;
   user-select: none;
+  margin: 0;
+  padding: 0;
 }
 :is(input, textarea, select, [contentEditable='true']) {
   user-select: none;
