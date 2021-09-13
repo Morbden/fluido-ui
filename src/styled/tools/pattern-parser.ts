@@ -177,9 +177,13 @@ export const patternParser = (
           delete result[cssProp]
         }
       } else if (/^#if/i.test(func)) {
-        if (contentMatch[0] === 'true') {
+        if (
+          contentMatch[0] === 'true' ||
+          contentMatch[0] === '!false' ||
+          contentMatch[0] === '!%DEL%'
+        ) {
           result[cssProp] = result[cssProp].replace(func, contentMatch[1])
-        } else if (contentMatch[0] === '%DEL%') {
+        } else if (contentMatch[0] === '%DEL%' || contentMatch[0] === 'false') {
           if (contentMatch[2]) {
             result[cssProp] = result[cssProp].replace(func, contentMatch[2])
           } else {
