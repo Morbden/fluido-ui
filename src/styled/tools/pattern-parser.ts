@@ -3,7 +3,7 @@ import { TypedMap } from 'ui-types/generics'
 
 const REGEX_PROP_TAG = /\$[a-z][0-9a-z\-]*/gi
 const REGEX_FUNC_TAG =
-  /#[a-z][0-9a-z\-]*\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%]+\s*(?:[,\+\-\*\/])?\s*)+\)|[0-9a-z\.\-%]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)/gi
+  /#[a-z][0-9a-z\-]*\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%\!]+\s*(?:[,\+\-\*\/])?\s*)+\)|[0-9a-z\.\-%\!]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)/gi
 const REGEX_FUNC_TYPES = /\#(if|f(all)?b(ack)?)/i
 const REGEX_FUNC_TYPES_CLEAR = /\#(if|f(all)?b(ack)?)\(/i
 const REGEX_THEME_PROP_TAG = /^\$the?me?(\-[0-9a-z]+)+/i
@@ -204,7 +204,6 @@ export const patternParser = (
             (signal === '<' && parseFloat(vs[0]) < parseFloat(vs[2])) ||
             (signal === '<=' && parseFloat(vs[0]) <= parseFloat(vs[2]))
           ) {
-            console.log(signal, 'YEAH')
             result[cssProp] = result[cssProp].replace(func, contentMatch[1])
           } else {
             if (contentMatch[2]) {
@@ -213,7 +212,6 @@ export const patternParser = (
               delete result[cssProp]
             }
           }
-          console.log(signal, vs)
         }
       }
     })

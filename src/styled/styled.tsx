@@ -20,7 +20,7 @@ export const styled: StyledFactory = (tag) => {
 
       const purge: string =
         (typeof asComp === 'string' && asComp) ||
-        (typeof tag === 'string' && tag) ||
+        (typeof tag === 'string' && !asComp && tag) ||
         ''
 
       // Limpar propriedades
