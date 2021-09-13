@@ -4,7 +4,7 @@ import { Length } from 'ui-types'
 
 export interface SidebarProps_ extends BoxProps {
   contentMin?: Length
-  equalHeight?: boolean
+  preventStretch?: boolean
   gap?: Length
   noStretch?: boolean
   side?: 'left' | 'right'
@@ -15,7 +15,7 @@ export const Sidebar_ = styled(Box)<SidebarProps_>`
   display: flex;
   flex-wrap: wrap;
   gap: $gap;
-  align-items: $equalHeight;
+  align-items: #if($preventStretch, flex-start, stretch);
 
   & > ${({ side }) => (side === 'right' ? ':last' : ':first')}-child {
     flex-basis: $sideWidth;
