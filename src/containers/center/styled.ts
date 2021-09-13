@@ -13,8 +13,8 @@ export const Center_ = styled(Box)<CenterProps_>`
   margin-left: auto;
   margin-right: auto;
   max-width: $maxWidth;
-  text-align: $if(andText, center);
-  display: $if(intrinsic, flex);
-  flex-direction: $if(intrinsic, column);
-  align-items: $if(intrinsic, var(--center, center));
+  text-align: #if($andText == true, center);
+  display: #if($intrinsic, flex);
+  flex-direction: #if($intrinsic, column);
+  align-items: #if($intrinsic, var(--center, center));
 `

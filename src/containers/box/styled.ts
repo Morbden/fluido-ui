@@ -26,6 +26,14 @@ export interface BoxProps_ {
    * @default null
    */
   pl?: Length
+  /** Single value for CSS `padding-top` plus `padding-bottom`
+   * @default null
+   */
+  py?: Length
+  /** Single value for CSS `padding-left` plus `padding-right`
+   * @default null
+   */
+  px?: Length
   /** One or two values for CSS `padding-block`. Shorthand for `padding-block-start` plus `padding-block-end`
    * @default null
    */
@@ -54,10 +62,10 @@ export interface BoxProps_ {
 
 export const Box_ = styled('div')<BoxProps_ & StyledProps>`
   padding: $p;
-  padding-top: $pt;
-  padding-right: $pr;
-  padding-bottom: $pb;
-  padding-left: $pl;
+  padding-top: #fallback($pt, $py);
+  padding-right: #fallback($pr, $px);
+  padding-bottom: #fallback($pb, $py);
+  padding-left: #fallback($pl, $px);
   padding-inline: $pil;
   padding-inline-start: $pis;
   padding-inline-end: $pie;

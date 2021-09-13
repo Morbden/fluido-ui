@@ -17,25 +17,14 @@ export const Sidebar_ = styled(Box)<SidebarProps_>`
   gap: $gap;
   align-items: $equalHeight;
 
-  & > :first-child {
+  & > ${({ side }) => (side === 'right' ? ':last' : ':first')}-child {
     flex-basis: $sideWidth;
     flex-grow: 1;
   }
 
-  & > :last-child {
+  & > ${({ side }) => (side === 'right' ? ':first' : ':last')}-child {
     flex-basis: 0;
     flex-grow: 9999;
     min-width: min($contentMin, 100%);
   }
-
-  /* & > $if(side = left, :first-child, :last-child) {
-    flex-basis: $sideWidth;
-    flex-grow: 1;
-  }
-
-  & > $if(side = left, :last-child, :first-child) {
-    flex-basis: 0;
-    flex-grow: 999;
-    min-width: $contentMin;
-  } */
 `
