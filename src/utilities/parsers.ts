@@ -7,3 +7,13 @@ export const parseThemeSentence = (val: string): string => {
     return val.replace(/[A-Z]/g, '-$&').toLowerCase()
   }
 }
+
+export function makeNthChildSelector(
+  value: number | number[],
+  offset: number = 0,
+) {
+  if (Array.isArray(value)) {
+    return value.map((v) => `:nth-child(${v + offset})`).join(',')
+  }
+  return `:nth-child(${value + offset})`
+}
