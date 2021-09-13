@@ -1,5 +1,6 @@
 export * from './box'
 export * from './center'
 export * from './cluster'
+export * from './cover'
 export * from './stack'
 export * from './sidebar'
