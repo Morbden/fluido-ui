@@ -28,7 +28,7 @@ export const Cover_ = styled(Box)<CoverProps_>`
     margin-bottom: auto;
   }
 
-  & > :is(${({ fill }) => fill && makeFillSelector(fill)}) {
+  & > :is(${({ fill }) => (fill && makeFillSelector(fill)) || 'a'}) {
     flex: 1;
   }
 `

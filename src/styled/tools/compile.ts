@@ -40,7 +40,7 @@ export const compile = <T extends Function | string>(
       }
 
       if (!result) {
-        return out
+        return out + next
       }
 
       return out + next + (result || '')

@@ -90,6 +90,7 @@ export const patternParser = (
   const result: TypedMap = { ...data }
 
   for (const cssProp in result) {
+    // '& > :is(:nth-child(2))' === cssProp && console.log(result)
     const value = result[cssProp]
     // Se o valor não for `string` é um `object`
     if (typeof value !== 'string') {
