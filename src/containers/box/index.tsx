@@ -13,7 +13,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(
 
     return (
       <Box_
-        className={className + srOnly ? ' sr-only' : ''}
+        className={className + (srOnly ? ' sr-only' : '')}
         ref={ref}
         theme={theme}
         {...props}>
