@@ -1,7 +1,7 @@
 import { styled } from 'ui-styled'
 import { Length, StyledProps } from 'ui-types'
 
-export interface BoxProps_ {
+export interface BoxProps_ extends StyledProps {
   /** One, two, three or four values for CSS `padding` shorthand
    * @default null
    */
@@ -82,7 +82,7 @@ export interface BoxProps_ {
   borderWidth?: Length
 }
 
-export const Box_ = styled('div')<BoxProps_ & StyledProps>`
+export const Box_ = styled('div')<BoxProps_>`
   padding: $p;
   padding-top: #fallback($pt, $py);
   padding-right: #fallback($pr, $px);
