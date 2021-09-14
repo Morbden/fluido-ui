@@ -8,11 +8,15 @@ export interface BoxProps extends BoxProps_ {}
 export type BoxType = FluiComponent<'div', BoxProps>
 
 export const Box = forwardRef<HTMLDivElement, BoxProps>(
-  ({ children, ...props }, ref) => {
+  ({ children, srOnly, className, ...props }, ref) => {
     const theme = useTheme()
 
     return (
-      <Box_ ref={ref} theme={theme} {...props}>
+      <Box_
+        className={className + srOnly ? ' sr-only' : ''}
+        ref={ref}
+        theme={theme}
+        {...props}>
         {children}
       </Box_>
     )

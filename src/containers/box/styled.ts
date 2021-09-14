@@ -58,6 +58,28 @@ export interface BoxProps_ {
    * @default null
    */
   pie?: Length
+  /** Prevents the user selection using `user-select: none`
+   * @default false
+   */
+  preventSelection?: boolean
+  /** Hides the component for visible users, but shows for screen readers */
+  srOnly?: boolean
+  bgColor?: string
+  color?: string
+  borderColor?: string
+  borderStyle?:
+    | 'dashed'
+    | 'dotted'
+    | 'double'
+    | 'groove'
+    | 'inherit'
+    | 'initial'
+    | 'inset'
+    | 'none'
+    | 'outset'
+    | 'ridge'
+    | 'solid'
+  borderWidth?: Length
 }
 
 export const Box_ = styled('div')<BoxProps_ & StyledProps>`
@@ -75,4 +97,13 @@ export const Box_ = styled('div')<BoxProps_ & StyledProps>`
   padding-inline: $pil;
   padding-inline-start: $pis;
   padding-inline-end: $pie;
+
+  user-select: #if($preventSelection, none);
+
+  background-color: $bgColor;
+  color: $color;
+
+  border-color: #fallback($borderColor, currentColor);
+  border-style: #fallback($borderStyle, solid);
+  border-width: #fallback($borderWidth, 0);
 `

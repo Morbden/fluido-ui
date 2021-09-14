@@ -11,14 +11,11 @@ export interface StackProps_ extends BoxProps {
 export const Stack_ = styled(Box)<StackProps_>`
   display: flex;
   flex-direction: column;
+  gap: $gap;
 
   &
     > :is(${({ splitAfter }) =>
         splitAfter && makeNthChildSelector(splitAfter, 1)}) {
     margin-top: auto;
-  }
-
-  & > * + * {
-    margin-top: $gap;
   }
 `
