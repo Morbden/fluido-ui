@@ -86,9 +86,9 @@ export interface DefaultTheme {
 
 export type BaseDefaultTheme = Optional<DefaultTheme>
 
-export interface StyledProps {
+export type StyledProps = React.HTMLAttributes<{
   theme?: DefaultTheme
-}
+}>
 
 export type TagType<P = any> = React.ElementType<P>
 
@@ -96,10 +96,6 @@ export type OmitCommonProps<
   T,
   OmitAdditionalProps extends keyof any = never,
 > = Omit<T, 'as' | OmitAdditionalProps>
-
-export interface ComponentProps<T extends TagType> {
-  as?: T
-}
 
 export interface StyledCompileCss {
   <T extends TagType>(tag: T): <P extends object = {}>(
@@ -128,7 +124,6 @@ export type MergeWithAs<
 > = RightJoinProps<CP, AP> &
   RightJoinProps<AsP, AP> & {
     as?: AsC
-    className?: string
   }
 
 export type FluiComponent<C extends TagType, P extends object = {}> = {
