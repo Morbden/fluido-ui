@@ -20,7 +20,7 @@ Even in this very basic use case, we found that tsx's syntax is a bit verbose.
 
 1. First you have to tell the template string that this is a dynamic value using `${...}`,
 2. Create a function `() =>`,
-3. Pass the variable as a parameter inside the function _optionally_ destructuring it (`{ var }` or `{ props.var }`),
+3. Pass the variable as a parameter inside the function _optionally_ destructuring it `({ var })` or `(props)`,
 4. Only to finally pass the variable `var` or `props.var`.
 
 ```tsx
@@ -171,14 +171,11 @@ border-color: ${({ borderColor }) => borderColor || 'currentColor'};
 
 // or
 
-border-color: ${(props) => props.borderColor ||
-  'currentColor'};` // checking multiple props
-`border-color: ${({ borderColor, theme }) =>
-  borderColor ||
-  theme.borderColor ||
-  'currentColor'};` // or
-`border-color: ${(props) =>
-  props.borderColor || props.theme.borderColor || 'currentColor'};`
+border-color: ${(props) => props.borderColor || 'currentColor'};` // checking multiple props
+border-color: ${({ borderColor, theme }) => borderColor || theme.borderColor || 'currentColor'};`
+
+// or
+border-color: ${(props) => props.borderColor || props.theme.borderColor || 'currentColor'};
 ```
 
 #### FSS
