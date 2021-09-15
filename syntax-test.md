@@ -1,8 +1,8 @@
 # The Fluido UI styling syntax
 
-Wrighting style rules for your custom components should be easy. Either you being an experienced front-end developer or not.
+Writing style rules for your custom components should be easy. Either you being an experienced front-end developer or not.
 
-If you already used styled-components (or goober, or emotion, or similar) you should be able to wright the styling for components using the same syntax as you're already accustomed. Just go ahead and try it.
+If you already used styled-components (or goober, or emotion, or similar) you should be able to write the styling for components using the same syntax as you're already accustomed. Just go ahead and try it.
 
 But if you are more used to the SCSS world, prefers a less verbose syntax, or just don't like the CSS-in-JS syntaxes, there's another way: the new syntax created by the team behind Fluido UI, called FSS (or Fluid Style Sheet).
 
@@ -167,11 +167,11 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-;`border-color: ${({ borderColor }) =>
-  borderColor ||
-  'currentColor'};` // or
-`border-color: ${(props) =>
-  props.borderColor ||
+border-color: ${({ borderColor }) => borderColor || 'currentColor'};
+
+// or
+
+border-color: ${(props) => props.borderColor ||
   'currentColor'};` // checking multiple props
 `border-color: ${({ borderColor, theme }) =>
   borderColor ||
