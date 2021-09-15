@@ -1,10 +1,13 @@
 import { prefix } from './prefix'
-import { TypedMap } from 'ui-types/generics'
+import { TypedMap } from 'ui-types'
+import { GenericNode } from './generic-node'
 
 const SR = /([^,])+/g
-const NEW_RULE =
-  /(?:([\u0080-\uFFFF\w-%@]+) *:? *([^{;]+?);|([^;}{]*?) *{)|(})/g
-const RULE_CLEAN = /\/\*[^]*?\*\/|\s\s+|\n/g
+const RULE_CLEAN = /\/\*\*?.*\*\/|\/\/.*\n/g
+const BLOCK = /{[^{}]+}/g
+const BLOCK_ID = /%BLOCK-\d+-\d+%/
+const PSEUDO_CLASSES =
+  /(?:\:(?:active|any|autofill|blank|checked|current|default|defined|dir|disabled|empty|enabled|first|fullscreen|future|focus|has|host|hover|indeterminate|in|is|lang|last|left|link|local|not|nth|only|optional|out|past|picture|placeholder|paused|playing|read|required|right|root|scope|state|target|user|valid|visited|where)|\:\:)/
 
 export let parseObjToString = (
   obj: TypedMap<string | TypedMap>,
@@ -68,19 +71,79 @@ export let parseObjToString = (
   return outer + blocks
 }
 
-export const parseStringToObj = (val: string) => {
-  const tree: TypedMap[] = [{}]
-  let block: RegExpExecArray | null
-
-  while ((block = NEW_RULE.exec(val.replace(RULE_CLEAN, '')))) {
-    if (block[4]) tree.shift()
-
-    if (block[3]) {
-      tree.unshift((tree[0][block[3]] = tree[0][block[3]] || {}))
-    } else if (!block[4]) {
-      tree[0][block[1]] = block[2]
+const trimList = (s: string) => s.trim()
+const clearList = (s: string) => s !== ''
+const parseLinesToNode = (parent: GenericNode) => {
+  let pseudo = ''
+  return (line: string) => {
+    if (/%BLOCK/.test(line)) {
+      pseudo += line
+      const node = new GenericNode(pseudo.replace(/\n/g, ' ').trim())
+      parent.addChild(node)
+      pseudo = ''
+    } else if (
+      PSEUDO_CLASSES.test(line) ||
+      !line.includes(':') ||
+      /\(.*\:.*\)/.test(line)
+    ) {
+      pseudo += line
+    } else {
+      const prop = line.split(':')
+      parent.properties[prop[0].trim()] = prop[1].trim()
     }
   }
+}
 
-  return tree[0]
+const parseBlocksToTree = (node: GenericNode, blocks: string[][][]) => {
+  const m = node.id.match(BLOCK_ID) as string[]
+  if (!m) return
+  node.id = node.id.replace(BLOCK_ID, '').trim()
+  const im = m[0].substr(7, m[0].length - 8).split('-')
+  const block = blocks[+im[0]][+im[1]]
+
+  block.forEach(parseLinesToNode(node))
+
+  if (!node.isEmpty()) {
+    const children = node.getChildren()
+    children.forEach((c) => {
+      parseBlocksToTree(c, blocks)
+    })
+  }
+}
+
+export const parseStringToObj = (val: string) => {
+  const code = val.replace(RULE_CLEAN, '\n')
+
+  const blockBuffer: string[][] = []
+  const tree = new GenericNode('root')
+  let modCode = code
+  let matches = code.match(BLOCK)
+  let counter = 0
+  while (matches) {
+    matches.forEach((b, i) => {
+      modCode = modCode.replace(b, `%BLOCK-${counter}-${i}%;`)
+    })
+    blockBuffer.push(matches)
+    counter++
+    matches = modCode.match(BLOCK)
+  }
+
+  const blockRoot = modCode.split(';').map(trimList).filter(clearList)
+  const childrenBlocks = blockBuffer.map((bks) =>
+    bks.map((b) =>
+      b
+        .substr(1, b.length - 2)
+        .split(';')
+        .map(trimList)
+        .filter(clearList),
+    ),
+  )
+
+  blockRoot.forEach(parseLinesToNode(tree))
+  const children = tree.getChildren()
+  children.forEach((c) => {
+    parseBlocksToTree(c, childrenBlocks)
+  })
+
+  return tree
 }

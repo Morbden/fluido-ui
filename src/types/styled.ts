@@ -11,8 +11,10 @@ export type Length =
   | string
   | TypedReturnFunction<number | string>
   | {
-      media?: TypedMap<number | string>
-      container?: TypedMap<number | string>
+      media?: TypedMap<number | string | TypedReturnFunction<number | string>>
+      container?: TypedMap<
+        number | string | TypedReturnFunction<number | string>
+      >
     }
 
 export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
@@ -86,8 +88,13 @@ export interface DefaultTheme {
 
 export type BaseDefaultTheme = Optional<DefaultTheme>
 
+export interface PatternFunction {
+  (...args: string[]): string
+}
+
 export interface StyledProps extends React.HTMLAttributes<Element> {
   theme?: DefaultTheme
+  handlers?: TypedMap<PatternFunction>
 }
 
 export type TagType<P = any> = React.ElementType<P>

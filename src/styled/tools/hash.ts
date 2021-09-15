@@ -25,23 +25,20 @@ const stringify = (data: TypedMap) => {
  * Generate the required `className`
  */
 export let hash = (
-  compiled: string | TypedMap,
+  compiled: string,
   props: TypedMap | undefined,
   global: boolean,
 ) => {
   // Trazer objeto `css` para padronização e propriedades
-  const data =
-    typeof compiled === 'object' ? compiled : parseStringToObj(compiled)
+  const data = parseStringToObj(compiled)
   // Compilar os patterns exclusivos
-  const parsed = patternParser(data, props || {})
+  patternParser(data, props || {})
+  const parsed = data.getMap()
 
   // Transforma o `objeto` css em `string`
   const stringifiedCompiled = stringify(parsed)
   // Hash para comparação
   const hashCompiled = sha256(stringifiedCompiled).toString()
-
-  stringifiedCompiled.includes('box-sizing: content-box;') &&
-    console.log(compiled)
 
   // Recupera `className` pelo hash do estilo
   const canParse = !cacheCompiled[hashCompiled]

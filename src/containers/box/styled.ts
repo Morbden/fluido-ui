@@ -79,15 +79,15 @@ export interface BoxProps_ extends StyledProps {
     | 'outset'
     | 'ridge'
     | 'solid'
-  borderWidth?: Length
+  border?: Length
 }
 
 export const Box_ = styled('div')<BoxProps_>`
   padding: $p;
-  padding-top: #fallback($pt, $py);
-  padding-right: #fallback($pr, $px);
-  padding-bottom: #fallback($pb, $py);
-  padding-left: #fallback($pl, $px);
+  padding-top: #or($pt, $py);
+  padding-right: #or($pr, $px);
+  padding-bottom: #or($pb, $py);
+  padding-left: #or($pl, $px);
   padding-inline: $pil;
   padding-inline-start: $pis;
   padding-inline-end: $pie;
@@ -98,12 +98,14 @@ export const Box_ = styled('div')<BoxProps_>`
   padding-inline-start: $pis;
   padding-inline-end: $pie;
 
-  user-select: #if($preventSelection, none);
-
+  user-select: #and($preventSelection, none);
   background-color: $bgColor;
   color: $color;
 
-  border-color: #fallback($borderColor, currentColor);
-  border-style: #fallback($borderStyle, solid);
-  border-width: #fallback($borderWidth, 0);
+  display: #func(myFunc);
+  #if($border) {
+    border-color: #or($borderColor, currentColor);
+    border-style: #or($borderStyle, solid);
+    border-width: $border;
+  }
 `

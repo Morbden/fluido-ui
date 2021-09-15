@@ -1,221 +1,299 @@
-import { parseThemeSentence } from 'ui-utilities/parsers'
-import { TypedMap } from 'ui-types/generics'
+import { parseThemeSentence } from 'ui-utilities'
+import { TypedMap } from 'ui-types'
+import { GenericNode } from './generic-node'
+import { funcs } from './reserved-function'
 
-const REGEX_PROP_TAG = /\$[a-z][0-9a-z\-]*/gi
+type ValueType =
+  | number
+  | string
+  | (number | string)[]
+  | (() => number | string | (number | string)[])
+
+// Identificadores
+const REGEX_PROPS = /\$[a-z][a-z0-9]*/gi
+const REGEX_THEME = /^\$the?me?(\.[a-z0-9]+)+/i
+const REGEX_IF_OPERATORS = /==|<=?|>=?|!=/
+const REGEX_BOOLEAN = /(false|0+[^\.1-9]+[a-z]*)/i
+
+// Capturadores
 const REGEX_FUNC_TAG =
-  /#[a-z][0-9a-z\-]*\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%\!]+\s*(?:[,\+\-\*\/])?\s*)+\)|[0-9a-z\.\-%\!]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)/gi
-const REGEX_FUNC_TYPES = /\#(if|f(all)?b(ack)?)/i
-const REGEX_FUNC_TYPES_CLEAR = /\#(if|f(all)?b(ack)?)\(/i
-const REGEX_THEME_PROP_TAG = /^\$the?me?(\-[0-9a-z]+)+/i
-const REGEX_THEME_MIN = /^\$thm/i
-const REGEX_IF_SIGNAL = /\s*(==|<=?|>=?|!=)\s*/g
+  /#(if|else|func(tion)?|call|or|and)\((?:(?:(?:[0-9a-z\-]+\((?:(?:(?:[0-9a-z\-]+\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%!#]+\s*(?:[,\+\-\*\/])?\s*)+\)|[0-9a-z\.\-%!#]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)|[0-9a-z\.\-%!#]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)|[0-9a-z\.\-%!#]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)/gi
 
-const parseNumberType = (val: string | number | (string | number)[]): string =>
-  Array.isArray(val)
-    ? val.map(parseNumberType).join(' ')
+// To boolean value
+const toBooleanValue = (val: string) => {
+  const nots = (val.match(/^!+/g) || [])[0] || ''
+  if (!(REGEX_BOOLEAN.test(val) && nots.length % 2 === 0)) {
+    return true
+  }
+  return false
+}
+
+// Filtros de lista
+const filterClearSame = (e: any, i: number, l: any[]) => l.indexOf(e) === i
+// Ordenadores de lista
+const sortLengthOrder = (a: string, b: string) => b.length - a.length
+// Transformadores de lista
+const listTrim = (v: string) => v.trim()
+
+// Encontrar todas as propriedades de valor e armazenar no buffer
+const computePropIds = (node: GenericNode, buffer: string[]) => {
+  buffer.push(...(node.id.match(REGEX_PROPS) || []))
+  for (let k in node.properties) {
+    buffer.push(...(node.properties[k].match(REGEX_PROPS) || []))
+  }
+  node.getChildren().forEach((c) => computePropIds(c, buffer))
+}
+
+// Processador de valor
+const computePropType = (val: ValueType): string =>
+  typeof val === 'function'
+    ? computePropType(val())
+    : Array.isArray(val)
+    ? val.map(computePropType).join(' ')
     : typeof val === 'number'
     ? `${val * 0.25}rem`
-    : val
+    : val.toString()
 
-const replacerData = (data: TypedMap, dataKey: string) => {
-  const iteration = ([pattern, value]: [string, any]) => {
-    const replacer = new RegExp(`\\$${pattern}`, 'g')
-
-    if (!data[dataKey]) return
-
-    if (typeof value === 'object' && !Array.isArray(value)) {
-      const originalDataValue = data[dataKey]
-      delete data[dataKey]
-
-      if ('media' in value) {
-        const media: TypedMap = value.media
-
-        for (const k in media) {
-          if (k === 'base') {
-            data[dataKey] = originalDataValue.replace(
-              replacer,
-              parseNumberType(media.base),
-            )
-          } else if ('base' in media) {
-            data[`@media ${k}`] = Object.assign(data[`@media ${k}`] || {}, {
-              [dataKey]: originalDataValue.replace(
-                replacer,
-                parseNumberType(media[k]),
-              ),
-            })
-          }
-        }
-      }
-    } else if (typeof value === 'function') {
-      iteration([pattern, value()])
-    } else if ('%DEL%' === value && !REGEX_FUNC_TYPES.test(data[dataKey])) {
-      delete data[dataKey]
-    } else {
-      data[dataKey] = data[dataKey].replace(replacer, parseNumberType(value))
-    }
-  }
-
-  return iteration
-}
-
-const fixNestingSplit = () => {
-  let counter = 0
-
-  return (p: string[], c: string): string[] => {
-    const opens = c.match(/\(/) || []
-    const closes = c.match(/\)/) || []
-    const reallyOpens = opens.length - closes.length
-    if (reallyOpens > 0) {
-      if (counter > 0) {
-        p[p.length - 1] += ',' + c
-      } else {
-        p.push(c)
-      }
-    } else if (counter > 0) {
-      p[p.length - 1] += ',' + c
-    } else {
-      p.push(c)
-    }
-
-    counter += reallyOpens
-    return p
-  }
-}
-
-export const patternParser = (
-  data: TypedMap,
-  props: TypedMap,
-  sub: boolean = false,
+// Mapear valores das propriedades
+const setPropValue = (
+  node: GenericNode,
+  regexp: RegExp,
+  val: ValueType,
+  removeOthers = false,
 ) => {
-  const result: TypedMap = { ...data }
-
-  for (const cssProp in result) {
-    // '& > :is(:nth-child(2))' === cssProp && console.log(result)
-    const value = result[cssProp]
-    // Se o valor não for `string` é um `object`
-    if (typeof value !== 'string') {
-      // Repassar `object`
-      const buffer: TypedMap = patternParser(value, props, true)
-      if (sub || cssProp[0] === '@') {
-        result[cssProp] = buffer
-        continue
+  if (regexp.test(node.id)) {
+    node.id = node.id.replace(regexp, computePropType(val))
+  }
+  for (let k in node.properties) {
+    if (!regexp.test(node.properties[k])) {
+      if (removeOthers) {
+        delete node.properties[k]
       }
+      continue
+    }
+    node.properties[k] = node.properties[k].replace(
+      regexp,
+      computePropType(val),
+    )
+  }
+}
 
-      delete result[cssProp]
-      let pure: TypedMap | undefined
-      for (const k in buffer) {
-        if (typeof buffer[k] !== 'object') {
-          pure = Object.assign(pure || {}, { [k]: buffer[k] })
+// Mapear valores das propriedades em nivel profundo
+const setDeepPropValue = (
+  node: GenericNode,
+  regexp: RegExp,
+  val: ValueType,
+  removeOthers = false,
+) => {
+  setPropValue(node, regexp, val, removeOthers)
+  node.getChildren().forEach((c) => {
+    setDeepPropValue(c, regexp, val, removeOthers)
+  })
+}
+
+// Repassar valores em seus respectivos locais
+const computePropValue = (node: GenericNode, [regexp, val]: [RegExp, any]) => {
+  if (typeof val === 'object' && !Array.isArray(val)) {
+    if ('media' in val) {
+      let childInTree = node
+      while (childInTree?.parent?.parent) {
+        childInTree = childInTree.parent
+      }
+      const origin = (childInTree || node).clone()
+      const isTree = !childInTree.parent
+
+      for (let m in val.media) {
+        if (m === 'base') {
+          setPropValue(node, regexp, val.media.base)
           continue
         }
-        result[k] = Object.assign(result[k] || {}, { [cssProp]: buffer[k] })
-      }
-      if (pure) {
-        result[cssProp] = pure
-      }
-      continue
-    }
 
-    // Capturar padrões de propriedades
-    const matchesProps =
-      value.match(REGEX_PROP_TAG)?.filter((m, i, l) => l.indexOf(m) === i) || []
-    if (!matchesProps.length) continue
+        if (!origin.id.includes('@')) {
+          const mediaNode = new GenericNode(`@media ${m}`)
+          const cloned = origin.clone()
 
-    // Mapear valores em propriedades do component
-    const entries = matchesProps.map<[string, any]>((m) => {
-      let val: any
-      const key = m.substr(1)
-
-      if (REGEX_THEME_PROP_TAG.test(m)) {
-        let variable: string = key
-        if (!REGEX_THEME_MIN.test(m)) {
-          variable = variable
-            .split('-')
-            .map<string>(parseThemeSentence)
-            .join('-')
-        }
-        val = `var(--flui-${variable.toLowerCase()})`
-      } else val = props[key] || '%DEL%'
-
-      return [key, val]
-    })
-
-    // Replace dos valores em suas determinas posições
-    entries.forEach(replacerData(result, cssProp))
-
-    const replacedValue = result[cssProp] as string
-    if (!replacedValue) continue
-
-    // Capturar padrões de funções
-    const matchesFuncs =
-      replacedValue
-        .match(REGEX_FUNC_TAG)
-        ?.filter((m, i, l) => l.indexOf(m) === i) || []
-
-    if (matchesFuncs.length && !REGEX_FUNC_TYPES.test(replacedValue)) {
-      delete result[cssProp]
-      continue
-    }
-
-    if (!matchesFuncs.length) continue
-
-    matchesFuncs.forEach((func) => {
-      if (!result[cssProp]) return
-
-      const contentMatch: string[] = func
-
-        .replace(REGEX_FUNC_TYPES_CLEAR, '')
-        .replace(/\)$/, '')
-        .split(/(?!\(.*)\s*,\s*(?!\).*)/)
-        .reduce<string[]>(fixNestingSplit(), [])
-
-      if (/^#f(all)?b(ack)?/i.test(func)) {
-        const val = contentMatch.find((v) => v !== '%DEL%')
-        if (val) {
-          result[cssProp] = result[cssProp].replace(func, val)
-        } else {
-          delete result[cssProp]
-        }
-      } else if (/^#if/i.test(func)) {
-        if (
-          contentMatch[0] === 'true' ||
-          contentMatch[0] === '!false' ||
-          contentMatch[0] === '!%DEL%'
-        ) {
-          result[cssProp] = result[cssProp].replace(func, contentMatch[1])
-        } else if (contentMatch[0] === '%DEL%' || contentMatch[0] === 'false') {
-          if (contentMatch[2]) {
-            result[cssProp] = result[cssProp].replace(func, contentMatch[2])
-          } else {
-            delete result[cssProp]
-          }
-        } else {
-          const signal = (
-            (contentMatch[0].match(REGEX_IF_SIGNAL) || [])[0] || ''
-          ).trim()
-          const vs = contentMatch[0].split(REGEX_IF_SIGNAL)
-          if (vs.length !== 3 || !signal) {
-            delete result[cssProp]
-          } else if (
-            (signal === '==' && vs[0] === vs[2]) ||
-            (signal === '!=' && vs[0] !== vs[2]) ||
-            (signal === '>' && parseFloat(vs[0]) > parseFloat(vs[2])) ||
-            (signal === '>=' && parseFloat(vs[0]) >= parseFloat(vs[2])) ||
-            (signal === '<' && parseFloat(vs[0]) < parseFloat(vs[2])) ||
-            (signal === '<=' && parseFloat(vs[0]) <= parseFloat(vs[2]))
-          ) {
-            result[cssProp] = result[cssProp].replace(func, contentMatch[1])
-          } else {
-            if (contentMatch[2]) {
-              result[cssProp] = result[cssProp].replace(func, contentMatch[2])
+          setPropValue(cloned, regexp, val.media[m], true)
+          if (!cloned.isPropsEmpty()) {
+            if (isTree) {
+              for (const k in cloned.properties) {
+                mediaNode.properties[k] = cloned.properties[k]
+              }
             } else {
-              delete result[cssProp]
+              mediaNode.addChild(cloned)
             }
+            node.addInTree(mediaNode)
           }
         }
       }
-    })
+    } else if ('container' in val) {
+      setPropValue(
+        node,
+        regexp,
+        `var(--flui-self-${regexp.source.substr(2)}, ${computePropType(
+          val.container.base,
+        )})`,
+      )
+    }
+  } else {
+    setPropValue(node, regexp, val)
   }
 
-  return result
+  node.getChildren().forEach((c) => {
+    computePropValue(c, [regexp, val])
+  })
+}
+
+// Repassador de valores de propriedades
+const computePropValues = (node: GenericNode, buffer: [RegExp, any][]) => {
+  buffer.forEach((value) => {
+    computePropValue(node, value)
+  })
+}
+
+const inOpenBrackets = (val: string) => {
+  const opens = (val.match(/\(/g) || []).length
+  const closes = (val.match(/\)/g) || []).length
+
+  return opens - closes
+}
+
+// Separador de valores
+const collectValuesIFunc = (val: string): string[] => {
+  let v = val.replace(/^#[a-z]+\(/i, '')
+  const buffer: string[] = v.substring(0, v.length - 1).split(/\s*,\s*/g)
+
+  let counter = 0
+  for (let i = 0; i < buffer.length; i++) {
+    const c = counter + inOpenBrackets(buffer[i])
+    if (counter > 0) {
+      buffer.splice(i - 1, 2, `${buffer[i - 1]},${buffer[i]}`)
+      i--
+    }
+    counter = c
+  }
+
+  return buffer
+}
+
+// Capturador de funções
+const functionFinder = (node: GenericNode, buffer: string[]) => {
+  buffer.push(...(node.id.match(REGEX_FUNC_TAG) || []))
+  for (const k in node.properties) {
+    buffer.push(...(node.properties[k].match(REGEX_FUNC_TAG) || []))
+  }
+
+  node.getChildren().forEach((c) => functionFinder(c, buffer))
+}
+
+// Processador de funções
+const computeFunction =
+  (data: TypedMap) =>
+  (func: string): [string, string] => {
+    if (func.startsWith('#if')) {
+      const value = func.substring(4, func.length - 1)
+      if (REGEX_IF_OPERATORS.test(value)) {
+        const op = (value.match(REGEX_IF_OPERATORS) as string[])[0]
+        const vs = value.split(REGEX_IF_OPERATORS).map(listTrim)
+
+        if (
+          (op === '==' && vs[0] === vs[1]) ||
+          (op === '!=' && vs[0] !== vs[1]) ||
+          (op === '>' && parseFloat(vs[0]) > parseFloat(vs[1])) ||
+          (op === '>=' && parseFloat(vs[0]) >= parseFloat(vs[1])) ||
+          (op === '<' && parseFloat(vs[0]) < parseFloat(vs[1])) ||
+          (op === '<=' && parseFloat(vs[0]) <= parseFloat(vs[1]))
+        ) {
+          return [func, 'true']
+        }
+      } else {
+        if (toBooleanValue(value)) {
+          return [func, 'true']
+        }
+      }
+    } else if (func.startsWith('#and')) {
+      const values = collectValuesIFunc(func)
+      if (values.length > 0 && values.every((c) => toBooleanValue(c))) {
+        return [func, values.pop() as string]
+      }
+    } else if (func.startsWith('#or')) {
+      const values = collectValuesIFunc(func)
+      const v = values.find((c) => toBooleanValue(c))
+      if (v) {
+        return [func, v]
+      }
+    } else if (func.startsWith('#func') || func.startsWith('#call')) {
+      const values = collectValuesIFunc(func)
+      const funcName = values.shift()
+      if (!funcName) {
+        return [func, 'false']
+      }
+
+      if (funcName in funcs) {
+        return [func, funcs[funcName](...values) || 'false']
+      } else if (data?.handlers && funcName in data.handlers) {
+        return [func, data.handlers[funcName](...values) || 'false']
+      }
+    }
+    return [func, 'false']
+  }
+
+// Limpeza da arvore
+const treeShaker = (node: GenericNode) => {
+  if (node.id.includes('false')) {
+    node.destroy()
+    return
+  }
+
+  for (let k in node.properties) {
+    if (node.properties[k].includes('false')) {
+      delete node.properties[k]
+    }
+  }
+
+  if (node.id === 'true') {
+    node.mergeToParent()
+  }
+
+  node.getChildren().forEach((c) => treeShaker(c))
+}
+
+// Compilador de flui syntax
+export const patternParser = (tree: GenericNode, data: TypedMap) => {
+  let propsIds: string[] = []
+  computePropIds(tree, propsIds)
+  propsIds = propsIds.filter(filterClearSame).sort(sortLengthOrder)
+
+  // Caves de valor das propriedades
+  const propsEntries = propsIds.map<[RegExp, any]>((key) => {
+    let val: any
+    if (REGEX_THEME.test(key)) {
+      // Se propriedade é tipo `theme` gera valor de tema baseado em `css-var`
+      val = key.split('.').map<string>(parseThemeSentence).join('-')
+      val = `var(--flui-${val.toLowerCase()})`
+    } else {
+      val = data[key.substr(1)] || 'false'
+    }
+    return [new RegExp(`\\${key}`, 'g'), val]
+  })
+
+  // Setar valores de propriedades
+  computePropValues(tree, propsEntries)
+
+  /*** Computação de funções ***/
+  let funcBuffer: string[] = []
+
+  // Encontrando funções
+  functionFinder(tree, funcBuffer)
+  funcBuffer = funcBuffer.filter(filterClearSame).sort(sortLengthOrder)
+  const funcEntries = funcBuffer
+    .map(computeFunction(data))
+    .map<[RegExp, string]>((c) => [
+      new RegExp(c[0].replace(/[\(\)\.\$\^\+\-\*\\\/\?]/g, '\\$&'), 'g'),
+      c[1],
+    ])
+
+  funcEntries.forEach(([regexp, val]) => {
+    setDeepPropValue(tree, regexp, val)
+  })
+  treeShaker(tree)
 }
