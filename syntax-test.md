@@ -1,6 +1,6 @@
-# The Fluido UI styling syntax
+# Writing styles should be Fluid
 
-Writing style rules for your custom components should be easy. Either you being an experienced front-end developer or not.
+Writing style rules for your custom components should be enjoyable. Doesn't matter if you're an experienced front-end developer or not.
 
 If you already used styled-components (or goober, or emotion, or similar) you should be able to write the styling for components using the same syntax as you're already accustomed. Just go ahead and try it.
 
@@ -20,7 +20,7 @@ Even in this very basic use case, we found that tsx's syntax is a bit verbose.
 
 1. First you have to tell the template string that this is a dynamic value using `${...}`,
 2. Create a function `() =>`,
-3. Pass the variable as a parameter inside the function _optionally_ destructuring it `({ var })` or `(props)`,
+3. Pass `(props)` as a parameter inside the function or _optionally_ destructure individual props `({ var1, var2 })`,
 4. Only to finally pass the variable `var` or `props.var`.
 
 ```tsx
