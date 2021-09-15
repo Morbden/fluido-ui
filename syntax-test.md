@@ -24,14 +24,15 @@ Even in this very basic use case, we found that tsx's syntax is a bit verbose.
 4. Only to finally pass the variable `var` or `props.var`.
 
 ```tsx
-padding: ${({ p }) => p};
-
-
+const style = styled('div')`
+  padding: ${({ p }) => p};
+`
 
 /* or */
 
-
-padding: ${( props ) => props.p};
+const style = styled('div')`
+  padding: ${(props) => props.p};
+`
 ```
 
 ### FSS
@@ -79,21 +80,27 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-const style = `user-select: ${({ preventSelection }) =>
-  preventSelection && 'none'};`
+const style = styled('div')`
+  user-select: ${({ preventSelection }) => preventSelection && 'none'};
+`
 
 /* or */
 
-const style = `user-select: ${(props) => props.preventSelection && 'none'};`
+const style = styled('div')`
+  user-select: ${(props) => props.preventSelection && 'none'};
+`
 
 // checking multiple props
-const style = `padding-inline: ${({ isFeatured, outlined }) =>
-  isFeatured && outlined && '2rem'};`
+const style = styled('div')`
+  padding-inline: ${({ isFeatured, outlined }) =>
+    isFeatured && outlined && '2rem'};
+`
 
 /* or */
 
-const style = `padding-inline: ${(props) =>
-  props.isFeatured && props.outlined && '2rem'};`
+const style = styled('div')`
+  padding-inline: ${(props) => props.isFeatured && props.outlined && '2rem'};
+`
 ```
 
 #### FSS
@@ -176,21 +183,28 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-const style = `border-color: ${({ borderColor }) =>
-  borderColor || 'currentColor'};`
+const style = styled('div')`
+  border-color: ${({ borderColor }) => borderColor || 'currentColor'};
+`
 
 /* or */
 
-const style = `border-color: ${(props) => props.borderColor || 'currentColor'};`
+const style = styled('div')`
+  border-color: ${(props) => props.borderColor || 'currentColor'};
+`
 
 // checking multiple props
-const style = `border-color: ${({ borderColor, theme }) =>
-  borderColor || theme.borderColor || 'currentColor'};`
+const style = styled('div')`
+  border-color: ${({ borderColor, theme }) =>
+    borderColor || theme.borderColor || 'currentColor'};
+`
 
 /* or */
 
-const style = `border-color: ${(props) =>
-  props.borderColor || props.theme.borderColor || 'currentColor'};`
+const style = styled('div')`
+  border-color: ${(props) =>
+    props.borderColor || props.theme.borderColor || 'currentColor'};
+`
 ```
 
 #### FSS
@@ -251,21 +265,25 @@ Example 3:
 ### styled-components tsx
 
 ```tsx
-const style = `${({ border, borderColor, borderStyle }) =>
-  border &&
-  `
+const style = styled('div')`
+  ${({ border, borderColor, borderStyle }) =>
+    border &&
+    `
 border-color: ${borderColor || 'currentColor'};
 border-style: ${borderStyle || 'solid'};
-border-width: ${border || 'currentColor'}`}`
+border-width: ${border || 'currentColor'}`}
+`
 
 /* or */
 
-const style = `${({ border, borderColor, borderStyle }) =>
-  border && {
-    borderColor: borderColor || 'currentColor',
-    borderStyle: borderStyle || 'solid',
-    borderWidth: border || 'currentColor',
-  }}`
+const style = styled('div')`
+  ${({ border, borderColor, borderStyle }) =>
+    border && {
+      borderColor: borderColor || 'currentColor',
+      borderStyle: borderStyle || 'solid',
+      borderWidth: border || 'currentColor',
+    }}
+`
 ```
 
 ### FSS
@@ -285,9 +303,11 @@ const style = `${({ border, borderColor, borderStyle }) =>
 ### styled-components tsx
 
 ```tsx
-const style = `${({ hue, saturation, lightness, colorOpacity }) => `
+const style = styled('div')`
+  ${({ hue, saturation, lightness, colorOpacity }) => `
     color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
-`}`
+`}
+`
 ```
 
 ### FSS
@@ -303,8 +323,10 @@ color: hsla($hue, $saturation, $lightness, $colorOpacity);
 ### styled-components tsx
 
 ```tsx
-const style = `${({ allowOverflow, preserveRatio }) =>
-  (allowOverflow || preserveRatio) && `position: absolute`}`
+const style = styled('div')`
+  ${({ allowOverflow, preserveRatio }) =>
+    (allowOverflow || preserveRatio) && `position: absolute`}
+`
 ```
 
 ### FSS
@@ -326,12 +348,14 @@ const style = `${({ allowOverflow, preserveRatio }) =>
 ### styled-components tsx
 
 ```tsx
-const style = `${({ stripes }) =>
-  stripes &&
-  `
+const style = styled('div')`
+  ${({ stripes }) =>
+    stripes &&
+    `
   & > :nth-of-type(${stripes}) {
     background-color: #eee;
-  }`}`
+  }`}
+`
 ```
 
 ### FSS
@@ -347,11 +371,12 @@ const style = `${({ stripes }) =>
 ### styled-components tsx
 
 ```tsx
-const style = `
-& > :nth-last-child(n + ${({ limit }) => limit && limit + 1}),
-& > :nth-last-child(n + ${({ limit }) => limit && limit + 1}) ~ \* {
-  flex-basis: 100%;
-}`
+const style = styled('div')`
+  & > :nth-last-child(n + ${({ limit }) => limit && limit + 1}),
+  & > :nth-last-child(n + ${({ limit }) => limit && limit + 1}) ~ \* {
+    flex-basis: 100%;
+  }
+`
 ```
 
 ### FSS
