@@ -26,14 +26,17 @@ Even in this very basic use case, we found that tsx's syntax is a bit verbose.
 ```tsx
 padding: ${({ p }) => p};
 
-// or
+
+
+/* or */
+
 
 padding: ${( props ) => props.p};
 ```
 
 ### FSS
 
-Using the FSS's aproach you just pass the variable with a dolar sign `$` in front of it, like you would using sass. That's it.
+Using the FSS's approach you just pass the variable with a dolar sign `$` in front of it, like you would using sass. That's it.
 
 ```scss
 padding: $p;
@@ -76,15 +79,21 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-user-select: ${({ preventSelection }) => preventSelection && 'none'};
-// or
-user-select: ${(props) => props.preventSelection && 'none'};
+const style = `user-select: ${({ preventSelection }) =>
+  preventSelection && 'none'};`
+
+/* or */
+
+const style = `user-select: ${(props) => props.preventSelection && 'none'};`
 
 // checking multiple props
+const style = `padding-inline: ${({ isFeatured, outlined }) =>
+  isFeatured && outlined && '2rem'};`
 
-padding-inline: ${({ isFeatured, outlined }) => isFeatured && outlined && '2rem'};
-// or
-padding-inline: ${(props) => props.isFeatured && props.outlined && '2rem'};
+/* or */
+
+const style = `padding-inline: ${(props) =>
+  props.isFeatured && props.outlined && '2rem'};`
 ```
 
 #### FSS
@@ -167,15 +176,21 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-border-color: ${({ borderColor }) => borderColor || 'currentColor'};
+const style = `border-color: ${({ borderColor }) =>
+  borderColor || 'currentColor'};`
 
-// or
+/* or */
 
-border-color: ${(props) => props.borderColor || 'currentColor'};` // checking multiple props
-border-color: ${({ borderColor, theme }) => borderColor || theme.borderColor || 'currentColor'};`
+const style = `border-color: ${(props) => props.borderColor || 'currentColor'};`
 
-// or
-border-color: ${(props) => props.borderColor || props.theme.borderColor || 'currentColor'};
+// checking multiple props
+const style = `border-color: ${({ borderColor, theme }) =>
+  borderColor || theme.borderColor || 'currentColor'};`
+
+/* or */
+
+const style = `border-color: ${(props) =>
+  props.borderColor || props.theme.borderColor || 'currentColor'};`
 ```
 
 #### FSS
@@ -236,9 +251,21 @@ Example 3:
 ### styled-components tsx
 
 ```tsx
-${({ border, borderColor, borderStyle }) =>
-border &&
-` border-color: ${borderColor || 'currentColor'} border-style: ${borderStyle || 'solid'} border-width: ${border || 'currentColor'}`}
+const style = `${({ border, borderColor, borderStyle }) =>
+  border &&
+  `
+border-color: ${borderColor || 'currentColor'};
+border-style: ${borderStyle || 'solid'};
+border-width: ${border || 'currentColor'}`}`
+
+/* or */
+
+const style = `${({ border, borderColor, borderStyle }) =>
+  border && {
+    borderColor: borderColor || 'currentColor',
+    borderStyle: borderStyle || 'solid',
+    borderWidth: border || 'currentColor',
+  }}`
 ```
 
 ### FSS
@@ -258,9 +285,9 @@ border &&
 ### styled-components tsx
 
 ```tsx
-${({ hue, saturation, lightness, colorOpacity }) => `
+const style = `${({ hue, saturation, lightness, colorOpacity }) => `
     color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
-`}
+`}`
 ```
 
 ### FSS
@@ -276,9 +303,8 @@ color: hsla($hue, $saturation, $lightness, $colorOpacity);
 ### styled-components tsx
 
 ```tsx
-${({ allowOverflow, preserveRatio }) => ` ${(allowOverflow || preserveRatio) &&`
-  position: absolute
-`} `}
+const style = `${({ allowOverflow, preserveRatio }) =>
+  (allowOverflow || preserveRatio) && `position: absolute`}`
 ```
 
 ### FSS
@@ -300,11 +326,12 @@ ${({ allowOverflow, preserveRatio }) => ` ${(allowOverflow || preserveRatio) &&`
 ### styled-components tsx
 
 ```tsx
-${({ stripes }) => stripes && `
+const style = `${({ stripes }) =>
+  stripes &&
+  `
   & > :nth-of-type(${stripes}) {
     background-color: #eee;
-  }`
-}
+  }`}`
 ```
 
 ### FSS
@@ -320,10 +347,11 @@ ${({ stripes }) => stripes && `
 ### styled-components tsx
 
 ```tsx
-& > :nth-last-child(n + ${({ limit }) => (limit && limit + 1)}),
-& > :nth-last-child(n + ${({ limit }) => (limit && limit + 1)}) ~ \* {
+const style = `
+& > :nth-last-child(n + ${({ limit }) => limit && limit + 1}),
+& > :nth-last-child(n + ${({ limit }) => limit && limit + 1}) ~ \* {
   flex-basis: 100%;
-}
+}`
 ```
 
 ### FSS
@@ -351,7 +379,7 @@ import { makeNthChildSelector } from 'ui-utilities'
 2. Then use it inside the style declaration
 
 ```tsx
-& > :is(${({ fill }) => (fill && makeNthChildSelector(fill)) || 'a'}) {
+& > :is(${({ fill }) => (fill && makeNthChildSelector(fill)) || ''}) {
   flex: 1;
 }
 ```
@@ -370,7 +398,29 @@ import { makeNthChildSelector } from 'ui-utilities'
 2. Then create a new variable calling the function
 
 ```tsx
-const selector = ({ fill }) => (fill && makeNthChildSelector(fill)) || 'a'
+const selector = ({ fill }) => (fill && makeNthChildSelector(fill)) || ''
+
+// or with types
+
+const selector = <T extends Object = {}>({ fill }: T) =>
+  (fill && makeNthChildSelector(fill)) || ''
+
+/* or with generic props */
+
+const generic = (propName) => (props) =>
+  (props[propName] && makeNthChildSelector(props[propName])) || ''
+
+// with types
+const generic =
+  <T extends Object = {}>(propName: keyof T) =>
+  (props: T) =>
+    (props[propName] && makeNthChildSelector(props[propName])) || ''
+
+// define selector function
+
+const selector = generic('fill')
+// with types
+const selector = generic<Props>('fill')
 ```
 
 3. Finally use the variable in your style declaration
@@ -382,5 +432,5 @@ const selector = ({ fill }) => (fill && makeNthChildSelector(fill)) || 'a'
 ```
 
 > Notice that javascript variables must be expressed using dolar sign `$` +
-> curly braces `{}`. Here\'s a comparisson — regular variable\: `$var`\;
+> curly braces `{}`. Here\'s a comparison — regular variable\: `$var`\;
 > javascript variable\: `${var}`.
