@@ -24,13 +24,13 @@ Even in this very basic use case, we found that tsx's syntax is a bit verbose.
 4. Only to finally pass the variable `var` or `props.var`.
 
 ```tsx
-const style = styled('div')`
+const Component = styled('div')`
   padding: ${({ p }) => p};
 `
 
 /* or */
 
-const style = styled('div')`
+const Component = styled('div')`
   padding: ${(props) => props.p};
 `
 ```
@@ -39,8 +39,10 @@ const style = styled('div')`
 
 Using the FSS's approach you just pass the variable with a dolar sign `$` in front of it, like you would using sass. That's it.
 
-```scss
-padding: $p;
+```tsx
+const Component = styled('div')`
+  padding: $p;
+`
 ```
 
 ---
@@ -265,35 +267,34 @@ Example 3:
 ### styled-components tsx
 
 ```tsx
-const style = styled('div')`
-  ${({ border, borderColor, borderStyle }) =>
-    border &&
-    `
-border-color: ${borderColor || 'currentColor'};
-border-style: ${borderStyle || 'solid'};
-border-width: ${border || 'currentColor'}`}
-`
+const style = `${({ border, borderColor, borderStyle }) =>
+  border &&
+  `
+    border-color: ${borderColor || 'currentColor'};
+    border-style: ${borderStyle || 'solid'};
+    border-width: ${border || 'currentColor'}`}`
 
 /* or */
 
-const style = styled('div')`
-  ${({ border, borderColor, borderStyle }) =>
-    border && {
-      borderColor: borderColor || 'currentColor',
-      borderStyle: borderStyle || 'solid',
-      borderWidth: border || 'currentColor',
-    }}
+const style = `${({ border, borderColor, borderStyle }) =>
+  border && {
+    borderColor: borderColor || 'currentColor',
+    borderStyle: borderStyle || 'solid',
+    borderWidth: border || 'currentColor',
+  }}
 `
 ```
 
 ### FSS
 
-```scss
-#if($border) {
-  border-color: #or($borderColor, currentColor);
-  border-style: #or($borderStyle, solid);
-  border-width: #or($border, $borderWidth);
-}
+```tsx
+const style = `
+  #if($border) {
+    border-color: #or($borderColor, currentColor);
+    border-style: #or($borderStyle, solid);
+    border-width: #or($border, $borderWidth);
+  }
+`
 ```
 
 ---
@@ -303,17 +304,17 @@ const style = styled('div')`
 ### styled-components tsx
 
 ```tsx
-const style = styled('div')`
-  ${({ hue, saturation, lightness, colorOpacity }) => `
-    color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
-`}
-`
+const style = `${({ hue, saturation, lightness, colorOpacity }) => `
+  color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
+`}`
 ```
 
 ### FSS
 
-```scss
-color: hsla($hue, $saturation, $lightness, $colorOpacity);
+```tsx
+const style = `
+  color: hsla($hue, $saturation, $lightness, $colorOpacity);
+`
 ```
 
 ---
@@ -331,10 +332,12 @@ const style = styled('div')`
 
 ### FSS
 
-```scss
-#if($allowOverflow || $preserveRatio) {
-  position: absolute;
-}
+```tsx
+const style = `
+  #if($allowOverflow || $preserveRatio) {
+    position: absolute;
+  }
+`
 ```
 
 ---
