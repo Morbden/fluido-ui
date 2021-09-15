@@ -24,14 +24,15 @@ Even in this very basic use case, we found that tsx's syntax is a bit verbose.
 4. Only to finally pass the variable `var` or `props.var`.
 
 ```tsx
-padding: ${({ p }) => p};
-
-
+const Component = styled('div')`
+  padding: ${({ p }) => p};
+`
 
 /* or */
 
-
-padding: ${( props ) => props.p};
+const Component = styled('div')`
+  padding: ${(props) => props.p};
+`
 ```
 
 ### FSS
@@ -39,7 +40,9 @@ padding: ${( props ) => props.p};
 Using the FSS's approach you just pass the variable with a dolar sign `$` in front of it, like you would using sass. That's it.
 
 ```scss
-padding: $p;
+const Component = styled('div')`
+  padding: $p;
+`
 ```
 
 ---
@@ -254,9 +257,9 @@ Example 3:
 const style = `${({ border, borderColor, borderStyle }) =>
   border &&
   `
-border-color: ${borderColor || 'currentColor'};
-border-style: ${borderStyle || 'solid'};
-border-width: ${border || 'currentColor'}`}`
+    border-color: ${borderColor || 'currentColor'};
+    border-style: ${borderStyle || 'solid'};
+    border-width: ${border || 'currentColor'}`}`
 
 /* or */
 
@@ -265,17 +268,20 @@ const style = `${({ border, borderColor, borderStyle }) =>
     borderColor: borderColor || 'currentColor',
     borderStyle: borderStyle || 'solid',
     borderWidth: border || 'currentColor',
-  }}`
+  }}
+`
 ```
 
 ### FSS
 
 ```scss
-#if($border) {
-  border-color: #or($borderColor, currentColor);
-  border-style: #or($borderStyle, solid);
-  border-width: #or($border, $borderWidth);
-}
+const style = `
+  #if($border) {
+    border-color: #or($borderColor, currentColor);
+    border-style: #or($borderStyle, solid);
+    border-width: #or($border, $borderWidth);
+  }
+`
 ```
 
 ---
@@ -286,14 +292,16 @@ const style = `${({ border, borderColor, borderStyle }) =>
 
 ```tsx
 const style = `${({ hue, saturation, lightness, colorOpacity }) => `
-    color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
+  color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
 `}`
 ```
 
 ### FSS
 
 ```scss
-color: hsla($hue, $saturation, $lightness, $colorOpacity);
+const style = `
+  color: hsla($hue, $saturation, $lightness, $colorOpacity);
+`
 ```
 
 ---
@@ -310,9 +318,11 @@ const style = `${({ allowOverflow, preserveRatio }) =>
 ### FSS
 
 ```scss
-#if($allowOverflow || $preserveRatio) {
-  position: absolute;
-}
+const style = `
+  #if($allowOverflow || $preserveRatio) {
+    position: absolute;
+  }
+`
 ```
 
 ---
