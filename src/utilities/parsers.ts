@@ -19,3 +19,17 @@ export const sortLengthOrder =
 // Transformadores de lista
 export const listTrim = (v: string) => v.trim()
 export const listClear = (s: string) => s !== ''
+
+export function makeNthChildSelector(value: string, offset: string) {
+  const children = value.split(/\s+/g)
+  return children
+    .map((v) => {
+      const c = parseInt(v) + parseInt(offset || '0')
+      if (isNaN(c)) {
+        return ''
+      }
+      return `:nth-child(${c})`
+    })
+    .filter((c) => !!c)
+    .join(',')
+}

@@ -31,6 +31,9 @@ export let hash = (
 ) => {
   // Trazer objeto `css` para padronização e propriedades
   const data = parseStringToObj(compiled)
+  if (data.isEmpty() && data.isPropsEmpty()) {
+    return ''
+  }
   // Compilar os patterns exclusivos
   patternParser(data, props || {})
   const parsed = data.getMap()

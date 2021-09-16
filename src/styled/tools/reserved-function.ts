@@ -44,17 +44,4 @@ export const funcs: TypedMap<PatternFunction> = {
   math(calc) {
     return `${stringMath(calc)}`
   },
-  makeNthChildSelector(value, offset) {
-    const children = value.split(/\s+/g)
-    return children
-      .map((v) => {
-        const c = parseInt(v) + parseInt(offset || '0')
-        if (isNaN(c)) {
-          return ''
-        }
-        return `:nth-child(${c})`
-      })
-      .filter((c) => !!c)
-      .join(',')
-  },
 }

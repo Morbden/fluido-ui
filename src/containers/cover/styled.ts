@@ -1,5 +1,6 @@
 import { styled } from 'ui-styled'
 import { Length } from 'ui-types'
+import { makeNthChildSelector } from 'ui-utilities'
 import { Box, BoxProps } from '../box'
 
 export interface CoverProps_ extends BoxProps {
@@ -9,7 +10,9 @@ export interface CoverProps_ extends BoxProps {
   minHeight?: Length
 }
 
-export const Cover_ = styled(Box)<CoverProps_>`
+export const Cover_ = styled(Box, {
+  functions: { makeNthChildSelector },
+})<CoverProps_>`
   display: flex;
   flex-direction: column;
   min-height: #or(~$minHeight, 100vh);
