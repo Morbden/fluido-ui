@@ -1,6 +1,5 @@
-import { listTrim } from 'ui-utilities'
-import { PatternFunction, TypedMap } from 'ui-types'
 import stringMath from 'string-math'
+import { PatternFunction, TypedMap } from 'ui-types'
 
 const REGEX_BOOLEAN = /(false|[^a-z1-9#]0+[^\.1-9]+[a-z]*)/i
 const REGEX_IF_OPERATORS = /==|<=?|>=?|!=|\|\||\&\&/
@@ -19,50 +18,10 @@ export const toBooleanValue = (val: string) => {
 }
 
 export const ifComparison = (value: string) => {
-  if (REGEX_IF_OPERATORS.test(value)) {
-    const ops = value.match(REGEX_IF_OPERATORS) as string[]
-    const vs = value.split(REGEX_IF_OPERATORS).map(listTrim)
-    const flags: boolean[] = []
-    const comps: string[] = []
-    ops.forEach((op, i) => {
-      if (
-        (op === '||' && (toBooleanValue(vs[i]) || toBooleanValue(vs[i + 1]))) ||
-        (op === '&&' && toBooleanValue(vs[i]) && toBooleanValue(vs[i + 1]))
-      ) {
-        comps.push(op)
-      }
-      if (
-        (op === '==' && vs[i] === vs[i + 1]) ||
-        (op === '!=' && vs[i] !== vs[i + 1]) ||
-        (op === '>' && parseFloat(vs[i]) > parseFloat(vs[i + 1])) ||
-        (op === '>=' && parseFloat(vs[i]) >= parseFloat(vs[i + 1])) ||
-        (op === '<' && parseFloat(vs[i]) < parseFloat(vs[i + 1])) ||
-        (op === '<=' && parseFloat(vs[i]) <= parseFloat(vs[i + 1]))
-      ) {
-        flags.push(true)
-      }
-      return flags.push(false)
-    })
-    if (flags.length === 1) {
-      return flags[0]
-    }
-
-    return flags.reduce((p, f, i) => {
-      if (i === 0) {
-        return f
-      }
-      if (comps[i - 1] === '||') {
-        return p || f
-      }
-      return p && f
-    }, false)
-  } else {
-    if (toBooleanValue(value)) {
-      return true
-    }
-  }
-
-  return false
+  const v = value
+    .replace(/false/g, "''")
+    .replace(/[a-z0-9\%\-\+\/\\\^\(\)]+/gi, "'$&'")
+  return !!eval(v)
 }
 
 export const funcs: TypedMap<PatternFunction> = {

@@ -281,7 +281,10 @@ export const patternParser = (tree: GenericNode, data: TypedMap) => {
       val = key.substr(1).split('.').map<string>(parseThemeSentence).join('-')
       val = `var(--flui-${val.toLowerCase()})`
     } else {
-      val = data[key.substr(key[0] === '~' ? 2 : 1)] || 'false'
+      val = data[key.substr(key[0] === '~' ? 2 : 1)]
+      if (val === undefined || val === null || val === '' || val === false) {
+        val = 'false'
+      }
     }
     return [new RegExp(key.replace(/[\$\.]/g, '\\$&'), 'g'), val]
   })
