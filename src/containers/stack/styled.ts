@@ -1,7 +1,6 @@
-import { Box, BoxProps } from '../box'
 import { styled } from 'ui-styled'
 import { Length } from 'ui-types'
-import { makeNthChildSelector } from 'ui-utilities'
+import { Box, BoxProps } from '../box'
 
 export interface StackProps_ extends BoxProps {
   gap?: Length
@@ -11,11 +10,9 @@ export interface StackProps_ extends BoxProps {
 export const Stack_ = styled(Box)<StackProps_>`
   display: flex;
   flex-direction: column;
-  gap: $gap;
+  gap: #or(~$gap, $theme.spaces.xl);
 
-  &
-    > :is(${({ splitAfter }) =>
-        splitAfter && makeNthChildSelector(splitAfter, 1)}) {
+  & > :is(#func(makeNthChildSelector, $splitAfter, 1)) {
     margin-top: auto;
   }
 `

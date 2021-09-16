@@ -27,8 +27,8 @@
     "dev": "run-p dev:tsc dev:alias",
     "dev:tsc": "tsc -w",
     "dev:alias": "tsc-alias -w",
-    "build": "run-s build:clear build:tsc build:alias",
-    "build:clear": "rimraf components containers contexts hooks settings styled types utilities",
+    "build": "run-s clear build:tsc build:alias",
+    "clear": "rimraf components containers contexts hooks settings styled types utilities",
     "build:tsc": "tsc",
     "build:alias": "tsc-alias",
     "pub": "npm publish --access public",
@@ -46,6 +46,7 @@
     "deepmerge": "^4.2.2",
     "react-hotkeys-hook": "^3.4.0",
     "react-popper": "^2.2.5",
+    "string-math": "^1.2.2",
     "style-vendorizer": "^2.1.1",
     "use-double-tap": "^1.3.3",
     "use-resize-observer": "^8.0.0"

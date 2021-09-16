@@ -50,7 +50,7 @@ export let hash = (
   if (canParse) {
     // Passar para estilo e armazenar no cache
     cacheClassName[className] = parseObjToString(
-      parsed,
+      data,
       // Checar se é `css` global
       global ? '' : '.' + className,
     )

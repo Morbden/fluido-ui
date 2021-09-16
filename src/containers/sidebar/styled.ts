@@ -1,6 +1,6 @@
-import { Box, BoxProps } from '../box'
 import { styled } from 'ui-styled'
 import { Length } from 'ui-types'
+import { Box, BoxProps } from '../box'
 
 export interface SidebarProps_ extends BoxProps {
   contentMin?: Length
@@ -14,17 +14,17 @@ export interface SidebarProps_ extends BoxProps {
 export const Sidebar_ = styled(Box)<SidebarProps_>`
   display: flex;
   flex-wrap: wrap;
-  gap: $gap;
-  align-items: #if($preventStretch, flex-start, stretch);
+  gap: #or(~$gap, $theme.spaces.md);
+  align-items: #select($preventStretch, flex-start, stretch);
 
-  & > ${({ side }) => (side === 'right' ? ':last' : ':first')}-child {
-    flex-basis: $sideWidth;
+  & > #select($side == right, :last-child, :first-child) {
+    flex-basis: ~$sideWidth;
     flex-grow: 1;
   }
 
-  & > ${({ side }) => (side === 'right' ? ':first' : ':last')}-child {
+  & > #select($side == right, :first-child, :last-child) { {
     flex-basis: 0;
     flex-grow: 9999;
-    min-width: min($contentMin, 100%);
+    min-width: min(#or(~$contentMin, 50%), 100%);
   }
 `

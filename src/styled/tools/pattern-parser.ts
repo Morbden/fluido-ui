@@ -1,7 +1,11 @@
-import { parseThemeSentence } from 'ui-utilities'
 import { TypedMap } from 'ui-types'
+import {
+  filterClearSame,
+  parseThemeSentence,
+  sortLengthOrder,
+} from 'ui-utilities'
 import { GenericNode } from './generic-node'
-import { funcs } from './reserved-function'
+import { funcs, ifComparison } from './reserved-function'
 
 type ValueType =
   | number
@@ -10,30 +14,11 @@ type ValueType =
   | (() => number | string | (number | string)[])
 
 // Identificadores
-const REGEX_PROPS = /\$[a-z][a-z0-9]*/gi
-const REGEX_THEME = /^\$the?me?(\.[a-z0-9]+)+/i
-const REGEX_IF_OPERATORS = /==|<=?|>=?|!=/
-const REGEX_BOOLEAN = /(false|0+[^\.1-9]+[a-z]*)/i
+const REGEX_PROPS = /~?\$[a-z][a-z0-9\.]*/gi
+const REGEX_THEME = /^\$the?me?[a-z0-9\.]+/i
+const REGEX_FUNC = /#(if|else|func|call|or|and|math|select)\(/gi
 
 // Capturadores
-const REGEX_FUNC_TAG =
-  /#(if|else|func(tion)?|call|or|and)\((?:(?:(?:[0-9a-z\-]+\((?:(?:(?:[0-9a-z\-]+\((?:(?:(?:[0-9a-z\-]+\((?:[0-9a-z\.\-%!#]+\s*(?:[,\+\-\*\/])?\s*)+\)|[0-9a-z\.\-%!#]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)|[0-9a-z\.\-%!#]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)|[0-9a-z\.\-%!#]+)+\s*(?:,|==|<=?|>=?|!=)?\s*)*)+\)/gi
-
-// To boolean value
-const toBooleanValue = (val: string) => {
-  const nots = (val.match(/^!+/g) || [])[0] || ''
-  if (!(REGEX_BOOLEAN.test(val) && nots.length % 2 === 0)) {
-    return true
-  }
-  return false
-}
-
-// Filtros de lista
-const filterClearSame = (e: any, i: number, l: any[]) => l.indexOf(e) === i
-// Ordenadores de lista
-const sortLengthOrder = (a: string, b: string) => b.length - a.length
-// Transformadores de lista
-const listTrim = (v: string) => v.trim()
 
 // Encontrar todas as propriedades de valor e armazenar no buffer
 const computePropIds = (node: GenericNode, buffer: string[]) => {
@@ -45,13 +30,15 @@ const computePropIds = (node: GenericNode, buffer: string[]) => {
 }
 
 // Processador de valor
-const computePropType = (val: ValueType): string =>
+const computePropType = (val: ValueType, unit = false): string =>
   typeof val === 'function'
     ? computePropType(val())
     : Array.isArray(val)
-    ? val.map(computePropType).join(' ')
+    ? val.map((v) => computePropType(v, unit)).join(' ')
     : typeof val === 'number'
-    ? `${val * 0.25}rem`
+    ? (unit && `${val * 0.25}rem`) || `${val}`
+    : /\d+un$/.test(val)
+    ? `${parseFloat(val) * 0.25}rem`
     : val.toString()
 
 // Mapear valores das propriedades
@@ -62,7 +49,10 @@ const setPropValue = (
   removeOthers = false,
 ) => {
   if (regexp.test(node.id)) {
-    node.id = node.id.replace(regexp, computePropType(val))
+    node.id = node.id.replace(
+      regexp,
+      computePropType(val, regexp.source[0] === '~'),
+    )
   }
   for (let k in node.properties) {
     if (!regexp.test(node.properties[k])) {
@@ -73,7 +63,7 @@ const setPropValue = (
     }
     node.properties[k] = node.properties[k].replace(
       regexp,
-      computePropType(val),
+      computePropType(val, regexp.source[0] === '~'),
     )
   }
 }
@@ -158,7 +148,7 @@ const inOpenBrackets = (val: string) => {
 }
 
 // Separador de valores
-const collectValuesIFunc = (val: string): string[] => {
+const collectValuesInFunc = (val: string): string[] => {
   let v = val.replace(/^#[a-z]+\(/i, '')
   const buffer: string[] = v.substring(0, v.length - 1).split(/\s*,\s*/g)
 
@@ -175,13 +165,52 @@ const collectValuesIFunc = (val: string): string[] => {
   return buffer
 }
 
-// Capturador de funções
-const functionFinder = (node: GenericNode, buffer: string[]) => {
-  buffer.push(...(node.id.match(REGEX_FUNC_TAG) || []))
-  for (const k in node.properties) {
-    buffer.push(...(node.properties[k].match(REGEX_FUNC_TAG) || []))
+// Capturar função em uma string
+const functionCatcher = (val: string): string[] => {
+  const buffer: string[] = []
+  const funcs = val.match(REGEX_FUNC) as string[]
+  let strBuffer: string[] = []
+  let brackets = 0
+  let step = 0
+
+  for (let i = 0; i < val.length; i++) {
+    if (brackets === 0 && step >= funcs.length) break
+
+    if (brackets === 0) {
+      i = val.indexOf(funcs[step], i) + funcs[step].length
+      strBuffer = [funcs[step]]
+      step++
+      brackets++
+    }
+
+    const caret = val[i]
+    if (caret === '(') {
+      brackets++
+    }
+    if (caret === ')') {
+      brackets--
+    }
+
+    strBuffer.push(caret)
+
+    if (brackets === 0) {
+      buffer.push(strBuffer.join(''))
+    }
   }
 
+  return buffer
+}
+
+// Capturador de funções
+const functionFinder = (node: GenericNode, buffer: string[]) => {
+  if (REGEX_FUNC.test(node.id)) {
+    buffer.push(...functionCatcher(node.id))
+  }
+
+  for (const k in node.properties) {
+    if (!REGEX_FUNC.test(node.properties[k])) continue
+    buffer.push(...functionCatcher(node.properties[k]))
+  }
   node.getChildren().forEach((c) => functionFinder(c, buffer))
 }
 
@@ -191,38 +220,19 @@ const computeFunction =
   (func: string): [string, string] => {
     if (func.startsWith('#if')) {
       const value = func.substring(4, func.length - 1)
-      if (REGEX_IF_OPERATORS.test(value)) {
-        const op = (value.match(REGEX_IF_OPERATORS) as string[])[0]
-        const vs = value.split(REGEX_IF_OPERATORS).map(listTrim)
-
-        if (
-          (op === '==' && vs[0] === vs[1]) ||
-          (op === '!=' && vs[0] !== vs[1]) ||
-          (op === '>' && parseFloat(vs[0]) > parseFloat(vs[1])) ||
-          (op === '>=' && parseFloat(vs[0]) >= parseFloat(vs[1])) ||
-          (op === '<' && parseFloat(vs[0]) < parseFloat(vs[1])) ||
-          (op === '<=' && parseFloat(vs[0]) <= parseFloat(vs[1]))
-        ) {
-          return [func, 'true']
-        }
-      } else {
-        if (toBooleanValue(value)) {
-          return [func, 'true']
-        }
+      if (ifComparison(value)) {
+        return [func, 'true']
       }
-    } else if (func.startsWith('#and')) {
-      const values = collectValuesIFunc(func)
-      if (values.length > 0 && values.every((c) => toBooleanValue(c))) {
-        return [func, values.pop() as string]
-      }
-    } else if (func.startsWith('#or')) {
-      const values = collectValuesIFunc(func)
-      const v = values.find((c) => toBooleanValue(c))
-      if (v) {
-        return [func, v]
+    } else if (/^#(and|or|math|select)/.test(func)) {
+      const values = collectValuesInFunc(func)
+      const name = (
+        ((func.match(/^#[a-z]+\(/i) as String[])[0] as string) || ''
+      ).replace(/[#\()]/g, '')
+      if (name in funcs) {
+        return [func, funcs[name](...values)]
       }
     } else if (func.startsWith('#func') || func.startsWith('#call')) {
-      const values = collectValuesIFunc(func)
+      const values = collectValuesInFunc(func)
       const funcName = values.shift()
       if (!funcName) {
         return [func, 'false']
@@ -268,12 +278,12 @@ export const patternParser = (tree: GenericNode, data: TypedMap) => {
     let val: any
     if (REGEX_THEME.test(key)) {
       // Se propriedade é tipo `theme` gera valor de tema baseado em `css-var`
-      val = key.split('.').map<string>(parseThemeSentence).join('-')
+      val = key.substr(1).split('.').map<string>(parseThemeSentence).join('-')
       val = `var(--flui-${val.toLowerCase()})`
     } else {
-      val = data[key.substr(1)] || 'false'
+      val = data[key.substr(key[0] === '~' ? 2 : 1)] || 'false'
     }
-    return [new RegExp(`\\${key}`, 'g'), val]
+    return [new RegExp(key.replace(/[\$\.]/g, '\\$&'), 'g'), val]
   })
 
   // Setar valores de propriedades
@@ -288,12 +298,16 @@ export const patternParser = (tree: GenericNode, data: TypedMap) => {
   const funcEntries = funcBuffer
     .map(computeFunction(data))
     .map<[RegExp, string]>((c) => [
-      new RegExp(c[0].replace(/[\(\)\.\$\^\+\-\*\\\/\?]/g, '\\$&'), 'g'),
+      new RegExp(
+        c[0].replace(/[\(\)\{\}\[\]\.\$\^\+\-\*\\\/\?\|]/g, '\\$&'),
+        'g',
+      ),
       c[1],
     ])
 
   funcEntries.forEach(([regexp, val]) => {
     setDeepPropValue(tree, regexp, val)
   })
+
   treeShaker(tree)
 }

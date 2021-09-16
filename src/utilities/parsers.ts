@@ -8,12 +8,11 @@ export const parseThemeSentence = (val: string): string => {
   }
 }
 
-export function makeNthChildSelector(
-  value: number | number[],
-  offset: number = 0,
-) {
-  if (Array.isArray(value)) {
-    return value.map((v) => `:nth-child(${v + offset})`).join(',')
-  }
-  return `:nth-child(${value + offset})`
-}
+// Filtros de lista
+export const filterClearSame = (e: any, i: number, l: any[]) =>
+  l.indexOf(e) === i
+// Ordenadores de lista
+export const sortLengthOrder = (a: string, b: string) => b.length - a.length
+// Transformadores de lista
+export const listTrim = (v: string) => v.trim()
+export const listClear = (s: string) => s !== ''

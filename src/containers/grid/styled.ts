@@ -1,6 +1,6 @@
-import { Box, BoxProps } from '../box'
 import { styled } from 'ui-styled'
 import { Length } from 'ui-types'
+import { Box, BoxProps } from '../box'
 
 export interface GridProps_ extends BoxProps {
   min?: Length
@@ -10,9 +10,9 @@ export interface GridProps_ extends BoxProps {
 
 export const Grid_ = styled(Box)<GridProps_>`
   display: grid;
-  gap: $gap;
+  gap: #or(~$gap, $theme.spaces.md);
   grid-template-columns: repeat(
-    #if($fill, auto-fill, auto-fit),
-    minmax(min(#fallback($min, 10rem), 100%), 1fr)
+    #select($fill, auto-fill, auto-fit),
+    minmax(min(#or(~$min, 10rem), 100%), 1fr)
   );
 `

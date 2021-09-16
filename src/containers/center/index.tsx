@@ -7,9 +7,12 @@ export interface CenterProps extends CenterProps_ {}
 export type CenterType = FluiComponent<'div', CenterProps>
 
 export const Center = forwardRef<HTMLDivElement, CenterProps>(
-  ({ children, maxWidth, ...props }, ref) => {
+  ({ children, debugClass, className, ...props }, ref) => {
+    const classes: string[] = []
+    className && classes.push(className)
+    debugClass && classes.push('center')
     return (
-      <Center_ maxWidth={maxWidth || '65ch'} ref={ref} {...props}>
+      <Center_ ref={ref} className={classes.join(' ')} {...props}>
         {children}
       </Center_>
     )

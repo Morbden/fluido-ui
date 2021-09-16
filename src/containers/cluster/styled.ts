@@ -1,6 +1,6 @@
-import { Box, BoxProps } from '../box'
 import { styled } from 'ui-styled'
 import { Length } from 'ui-types'
+import { Box, BoxProps } from '../box'
 
 export interface ClusterProps_ extends BoxProps {
   gap?: Length
@@ -17,7 +17,7 @@ export interface ClusterProps_ extends BoxProps {
 export const Cluster_ = styled(Box)<ClusterProps_>`
   display: flex;
   flex-wrap: wrap;
-  gap: $gap;
+  gap: #or(~$gap, $theme.spaces.md);
   justify-content: $justify;
   align-items: $items;
 `

@@ -95,6 +95,7 @@ export interface PatternFunction {
 export interface StyledProps extends React.HTMLAttributes<Element> {
   theme?: DefaultTheme
   handlers?: TypedMap<PatternFunction>
+  debugClass?: boolean
 }
 
 export type TagType<P = any> = React.ElementType<P>

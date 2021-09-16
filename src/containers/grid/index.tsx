@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import { FluiComponent } from 'ui-types'
-import { useTheme } from 'ui-contexts'
 import { GridProps_, Grid_ } from './styled'
 
 export interface GridProps extends GridProps_ {}
@@ -8,10 +7,12 @@ export interface GridProps extends GridProps_ {}
 export type GridType = FluiComponent<'div', GridProps>
 
 export const Grid = forwardRef<HTMLDivElement, GridProps>(
-  ({ children, gap, min, ...props }, ref) => {
-    const theme = useTheme()
+  ({ children, debugClass, className, ...props }, ref) => {
+    const classes: string[] = []
+    className && classes.push(className)
+    debugClass && classes.push('grid')
     return (
-      <Grid_ ref={ref} gap={gap || theme.spaces.md} min={min} {...props}>
+      <Grid_ ref={ref} className={classes.join(' ')} {...props}>
         {children}
       </Grid_>
     )

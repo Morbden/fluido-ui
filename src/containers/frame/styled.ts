@@ -1,5 +1,5 @@
-import { Box, BoxProps } from '../box'
 import { styled } from 'ui-styled'
+import { Box, BoxProps } from '../box'
 
 export interface FrameProps_ extends BoxProps {
   allowOverflow?: boolean
@@ -30,9 +30,9 @@ export const Frame_ = styled(Box)<FrameProps_>`
   display: grid;
   grid-template-areas: 'cell';
   position: relative;
-  overflow: #if(!$allowOverflow, hidden);
-  min-height: #if($preserveRatio, 0);
-  isolation: #if($context, isolate);
+  overflow: #and(!$allowOverflow, hidden);
+  min-height: #and($preserveRatio, 0);
+  isolation: #and($context, isolate);
 
   & > img,
   & > video,
@@ -51,8 +51,7 @@ export const Frame_ = styled(Box)<FrameProps_>`
 
     & > * {
       grid-area: cell;
-      position: #if($allowOverflow, absolute);
-      position: #if($preserveRatio, absolute);
+      position: #select($preserveRatio || $allowOverflow, absolute);
     }
   }
 `

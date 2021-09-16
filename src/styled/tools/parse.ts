@@ -1,78 +1,57 @@
-import { prefix } from './prefix'
-import { TypedMap } from 'ui-types'
+import { listClear, listTrim } from 'ui-utilities'
 import { GenericNode } from './generic-node'
+import { prefix } from './prefix'
 
-const SR = /([^,])+/g
 const RULE_CLEAN = /\/\*\*?.*\*\/|\/\/.*\n/g
 const BLOCK = /{[^{}]+}/g
 const BLOCK_ID = /%BLOCK-\d+-\d+%/
 const PSEUDO_CLASSES =
   /(?:\:(?:active|any|autofill|blank|checked|current|default|defined|dir|disabled|empty|enabled|first|fullscreen|future|focus|has|host|hover|indeterminate|in|is|lang|last|left|link|local|not|nth|only|optional|out|past|picture|placeholder|paused|playing|read|required|right|root|scope|state|target|user|valid|visited|where)|\:\:)/
 
-export let parseObjToString = (
-  obj: TypedMap<string | TypedMap>,
-  selector: string,
-) => {
-  let outer = ''
-  let blocks = ''
-  let current = ''
-  let next: string
+const propsToBuffer = (node: GenericNode, buffer: string[]) => {
+  for (const k in node.properties) {
+    const val = prefix(k, node.properties[k])
+    buffer.push(val)
+  }
+}
+export const parseObjToString = (node: GenericNode, selector: string) => {
+  const buffer: string[] = []
 
-  for (let key in obj) {
-    let val = obj[key]
+  if (node.id === 'root') {
+    buffer.push(selector)
+    buffer.push('{')
+    propsToBuffer(node, buffer)
+    buffer.push('}')
+  } else if (node.id[0] === '@') {
+    buffer.push(node.id)
+    buffer.push('{')
+    buffer.push(selector)
+    buffer.push('{')
+    propsToBuffer(node, buffer)
+    buffer.push('}')
+    node.getChildren().forEach((c) => {
+      buffer.push(parseObjToString(c, selector))
+    })
+    buffer.push('}')
+  } else {
+    const toConcat: string[] = []
+    propsToBuffer(node, toConcat)
 
-    if (typeof val === 'string') {
-      if (key[0] === '@' && key[1] === 'i') {
-        outer = key + ' ' + val + ';'
-      } else {
-        key = key.replace(/[A-Z]/g, '-$&').toLowerCase()
-        current += prefix(key, val)
-      }
-      continue
-    }
-
-    next = selector
-      ? // Vá até o seletor e substitua os vários seletores correspondentes, se houver
-        selector.replace(SR, (sel) => {
-          // Retorna o seletor atual com a chave combinando com vários seletores, se houver
-          return key.replace(SR, (k) => {
-            // Se o `k`(chave) atual tiver um seletor aninhado, substitua-o
-            if (/&/.test(k)) return k.replace(/&/g, sel)
-
-            // Se houver um seletor atual concatenar
-            return sel ? sel + ' ' + k : k
-          })
-        })
-      : key
-
-    // Se é uma `rule`
-    if (key[0] == '@') {
-      // Lidar com o `@font-face` onde o
-      // bloco não precisa dos colchetes enrolados
-      if (key[1] == 'f') {
-        blocks += parseObjToString(val, key)
-      } else {
-        // `rule` de bloco
-        const subProps = parseObjToString(val, key[1] == 'k' ? '' : selector)
-
-        blocks += key + '{' + subProps + '}'
-      }
+    if (/&/g.test(node.id)) {
+      buffer.push(node.id.replace(/&/g, selector))
     } else {
-      blocks += parseObjToString(val, next)
+      buffer.push(selector)
+      buffer.push(' ')
+      buffer.push(node.id)
     }
+    buffer.push('{')
+    propsToBuffer(node, buffer)
+    buffer.push('}')
   }
 
-  // Se tem propriedades
-  if (current[0]) {
-    next = selector ? selector + '{' + current + '}' : current
-    return outer + next + blocks
-  }
-
-  return outer + blocks
+  return buffer.join('')
 }
 
-const trimList = (s: string) => s.trim()
-const clearList = (s: string) => s !== ''
 const parseLinesToNode = (parent: GenericNode) => {
   let pseudo = ''
   return (line: string) => {
@@ -128,14 +107,14 @@ export const parseStringToObj = (val: string) => {
     matches = modCode.match(BLOCK)
   }
 
-  const blockRoot = modCode.split(';').map(trimList).filter(clearList)
+  const blockRoot = modCode.split(';').map(listTrim).filter(listClear)
   const childrenBlocks = blockBuffer.map((bks) =>
     bks.map((b) =>
       b
         .substr(1, b.length - 2)
         .split(';')
-        .map(trimList)
-        .filter(clearList),
+        .map(listTrim)
+        .filter(listClear),
     ),
   )
 

@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import { FluiComponent } from 'ui-types'
-import { useTheme } from 'ui-contexts'
 import { SidebarProps_, Sidebar_ } from './styled'
 
 export interface SidebarProps extends SidebarProps_ {}
@@ -8,14 +7,12 @@ export interface SidebarProps extends SidebarProps_ {}
 export type SidebarType = FluiComponent<'div', SidebarProps>
 
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
-  ({ children, contentMin, gap, ...props }, ref) => {
-    const theme = useTheme()
+  ({ children, debugClass, className, ...props }, ref) => {
+    const classes: string[] = []
+    className && classes.push(className)
+    debugClass && classes.push('sidebar')
     return (
-      <Sidebar_
-        ref={ref}
-        contentMin={contentMin || '50%'}
-        gap={gap || theme.spaces.md}
-        {...props}>
+      <Sidebar_ ref={ref} className={classes.join(' ')} {...props}>
         {children}
       </Sidebar_>
     )

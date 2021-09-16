@@ -21,11 +21,11 @@ const themeParser = (
   root: boolean = true,
 ): [string, string][] => {
   const list: [string, string][] = []
-  if (root) list.push(['--fluithm-clr-op', '1'])
+  if (root) list.push(['--flui-theme-colors-opacity', '1'])
 
   for (const k in theme) {
     const sentence = parseThemeSentence(k)
-    const base = root ? `--fluithm-${sentence}` : '-' + sentence
+    const base = root ? `--flui-theme-${sentence}` : '-' + sentence
     const val = theme[k]
     if (typeof val === 'object' && !Array.isArray(val)) {
       list.push(
@@ -46,7 +46,10 @@ const themeParser = (
       const color = new TinyColor(sVal)
       if (/^(rgb|#|hs)/.test(sVal) && color.isValid) {
         const { r, g, b } = color.toRgb()
-        list.push([base, `rgb(${r} ${g} ${b} / var(--fluithm-clr-op,1))`])
+        list.push([
+          base,
+          `rgb(${r} ${g} ${b} / var(--flui-theme-colors-opacity,1))`,
+        ])
       } else {
         list.push([base, sVal])
       }
