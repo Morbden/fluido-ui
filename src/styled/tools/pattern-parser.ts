@@ -249,7 +249,7 @@ const computeFunction =
 
 // Limpeza da arvore
 const treeShaker = (node: GenericNode) => {
-  if (node.id.includes('false')) {
+  if (node.id.includes('false') || (node.isEmpty() && node.isPropsEmpty())) {
     node.destroy()
     return
   }

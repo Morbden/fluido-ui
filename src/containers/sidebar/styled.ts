@@ -22,7 +22,7 @@ export const Sidebar_ = styled(Box)<SidebarProps_>`
     flex-grow: 1;
   }
 
-  & > #select($side == right, :first-child, :last-child) { {
+  & > #select($side == right, :first-child, :last-child) {
     flex-basis: 0;
     flex-grow: 9999;
     min-width: min(#or(~$contentMin, 50%), 100%);

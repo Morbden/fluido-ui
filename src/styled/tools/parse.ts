@@ -22,6 +22,9 @@ export const parseObjToString = (node: GenericNode, selector: string) => {
     buffer.push('{')
     propsToBuffer(node, buffer)
     buffer.push('}')
+    node.getChildren().forEach((c) => {
+      buffer.push(parseObjToString(c, selector))
+    })
   } else if (node.id[0] === '@') {
     buffer.push(node.id)
     buffer.push('{')
@@ -34,14 +37,11 @@ export const parseObjToString = (node: GenericNode, selector: string) => {
     })
     buffer.push('}')
   } else {
-    const toConcat: string[] = []
-    propsToBuffer(node, toConcat)
-
     if (/&/g.test(node.id)) {
       buffer.push(node.id.replace(/&/g, selector))
     } else {
       buffer.push(selector)
-      buffer.push(' ')
+      buffer.push(' > ')
       buffer.push(node.id)
     }
     buffer.push('{')
