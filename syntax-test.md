@@ -4,7 +4,7 @@ Writing style rules for your custom components should be enjoyable. Doesn't matt
 
 If you already used styled-components (or goober, or emotion, or similar) you should be able to write the styling for components using the same syntax as you're already accustomed. Just go ahead and try it.
 
-But if you are more used to the SCSS world, prefers a less verbose syntax, or just don't like the CSS-in-JS syntaxes, there's another way: the new syntax created by the team behind Fluido UI, called FSS (or Fluid Style Sheet).
+But if you are more used to the tsx world, prefers a less verbose syntax, or just don't like the CSS-in-JS syntaxes, there's another way: the new syntax created by the team behind Fluido UI, called FSS (or Fluid Style Sheet).
 
 Keep reading if you want to know more about FSS, how it compares to styled-components and how to use it in your components.
 
@@ -82,25 +82,25 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-const style = styled('div')`
+const Component = styled('div')`
   user-select: ${({ preventSelection }) => preventSelection && 'none'};
 `
 
 /* or */
 
-const style = styled('div')`
+const Component = styled('div')`
   user-select: ${(props) => props.preventSelection && 'none'};
 `
 
 // checking multiple props
-const style = styled('div')`
+const Component = styled('div')`
   padding-inline: ${({ isFeatured, outlined }) =>
     isFeatured && outlined && '2rem'};
 `
 
 /* or */
 
-const style = styled('div')`
+const Component = styled('div')`
   padding-inline: ${(props) => props.isFeatured && props.outlined && '2rem'};
 `
 ```
@@ -109,11 +109,14 @@ const style = styled('div')`
 
 In FSS we use the logical operators as special functions, passing comma separated values.
 
-```scss
-user-select: #and($preventSelection, none);
+```tsx
+const Component = styled('div')`
+  user-select: #and($preventSelection, none);
+`
 
 // checking multiple props
 
+const Component = styled('div')`
 padding-inline: #and($isFeatured, $outlined, 2rem);
 ```
 
@@ -185,25 +188,25 @@ Now compare the following real syntax differences.
 #### styled-components tsx
 
 ```tsx
-const style = styled('div')`
+const Component = styled('div')`
   border-color: ${({ borderColor }) => borderColor || 'currentColor'};
 `
 
 /* or */
 
-const style = styled('div')`
+const Component = styled('div')`
   border-color: ${(props) => props.borderColor || 'currentColor'};
 `
 
 // checking multiple props
-const style = styled('div')`
+const Component = styled('div')`
   border-color: ${({ borderColor, theme }) =>
     borderColor || theme.borderColor || 'currentColor'};
 `
 
 /* or */
 
-const style = styled('div')`
+const Component = styled('div')`
   border-color: ${(props) =>
     props.borderColor || props.theme.borderColor || 'currentColor'};
 `
@@ -213,12 +216,15 @@ const style = styled('div')`
 
 In FSS we use the logical operators as special functions, passing comma separated values.
 
-```scss
-border-color: #or($borderColor, currentColor);
-
+```tsx
+const Component = styled('div')`
+  border-color: #or($borderColor, currentColor);
+`
 // checking multiple props
 
-border-color: #or($borderColor, $theme.borderColor, currentColor);
+const Component = styled('div')`
+  border-color: #or($borderColor, $theme.borderColor, currentColor);
+`
 ```
 
 #### Using the component
@@ -267,32 +273,35 @@ Example 3:
 ### styled-components tsx
 
 ```tsx
-const style = `${({ border, borderColor, borderStyle }) =>
-  border &&
-  `
+const Component = styled('div')`
+  ${({ border, borderColor, borderStyle }) =>
+    border &&
+    `
     border-color: ${borderColor || 'currentColor'};
     border-style: ${borderStyle || 'solid'};
-    border-width: ${border || 'currentColor'}`}`
+    border-width: ${border}`}
+`
 
 /* or */
 
-const style = `${({ border, borderColor, borderStyle }) =>
-  border && {
-    borderColor: borderColor || 'currentColor',
-    borderStyle: borderStyle || 'solid',
-    borderWidth: border || 'currentColor',
-  }}
+const Component = styled('div')`
+  ${({ border, borderColor, borderStyle }) =>
+    border && {
+      borderColor: borderColor || 'currentColor',
+      borderStyle: borderStyle || 'solid',
+      borderWidth: border,
+    }}
 `
 ```
 
 ### FSS
 
 ```tsx
-const style = `
+const Component = styled('div')`
   #if($border) {
     border-color: #or($borderColor, currentColor);
     border-style: #or($borderStyle, solid);
-    border-width: #or($border, $borderWidth);
+    border-width: $border;
   }
 `
 ```
@@ -304,7 +313,7 @@ const style = `
 ### styled-components tsx
 
 ```tsx
-const style = `${({ hue, saturation, lightness, colorOpacity }) => `
+const Component = `${({ hue, saturation, lightness, colorOpacity }) => `
   color: hsla(${hue}, ${saturation}, ${lightness}, ${colorOpacity});
 `}`
 ```
@@ -312,7 +321,7 @@ const style = `${({ hue, saturation, lightness, colorOpacity }) => `
 ### FSS
 
 ```tsx
-const style = `
+const Component = `
   color: hsla($hue, $saturation, $lightness, $colorOpacity);
 `
 ```
@@ -324,7 +333,7 @@ const style = `
 ### styled-components tsx
 
 ```tsx
-const style = styled('div')`
+const Component = styled('div')`
   ${({ allowOverflow, preserveRatio }) =>
     (allowOverflow || preserveRatio) && `position: absolute`}
 `
@@ -333,7 +342,7 @@ const style = styled('div')`
 ### FSS
 
 ```tsx
-const style = `
+const Component = `
   #if($allowOverflow || $preserveRatio) {
     position: absolute;
   }
@@ -351,7 +360,7 @@ const style = `
 ### styled-components tsx
 
 ```tsx
-const style = styled('div')`
+const Component = styled('div')`
   ${({ stripes }) =>
     stripes &&
     `
@@ -363,7 +372,7 @@ const style = styled('div')`
 
 ### FSS
 
-```scss
+```tsx
 #if($stripes) {
   & > :nth-of-type($stripes) {
     background-color: #eee;
@@ -374,7 +383,7 @@ const style = styled('div')`
 ### styled-components tsx
 
 ```tsx
-const style = styled('div')`
+const Component = styled('div')`
   & > :nth-last-child(n + ${({ limit }) => limit && limit + 1}),
   & > :nth-last-child(n + ${({ limit }) => limit && limit + 1}) ~ \* {
     flex-basis: 100%;
@@ -384,11 +393,13 @@ const style = styled('div')`
 
 ### FSS
 
-```scss
-& > :nth-last-child(n + #math($limit + 1)),
-& > :nth-last-child(n + #math($limit + 1)) ~ \* {
-  flex-basis: 100%;
-}
+```tsx
+const Component = styled('div')`
+  & > :nth-last-child(n + #math($limit + 1)),
+  & > :nth-last-child(n + #math($limit + 1)) ~ \* {
+    flex-basis: 100%;
+  }
+`
 ```
 
 ## Running functions
@@ -407,15 +418,16 @@ import { makeNthChildSelector } from 'ui-utilities'
 2. Then use it inside the style declaration
 
 ```tsx
-& > :is(${({ fill }) => (fill && makeNthChildSelector(fill)) || ''}) {
-  flex: 1;
-}
+const Component = styled('div')`
+  & > :is(${({ fill }) => (fill && makeNthChildSelector(fill)) || ''}) {
+    flex: 1;
+  }
+`
 ```
 
 ### FSS
 
-Using FSS is a little different, it is a bit more verbose in favor of legibility.
-There are three steps, like so:
+Using FSS is a little different, you'll need an extra step in favor of legibility.
 
 1. First import the function
 
@@ -423,42 +435,47 @@ There are three steps, like so:
 import { makeNthChildSelector } from 'ui-utilities'
 ```
 
-2. Then create a new variable calling the function
+2. Then you can pass it into a functions object as a second argument to the styled function
 
 ```tsx
-const selector = ({ fill }) => (fill && makeNthChildSelector(fill)) || ''
+const Component = styled('div', { functions: { makeNthChildSelector } })``
+```
+
+3. You can then use it in your template using with the `#func` keyword
+
+```tsx
+const Component = styled('div', { functions: { makeNthChildSelector } })`
+  & > :is(#func(makeNthChildSelector, $fill)) {
+    flex: 1;
+  }
+`
+```
 
 // or with types
 
 const selector = <T extends Object = {}>({ fill }: T) =>
-  (fill && makeNthChildSelector(fill)) || ''
+(fill && makeNthChildSelector(fill)) || ''
 
-/* or with generic props */
+/_ or with generic props _/
 
 const generic = (propName) => (props) =>
-  (props[propName] && makeNthChildSelector(props[propName])) || ''
+(props[propName] && makeNthChildSelector(props[propName])) || ''
 
 // with types
 const generic =
-  <T extends Object = {}>(propName: keyof T) =>
-  (props: T) =>
-    (props[propName] && makeNthChildSelector(props[propName])) || ''
+<T extends Object = {}>(propName: keyof T) =>
+(props: T) =>
+(props[propName] && makeNthChildSelector(props[propName])) || ''
 
 // define selector function
 
 const selector = generic('fill')
 // with types
 const selector = generic<Props>('fill')
-```
 
-3. Finally use the variable in your style declaration
-
-```scss
-& > :is(${selector}) {
-  flex: 1;
-}
 ```
 
 > Notice that javascript variables must be expressed using dolar sign `$` +
 > curly braces `{}`. Here\'s a comparison — regular variable\: `$var`\;
 > javascript variable\: `${var}`.
+```
