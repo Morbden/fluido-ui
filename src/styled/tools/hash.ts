@@ -31,11 +31,14 @@ export let hash = (
 ) => {
   // Trazer objeto `css` para padronização e propriedades
   const data = parseStringToObj(compiled)
+  // Compilar os patterns exclusivos
+  patternParser(data, props || {})
+
+  // Não renderiza se vazio
   if (data.isEmpty() && data.isPropsEmpty()) {
     return ''
   }
-  // Compilar os patterns exclusivos
-  patternParser(data, props || {})
+
   const parsed = data.getMap()
 
   // Transforma o `objeto` css em `string`

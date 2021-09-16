@@ -49,10 +49,12 @@ export const styled: StyledFactory = (tag, opts) => {
         Node = asComp || tag
       }
 
+      const classes: string[] = []
+      cssClassName && classes.push(cssClassName)
+      className && classes.push(className)
+
       return (
-        <Node
-          className={cssClassName + ((className && ' ' + className) || '')}
-          {..._props}>
+        <Node className={classes.join(' ')} {..._props}>
           {children}
         </Node>
       )
