@@ -12,7 +12,10 @@ export const parseThemeSentence = (val: string): string => {
 export const filterClearSame = (e: any, i: number, l: any[]) =>
   l.indexOf(e) === i
 // Ordenadores de lista
-export const sortLengthOrder = (a: string, b: string) => b.length - a.length
+export const sortLengthOrder =
+  (asc = true) =>
+  (a: string, b: string) =>
+    asc ? b.length - a.length : a.length - b.length
 // Transformadores de lista
 export const listTrim = (v: string) => v.trim()
 export const listClear = (s: string) => s !== ''

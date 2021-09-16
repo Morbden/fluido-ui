@@ -94,7 +94,7 @@ export interface PatternFunction {
 
 export interface StyledProps extends React.HTMLAttributes<Element> {
   theme?: DefaultTheme
-  handlers?: TypedMap<PatternFunction>
+  functions?: TypedMap<PatternFunction>
   debugClass?: boolean
   as?: TagType
 }
@@ -113,8 +113,14 @@ export interface StyledCompileCss {
   ) => FluiComponent<T, P>
 }
 
+export interface StyledFactoryProps {
+  functions?: TypedMap<PatternFunction>
+}
+
 export interface StyledFactory {
-  <T extends TagType>(tag: T): <P extends object = {}>(
+  <T extends TagType>(tag: T, props?: StyledFactoryProps): <
+    P extends object = {},
+  >(
     templates: TemplateStringsArray,
     ...args: (TypedFunction<P> | string)[]
   ) => FluiComponent<T, P>

@@ -18,17 +18,9 @@ export const Switcher_ = styled(Box)<SwitcherProps_>`
     flex-basis: calc((#or(~$threshold, 30rem) - 100%) * 999);
   }
 
-  #if($limit) {
-    & > :nth-last-child(n + #math($limit + 1)),
-    & > :nth-last-child(n + #math($limit + 1)) ~ * {
-      flex-basis: 100%;
-    }
-  }
-  #if(!$limit) {
-    & > :nth-last-child(n + 5),
-    & > :nth-last-child(n + 5) ~ * {
-      flex-basis: 100%;
-    }
+  & > :nth-last-child(n + #math(#or($limit, 5) + 1)),
+  & > :nth-last-child(n + #math(#or($limit, 5) + 1)) ~ * {
+    flex-basis: 100%;
   }
 
   & > * > * {
