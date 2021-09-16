@@ -243,8 +243,8 @@ const computeFunction =
 
       if (funcName in funcs) {
         return [func, funcs[funcName](...values) || 'false']
-      } else if (data?.handlers && funcName in data.handlers) {
-        return [func, data.handlers[funcName](...values) || 'false']
+      } else if (data?.functions && funcName in data.functions) {
+        return [func, data.functions[funcName](...values) || 'false']
       }
     }
     return [func, 'false']

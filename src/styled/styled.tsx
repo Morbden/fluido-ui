@@ -6,7 +6,7 @@ import { cssBase } from './css'
 /**
  * Styled factory
  */
-export const styled: StyledFactory = (tag) => {
+export const styled: StyledFactory = (tag, opts) => {
   return (templates, ...args) => {
     return function StyledComponent({
       as: asComp,
@@ -15,7 +15,9 @@ export const styled: StyledFactory = (tag) => {
       ...props
     }) {
       const _props: TypedMap = props
-
+      if (!('functions' in _props)) {
+        _props.functions = opts?.functions
+      }
       const cssClassName = cssBase({ p: _props }, templates, ...args)
 
       const purge: string =
