@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 
-export interface UseDebounceStateFunction {
+export interface UseStateDebounceFunction {
   <T = undefined>(timeInMillis?: number, initial?: T): [
     T | undefined,
     React.Dispatch<React.SetStateAction<T | undefined>>,
   ]
 }
 
-export const useDebounceState: UseDebounceStateFunction = (
+export const useStateDebounce: UseStateDebounceFunction = (
   timeInMillis = 1000,
   initial,
 ) => {

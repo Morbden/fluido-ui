@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export interface useArrayStateFunction {
+export interface useStateArrayFunction {
   <T = undefined>(initial: T[]): [
     T[],
     {
@@ -13,7 +13,7 @@ export interface useArrayStateFunction {
   ]
 }
 
-export const useArrayState: useArrayStateFunction = (initial) => {
+export const useStateArray: useStateArrayFunction = (initial) => {
   const [array, setArray] = useState(initial)
 
   return [
