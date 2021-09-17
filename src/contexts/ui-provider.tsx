@@ -45,10 +45,10 @@ const themeParser = (
       // Tentar como cor
       const color = new TinyColor(sVal)
       if (/^(rgb|#|hs)/.test(sVal) && color.isValid) {
-        const { r, g, b } = color.toRgb()
+        const { h, s, l } = color.toHsl()
         list.push([
           base,
-          `rgb(${r} ${g} ${b} / var(--flui-theme-colors-opacity,1))`,
+          `hsl(${h} ${s} ${l} / var(--flui-theme-colors-opacity,1))`,
         ])
       } else {
         list.push([base, sVal])

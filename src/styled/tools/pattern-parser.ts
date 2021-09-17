@@ -1,3 +1,4 @@
+import { TinyColor } from '@ctrl/tinycolor'
 import { TypedMap } from 'ui-types'
 import {
   filterClearSame,
@@ -30,16 +31,27 @@ const computePropIds = (node: GenericNode, buffer: string[]) => {
 }
 
 // Processador de valor
-const computePropType = (val: ValueType, unit = false): string =>
-  typeof val === 'function'
-    ? computePropType(val())
-    : Array.isArray(val)
-    ? val.map((v) => computePropType(v, unit)).join(' ')
-    : typeof val === 'number'
-    ? (unit && `${val * 0.25}rem`) || `${val}`
-    : /\d+un$/.test(val)
-    ? `${parseFloat(val) * 0.25}rem`
-    : val.toString()
+const computePropType = (val: ValueType, unit = false): string => {
+  switch (typeof val) {
+    case 'function':
+      return computePropType(val())
+    case 'object':
+      if (Array.isArray(val))
+        return val.map((v) => computePropType(v, unit)).join(' ')
+    case 'number':
+      return (unit && `${val * 0.25}rem`) || `${val}`
+    case 'string':
+      if (/\d+un$/.test(val)) return `${parseFloat(val) * 0.25}rem`
+
+      const color = new TinyColor(val)
+      if (/^(rgb|#|hs)/.test(val) && color.isValid) {
+        const { h, s, l } = color.toHsl()
+        return `hsl(${h} ${s} ${l} / var(--flui-theme-colors-opacity,1))`
+      }
+    default:
+      return val.toString()
+  }
+}
 
 // Mapear valores das propriedades
 const setPropValue = (
