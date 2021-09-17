@@ -1,3 +1,4 @@
+import { TinyColor } from '@ctrl/tinycolor'
 import { THEME_DICTIONARY } from './constants'
 
 export const parseThemeSentence = (val: string): string => {
@@ -32,4 +33,15 @@ export function makeNthChildSelector(value: string, offset: string) {
     })
     .filter((c) => !!c)
     .join(',')
+}
+
+export const tryParseColor = (val: string) => {
+  const color = new TinyColor(val)
+  if (/^#/.test(val) && color.isValid) {
+    const { h, s, l } = color.toHsl()
+    return `hsl(${h} ${Math.round(s * 10000) / 100}% ${
+      Math.round(l * 10000) / 100
+    }% / var(--flui-colors-opacity,1))`
+  }
+  return val.toString()
 }

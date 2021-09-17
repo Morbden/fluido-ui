@@ -1,9 +1,9 @@
-import { TinyColor } from '@ctrl/tinycolor'
 import { TypedMap } from 'ui-types'
 import {
   filterClearSame,
   parseThemeSentence,
   sortLengthOrder,
+  tryParseColor,
 } from 'ui-utilities'
 import { GenericNode } from './generic-node'
 import { funcs, ifComparison } from './reserved-function'
@@ -40,16 +40,9 @@ const computePropType = (val: ValueType, unit = false): string => {
         return val.map((v) => computePropType(v, unit)).join(' ')
     case 'number':
       return (unit && `${val * 0.25}rem`) || `${val}`
-    case 'string':
-      if (/\d+un$/.test(val)) return `${parseFloat(val) * 0.25}rem`
-
-      const color = new TinyColor(val)
-      if (/^#/.test(val) && color.isValid) {
-        const { h, s, l } = color.toHsl()
-        return `hsl(${h} ${s} ${l} / var(--flui-theme-colors-opacity,1))`
-      }
     default:
-      return val.toString()
+      if (/\d+un$/.test(val)) return `${parseFloat(val) * 0.25}rem`
+      return tryParseColor(val.toString())
   }
 }
 
@@ -73,6 +66,7 @@ const setPropValue = (
       }
       continue
     }
+
     node.properties[k] = node.properties[k].replace(
       regexp,
       computePropType(val, regexp.source[0] === '~'),

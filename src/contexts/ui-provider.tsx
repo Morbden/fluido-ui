@@ -4,7 +4,7 @@ import deepmerge from 'deepmerge'
 import { createContext, useContext, useMemo, useRef } from 'react'
 import { getSheetTheme } from 'ui-styled/tools/get-sheet'
 import { BaseDefaultTheme, DefaultTheme, TypedMap } from 'ui-types'
-import { parseThemeSentence, THEME } from 'ui-utilities'
+import { parseThemeSentence, THEME, tryParseColor } from 'ui-utilities'
 
 interface ProviderProps {
   theme?: BaseDefaultTheme
@@ -21,8 +21,6 @@ const themeParser = (
   root: boolean = true,
 ): [string, string][] => {
   const list: [string, string][] = []
-  if (root) list.push(['--flui-theme-colors-opacity', '1'])
-
   for (const k in theme) {
     const sentence = parseThemeSentence(k)
     const base = root ? `--flui-theme-${sentence}` : '-' + sentence
@@ -40,19 +38,9 @@ const themeParser = (
       const aVal: string[] = val
       list.push([base, aVal.map((s) => '"' + s + '"').join(',')])
     } else if (val) {
-      const sVal: string = val.toString()
-
       // Tentar como cor
-      const color = new TinyColor(sVal)
-      if (/^#/.test(sVal) && color.isValid) {
-        const { h, s, l } = color.toHsl()
-        list.push([
-          base,
-          `hsl(${h} ${s} ${l} / var(--flui-theme-colors-opacity,1))`,
-        ])
-      } else {
-        list.push([base, sVal])
-      }
+      const sVal = tryParseColor(val.toString())
+      list.push([base, sVal])
     }
   }
 

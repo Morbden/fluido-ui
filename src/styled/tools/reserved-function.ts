@@ -1,45 +1,47 @@
+import { listTrim } from 'ui-utilities'
 import stringMath from 'string-math'
 import { PatternFunction, TypedMap } from 'ui-types'
 
 const REGEX_BOOLEAN = /(false|[^a-z1-9#]0+[^\.1-9]+[a-z]*)/i
-const REGEX_IF_OPERATORS = /==|<=?|>=?|!=|\|\||\&\&/
+const REGEX_IF_OPERATORS = /==|!=|>=?|<=?|&&|\|\|/g
+const OPERATORS = ['=', '!=', '>', '<', '||', '&&']
 
-// To boolean value
-export const toBooleanValue = (val: string) => {
-  const nots = (val.match(/^!+/g) || [])[0] || ''
-
-  if (!(REGEX_BOOLEAN.test(val) && nots.length % 2 === 0)) {
-    return true
-  }
-  if (REGEX_BOOLEAN.test(val) && nots.length % 2 === 1) {
-    return true
-  }
-  return false
+const containOperator = (val: string) => {
+  return OPERATORS.some((o) => val.includes(o))
 }
 
-export const ifComparison = (value: string) => {
-  const v = value
-    .replace(/false/g, "''")
-    .replace(/[a-z0-9\%\-\+\/\\\^\(\)]+/gi, "'$&'")
-  return !!eval(v)
+export const ifComparison = (value: string, debug = false) => {
+  if (containOperator(value)) {
+    const sp = value
+      .split(REGEX_IF_OPERATORS)
+      .map(listTrim)
+      .map((s) => {
+        const sc = s.trim()
+        return sc === 'false' ? [sc, "''"] : [sc, `'${sc}'`]
+      })
+
+    const v = sp.reduce((p, c) => p.replace(c[0], c[1]), value)
+    return !!eval(v)
+  } else {
+    return !(value.trim() === 'false')
+  }
 }
 
 export const funcs: TypedMap<PatternFunction> = {
   and(...args) {
-    if (args.length > 0 && args.every((c) => toBooleanValue(c))) {
+    if (args.length > 0 && args.every((c) => ifComparison(c))) {
       return args.pop() as string
     }
     return 'false'
   },
   or(...args) {
-    const v = args.find((c) => toBooleanValue(c))
+    const v = args.find((c) => ifComparison(c))
     return v || 'false'
   },
   select(compare, a, b) {
-    if (ifComparison(compare)) {
-      return a || 'false'
-    }
-    return b || 'false'
+    const test = ifComparison(compare, true)
+    const res = (test && a) || b || 'false'
+    return res
   },
   math(calc) {
     return `${stringMath(calc)}`
