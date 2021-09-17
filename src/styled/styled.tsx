@@ -1,4 +1,4 @@
-import { StyledFactory } from 'ui-types'
+import { StyledComponent } from 'ui-types'
 import { TypedMap } from 'ui-types/generics'
 import { htmlElementAttributes } from 'ui-utilities/html-attrs'
 import { cssBase } from './css'
@@ -6,7 +6,7 @@ import { cssBase } from './css'
 /**
  * Styled factory
  */
-export const styled: StyledFactory = (tag, opts) => {
+export const styled: StyledComponent = (tag, opts) => {
   return (templates, ...args) => {
     return function StyledComponent({
       as: asComp,

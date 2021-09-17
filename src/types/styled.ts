@@ -112,12 +112,12 @@ export interface StyledCompileCss {
   ) => FluiComponent<T, P>
 }
 
-export interface StyledFactoryProps {
+export interface StyledComponentProps {
   functions?: TypedMap<PatternFunction>
 }
 
-export interface StyledFactory {
-  <T extends TagType>(tag: T, props?: StyledFactoryProps): <
+export interface StyledComponent {
+  <T extends TagType>(tag: T, props?: StyledComponentProps): <
     P extends object = {},
   >(
     templates: TemplateStringsArray,
