@@ -44,7 +44,7 @@ const computePropType = (val: ValueType, unit = false): string => {
       if (/\d+un$/.test(val)) return `${parseFloat(val) * 0.25}rem`
 
       const color = new TinyColor(val)
-      if (/^(rgb|#|hs)/.test(val) && color.isValid) {
+      if (/^#/.test(val) && color.isValid) {
         const { h, s, l } = color.toHsl()
         return `hsl(${h} ${s} ${l} / var(--flui-theme-colors-opacity,1))`
       }

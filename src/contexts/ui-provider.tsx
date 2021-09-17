@@ -44,7 +44,7 @@ const themeParser = (
 
       // Tentar como cor
       const color = new TinyColor(sVal)
-      if (/^(rgb|#|hs)/.test(sVal) && color.isValid) {
+      if (/^#/.test(sVal) && color.isValid) {
         const { h, s, l } = color.toHsl()
         list.push([
           base,
