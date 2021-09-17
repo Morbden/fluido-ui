@@ -1,5 +1,5 @@
-import { forwardRef } from 'react'
 import { FluiComponent, TypedMap } from 'ui-types'
+import { Flui } from 'ui-utilities'
 import { BoxProps_, Box_ } from './styled'
 
 export interface BoxProps extends BoxProps_ {}
@@ -36,7 +36,7 @@ const watchedProps = [
   'marginInlineEnd',
 ]
 
-export const Box = forwardRef<HTMLDivElement, BoxProps>(
+export const Box = Flui<'div', BoxProps>(
   ({ children, srOnly, className, debugClass, ...props }, ref) => {
     const classes: string[] = []
     const wProps: TypedMap = props
@@ -70,4 +70,4 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(
       </Box_>
     )
   },
-) as BoxType
+)

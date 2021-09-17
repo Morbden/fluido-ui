@@ -1,10 +1,11 @@
+import { Flui } from 'ui-utilities'
 import { Stack } from 'ui-containers'
-import BottomNavLink from './bottom-nav-link'
-import BottomNavLinks from './bottom-nav-links'
+import { BottomNavLink } from './bottom-nav-link'
+import { BottomNavLinks } from './bottom-nav-links'
 
 interface Props {}
 
-const BottomNav: React.FC<Props> = ({ children, ...props }) => {
+export const BottomNav = Flui<'div', Props>(({ children, ...props }) => {
   return (
     <Stack gap={0} p={8} bgColor='gray' as='nav' {...props}>
       <BottomNavLinks>
@@ -18,6 +19,4 @@ const BottomNav: React.FC<Props> = ({ children, ...props }) => {
       </BottomNavLinks>
     </Stack>
   )
-}
-
-export default BottomNav
+})

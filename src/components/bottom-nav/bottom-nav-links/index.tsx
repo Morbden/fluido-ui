@@ -1,14 +1,12 @@
 import { Switcher } from 'ui-containers'
-import { BottomNavLinks_ } from './styled'
+import { Flui } from 'ui-utilities'
 
 interface Props {}
 
-const BottomNavLinks: React.FC<Props> = ({ children, ...props }) => {
+export const BottomNavLinks = Flui<'div', Props>(({ children, ...props }) => {
   return (
     <Switcher data-switcher limit={5} threshold={0} gap={0} {...props}>
       {children}
     </Switcher>
   )
-}
-
-export default BottomNavLinks
+})

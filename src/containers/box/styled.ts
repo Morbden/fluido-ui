@@ -408,16 +408,51 @@ export interface BoxProps_ extends StyledProps {
   letterSpacing?: string
   lineHeight?: Length
   textAlign?:
-    | 'start'
     | 'center'
     | 'end'
+    | 'inherit'
+    | 'initial'
+    | 'justify'
     | 'left'
     | 'right'
-    | 'justify'
-    | 'inherit'
+    | 'start'
     | 'unset'
-    | 'initial'
   textTransform?: 'capitalize' | 'lowercase' | 'uppercase' | 'inherit' | 'unset'
+
+  overflow?: 'auto' | 'hidden' | 'visible' | 'scroll'
+  overflowX?: 'auto' | 'hidden' | 'visible' | 'scroll'
+  overflowY?: 'auto' | 'hidden' | 'visible' | 'scroll'
+
+  display?:
+    | 'block'
+    | 'flex'
+    | 'flow-root'
+    | 'grid'
+    | 'inline-block'
+    | 'inline-flex'
+    | 'inline-grid'
+    | 'inline'
+    | 'none'
+
+  // parent
+  alignItems?: string
+  items?: string
+  alignContent?: string
+  justifyItems?: string
+  justifyContent?: string
+  justify?: string
+  flexWrap?: string
+  wrap?: string
+  flexDirection?: string
+  direction?: string
+  // children
+  flex?: string
+  flexGrow?: string
+  flexShrink?: string
+  flexBasis?: string
+  justifySelf?: string
+  alignSelf?: string
+  order?: string
 }
 
 export const Box_ = styled('div')<BoxProps_>`
@@ -491,4 +526,10 @@ export const Box_ = styled('div')<BoxProps_>`
   font-style: $fontStyle;
   text-decoration: $textDecoration;
   text-transform: $textTransform;
+
+  overflow: $overflow;
+  overflow-x: $overflowX;
+  overflow-y: $overflowY;
+
+  display: #or($display, $d);
 `
