@@ -37,7 +37,7 @@ export function makeNthChildSelector(value: string, offset: string) {
 
 export const tryParseColor = (val: string) => {
   const color = new TinyColor(val)
-  if (/^#/.test(val) && color.isValid) {
+  if (!/^[0-9]/.test(val) && color.isValid) {
     const { h, s, l } = color.toHsl()
     return `hsl(${h} ${Math.round(s * 10000) / 100}% ${
       Math.round(l * 10000) / 100
