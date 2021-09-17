@@ -1,4 +1,9 @@
-import { StyledComponent } from 'ui-types'
+import {
+  FluiComponent,
+  StyledComponentProps,
+  TagType,
+  TypedFunction,
+} from 'ui-types'
 import { TypedMap } from 'ui-types/generics'
 import { htmlElementAttributes } from 'ui-utilities/html-attrs'
 import { cssBase } from './css'
@@ -6,8 +11,14 @@ import { cssBase } from './css'
 /**
  * Styled factory
  */
-export const styled: StyledComponent = (tag, opts) => {
-  return (templates, ...args) => {
+export const styled = <T extends TagType>(
+  tag: T,
+  opts?: StyledComponentProps,
+) => {
+  return <P extends object = {}>(
+    templates: TemplateStringsArray,
+    ...args: (TypedFunction<P> | string)[]
+  ) => {
     return function StyledComponent({
       as: asComp,
       className,
@@ -58,6 +69,6 @@ export const styled: StyledComponent = (tag, opts) => {
           {children}
         </Node>
       )
-    }
+    } as FluiComponent<T, P>
   }
 }

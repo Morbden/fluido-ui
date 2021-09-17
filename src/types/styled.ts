@@ -116,15 +116,6 @@ export interface StyledComponentProps {
   functions?: TypedMap<PatternFunction>
 }
 
-export interface StyledComponent {
-  <T extends TagType>(tag: T, props?: StyledComponentProps): <
-    P extends object = {},
-  >(
-    templates: TemplateStringsArray,
-    ...args: (TypedFunction<P> | string)[]
-  ) => FluiComponent<T, P>
-}
-
 export type RightJoinProps<
   SP extends object = {},
   OP extends object = {},
