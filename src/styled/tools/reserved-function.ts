@@ -2,7 +2,6 @@ import { listTrim } from 'ui-utilities'
 import stringMath from 'string-math'
 import { PatternFunction, TypedMap } from 'ui-types'
 
-const REGEX_BOOLEAN = /(false|[^a-z1-9#]0+[^\.1-9]+[a-z]*)/i
 const REGEX_IF_OPERATORS = /==|!=|>=?|<=?|&&|\|\|/g
 const OPERATORS = ['=', '!=', '>', '<', '||', '&&']
 
