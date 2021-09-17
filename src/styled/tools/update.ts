@@ -23,5 +23,14 @@ export const extractCss = (theme: boolean = false) => {
  */
 export const update = (cache: TypedMap<string>, sheet: Text) => {
   const data = cssReset + Object.values(cache).join('')
-  sheet.data = minify(data).css
+
+  if (
+    typeof process !== 'object' ||
+    !process.env.NODE_ENV ||
+    process.env.NODE_ENV === 'production'
+  ) {
+    sheet.data = minify(data).css
+  } else {
+    sheet.data = data
+  }
 }
