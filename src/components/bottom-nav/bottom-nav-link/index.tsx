@@ -11,14 +11,10 @@ const BottomNavLink: React.FC<Props> = ({ children, icon, ...props }) => {
     <Stack p={2} {...props}>
       {icon && (
         <Center intrinsic andText>
-          <Box
-            bgColor='red'
-            style={{
-              width: '1.5rem',
-              height: '1.5rem',
-              lineHeight: '1.5rem',
-            }}>
-            {icon}
+          <Box bgColor='red' size={6}>
+            <Text as='span' lineHeight={6}>
+              {icon}
+            </Text>
           </Box>
         </Center>
       )}

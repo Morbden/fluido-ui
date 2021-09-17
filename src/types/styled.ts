@@ -28,6 +28,8 @@ export interface Breakpoints {
   '3xl': string
 }
 
+export interface Sizes {}
+
 export interface Spaces {
   xs: Length
   sm: Length
@@ -80,9 +82,6 @@ export interface Font {
 }
 
 export interface DefaultTheme {
-  breakpoints: Breakpoints
-  colors: TypedMap<ColorWeight>
-  fonts: TypedMap<Font>
   [key: string]: any
 }
 

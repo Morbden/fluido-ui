@@ -25,11 +25,15 @@ body {
   margin: 0;
   padding: 0;
 }
-:is(input, textarea, select, [contentEditable='true']) {
+:is(button, a, input, textarea, select, [contentEditable='true']) {
   user-select: none;
 }
-:is(button, a) {
+button {
   cursor: pointer;
+}
+:any-link {
+  text-decoration: inherit;
+  color: inherit;
 }
 [disabled] {
   cursor: default;
