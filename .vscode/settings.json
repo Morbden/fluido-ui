@@ -6,8 +6,6 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "index.js": true,
-    "index.d.ts": true,
     "components/**": true,
     "containers/**": true,
     "contexts/**": true,
