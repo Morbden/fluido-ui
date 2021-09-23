@@ -434,6 +434,25 @@ export interface BoxProps_ extends StyledProps {
     | 'inline'
     | 'none'
 
+  borderRadius?: Length
+  radius?: Length
+  borderTopLeftRadius?: Length
+  radiusTL?: Length
+  borderTopRightRadius?: Length
+  radiusTR?: Length
+  borderBottomLeftRadius?: Length
+  radiusBL?: Length
+  borderBottomRightRadius?: Length
+  radiusBR?: Length
+  borderTopRadius?: Length
+  radiusT?: Length
+  borderRightRadius?: Length
+  radiusR?: Length
+  borderBottomRadius?: Length
+  radiusB?: Length
+  borderLeftRadius?: Length
+  radiusL?: Length
+
   // parent
   alignItems?: string
   items?: string
@@ -496,6 +515,40 @@ export const Box_ = styled('div')<BoxProps_>`
     border-style: #or($borderStyle, solid);
     border-width: ~$border;
   }
+
+  border-radius: #or(~$borderRadius, ~$radius);
+  border-top-left-radius: #or(
+    ~$borderTopLeftRadius,
+    ~$radiusTL,
+    ~$borderTopRadius,
+    ~$radiusT,
+    ~$borderLeftRadius,
+    ~$radiusL
+  );
+  border-top-right-radius: #or(
+    ~$borderTopRightRadius,
+    ~$radiusTR,
+    ~$borderTopRadius,
+    ~$radiusT,
+    ~$borderRightRadius,
+    ~$radiusR
+  );
+  border-bottom-left-radius: #or(
+    ~$borderBottomLeftRadius,
+    ~$radiusBL,
+    ~$borderBottomRadius,
+    ~$radiusB,
+    ~$borderLeftRadius,
+    ~$radiusL
+  );
+  border-bottom-right-radius: #or(
+    ~$borderBottomRightRadius,
+    ~$radiusBR,
+    ~$borderBottomRadius,
+    ~$radiusB,
+    ~$borderRightRadius,
+    ~$radiusR
+  );
 
   #if($textDecoration) {
     text-decoration-color: #or($textDecorationColor, currentColor);
