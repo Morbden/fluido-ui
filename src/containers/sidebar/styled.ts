@@ -17,12 +17,12 @@ export const Sidebar_ = styled(Box)<SidebarProps_>`
   gap: #or(~$gap, $theme.spaces.md);
   align-items: #select($preventStretch, flex-start, stretch);
 
-  & > #select($side == right, :last-child, :first-child) {
+  & > #select($side == right, :first-child, :last-child) {
     flex-basis: ~$sideWidth;
     flex-grow: 1;
   }
 
-  & > #select($side == right, :first-child, :last-child) {
+  & > #select($side == right, :last-child, :first-child) {
     flex-basis: 0;
     flex-grow: 9999;
     min-width: min(#or(~$contentMin, 50%), 100%);
