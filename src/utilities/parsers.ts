@@ -35,7 +35,7 @@ export function makeNthChildSelector(value: string, offset: string) {
     .join(',')
 }
 
-export const tryParseColor = (val: string) => {
+export const tryParseColor = (val: string, alias = 'color') => {
   const color = new TinyColor(val)
   if (!/^[0-9]/.test(val) && color.isValid) {
     const { h, s, l } = color.toHsl()
@@ -43,7 +43,20 @@ export const tryParseColor = (val: string) => {
       ${Math.round(h * 100) / 100}
       ${Math.round(s * 10000) / 100}%
       ${Math.round(l * 10000) / 100}%
-      / var(--flui-colors-opacity,1))`
+      / var(--flui-${alias}-opacity,1))`
+  }
+  return val.toString()
+}
+
+export const tryParseColorHSL = (val: string) => {
+  const color = new TinyColor(val)
+  if (!/^[0-9]/.test(val) && color.isValid) {
+    const { h, s, l, a } = color.toHsl()
+    return `hsl(
+      ${Math.round(h * 100) / 100}
+      ${Math.round(s * 10000) / 100}%
+      ${Math.round(l * 10000) / 100}%
+      / ${Math.round(a * 100) / 100}`
   }
   return val.toString()
 }

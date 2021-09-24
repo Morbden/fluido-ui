@@ -3,7 +3,7 @@ import {
   filterClearSame,
   parseThemeSentence,
   sortLengthOrder,
-  tryParseColor,
+  tryParseColorHSL,
 } from 'ui-utilities'
 import { GenericNode } from './generic-node'
 import { funcs, ifComparison } from './reserved-function'
@@ -42,7 +42,8 @@ const computePropType = (val: ValueType, unit = false): string => {
       return (unit && `${val * 0.25}rem`) || `${val}`
     default:
       if (/\d+un$/.test(val)) return `${parseFloat(val) * 0.25}rem`
-      return tryParseColor(val.toString())
+      if (!/^hsl/.test(val)) return tryParseColorHSL(val.toString())
+      return val.toString()
   }
 }
 

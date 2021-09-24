@@ -44,7 +44,6 @@ export const Box = Flui<'div', BoxProps>(
 
     className && classes.push(className)
     srOnly && classes.push(' sr-only')
-    debugClass && classes.push('box')
 
     for (const k in wProps) {
       if (watchedProps.includes(k)) {
