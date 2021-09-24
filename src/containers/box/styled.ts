@@ -559,13 +559,11 @@ export const Box_ = styled('div')<BoxProps_>`
 
   #if($shadow) {
     box-shadow: 0px calc(~$shadow / 8 * ($shadow / 2))
-        calc(~$shadow / 8 * ($shadow))
-        calc(~$shadow / 8 * ($shadow * -0.25))
+        calc(~$shadow / 8 * ($shadow)) calc(~$shadow / 8 * ($shadow * -0.25))
         rgb(0 0 0 / calc(0.12 + $shadow / 50)),
       0px calc(~$shadow / 6 * ($shadow / 2 + 1))
         calc(~$shadow / 6 * ($shadow * 1.25))
-        calc(~$shadow / 6 * ($shadow * -0.25))
-        rgb(0 0 0 / 0.12);
+        calc(~$shadow / 6 * ($shadow * -0.25)) rgb(0 0 0 / 0.12),
       0px calc(~$shadow / 4 * ($shadow / 2))
         calc(~$shadow / 4 * ($shadow * 1.25))
         calc(~$shadow / 4 * ($shadow * -0.5))
