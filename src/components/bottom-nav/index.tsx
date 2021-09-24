@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { Stack } from 'ui-containers'
 import { BottomNavLink } from './bottom-nav-link'
 import { BottomNavLinks } from './bottom-nav-links'

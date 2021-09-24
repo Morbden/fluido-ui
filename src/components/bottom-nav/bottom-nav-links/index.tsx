@@ -1,5 +1,5 @@
 import { Switcher } from 'ui-containers'
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 
 interface Props {}
 

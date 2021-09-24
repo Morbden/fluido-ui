@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { CoverProps_, Cover_ } from './styled'
 
 export interface CoverProps extends CoverProps_ {}

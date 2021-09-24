@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { SwitcherProps_, Switcher_ } from './styled'
 
 export interface SwitcherProps extends SwitcherProps_ {}

@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { SidebarProps_, Sidebar_ } from './styled'
 
 export interface SidebarProps extends SidebarProps_ {

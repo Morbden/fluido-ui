@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { ClusterProps_, Cluster_ } from './styled'
 
 export interface ClusterProps extends ClusterProps_ {}

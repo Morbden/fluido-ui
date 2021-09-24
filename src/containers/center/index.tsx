@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { CenterProps_, Center_ } from './styled'
 
 export interface CenterProps extends CenterProps_ {}

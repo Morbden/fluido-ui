@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { StackProps_, Stack_ } from './styled'
 
 export interface StackProps extends StackProps_ {}

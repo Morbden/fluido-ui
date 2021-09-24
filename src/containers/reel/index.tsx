@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { ReelProps_, Reel_ } from './styled'
 
 export interface ReelProps extends ReelProps_ {}

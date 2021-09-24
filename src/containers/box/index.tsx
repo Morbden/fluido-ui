@@ -1,5 +1,5 @@
 import { FluiComponent, TypedMap } from 'ui-types'
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { BoxProps_, Box_ } from './styled'
 
 export interface BoxProps extends BoxProps_ {}

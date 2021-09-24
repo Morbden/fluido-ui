@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { TextProps_, Text_ } from './styled'
 
 export interface TextProps extends TextProps_ {
