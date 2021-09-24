@@ -19,6 +19,11 @@ body {
 *,
 *::after,
 *::before {
+  --flui-color-opacity: 1;
+  --flui-bg-opacity: 1;
+  --flui-stroke-opacity: 1;
+  --flui-fill-opacity: 1;
+  --flui-bgColor-opacity: 1;
   box-sizing: border-box;
   -webkit-tap-highlight: transparent;
   user-select: none;

@@ -474,12 +474,40 @@ export interface BoxProps_ extends StyledProps {
   order?: string
 
   boxShadow?: string
-  shadow?: Length
+  shadow?: number
+
+  fillColor?: string
+  strokeColor?: string
+
+  gradient?: string[] | string
+  gradientType?:
+    | 'linear-gradient'
+    | 'radial-gradient'
+    | 'conic-gradient'
+    | 'repeating-linear-gradient'
+    | 'repeating-radial-gradient'
+  gradientDirection?:
+    | 'to right'
+    | 'to left'
+    | 'to top'
+    | 'to bottom'
+    | 'to top right'
+    | 'to top left'
+    | 'to bottom right'
+    | 'to bottom left'
+    | string
 }
 
 export const Box_ = styled('div')<BoxProps_>`
   background: #or($background, $bg);
   background-color: #or($backgroundColor, $bgColor);
+  stroke: $strokeColor;
+  fill: $fillColor;
+
+  #if($gradient && $gradientType == linear-gradient) {
+    background-image: #or($gradientType, linear-gradient)
+      (#or($gradientDirection, to right), $gradient);
+  }
 
   color: $color;
 

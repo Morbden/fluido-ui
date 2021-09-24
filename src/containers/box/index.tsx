@@ -1,6 +1,7 @@
 import { FluiComponent, TypedMap } from 'ui-types'
 import { Flui } from 'ui-styled'
 import { BoxProps_, Box_ } from './styled'
+import { tryParseColor } from 'ui-utilities/parsers'
 
 export interface BoxProps extends BoxProps_ {}
 
@@ -38,7 +39,24 @@ const watchedProps = [
 ]
 
 export const Box = Flui<'div', BoxProps>(
-  ({ children, srOnly, className, debugClass, ...props }, ref) => {
+  (
+    {
+      bg,
+      background,
+      bgColor,
+      backgroundColor,
+      children,
+      className,
+      color,
+      debugClass,
+      fillColor,
+      gradient,
+      srOnly,
+      strokeColor,
+      ...props
+    },
+    ref,
+  ) => {
     const classes: string[] = []
     const wProps: TypedMap = props
 
@@ -62,6 +80,23 @@ export const Box = Flui<'div', BoxProps>(
             break
         }
       }
+    }
+
+    wProps.bg = bg && tryParseColor(bg, 'bg')
+    wProps.background = background && tryParseColor(background, 'bg')
+    wProps.bgColor = bgColor && tryParseColor(bgColor, 'bgColor')
+    wProps.backgroundColor =
+      backgroundColor && tryParseColor(backgroundColor, 'bgColor')
+    wProps.color = color && tryParseColor(color, 'color')
+    wProps.fillColor = fillColor && tryParseColor(fillColor, 'fill')
+    wProps.strokeColor = strokeColor && tryParseColor(strokeColor, 'stroke')
+
+    if (Array.isArray(gradient) && gradient.length >= 2) {
+      wProps.gradient = gradient
+        .map((color) => tryParseColor(color || 'transparent', 'gradient'))
+        .join(',')
+    } else if (typeof gradient === 'string') {
+      wProps.gradient = gradient
     }
 
     return (
