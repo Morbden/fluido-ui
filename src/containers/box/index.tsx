@@ -34,6 +34,7 @@ const watchedProps = [
   'marginInline',
   'marginInlineStart',
   'marginInlineEnd',
+  'radius',
 ]
 
 export const Box = Flui<'div', BoxProps>(
