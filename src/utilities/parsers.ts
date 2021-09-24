@@ -39,9 +39,11 @@ export const tryParseColor = (val: string) => {
   const color = new TinyColor(val)
   if (!/^[0-9]/.test(val) && color.isValid) {
     const { h, s, l } = color.toHsl()
-    return `hsl(${h} ${Math.round(s * 10000) / 100}% ${
-      Math.round(l * 10000) / 100
-    }% / var(--flui-colors-opacity,1))`
+    return `hsl(
+      ${Math.round(h * 100) / 100}
+      ${Math.round(s * 10000) / 100}%
+      ${Math.round(l * 10000) / 100}%
+      / var(--flui-colors-opacity,1))`
   }
   return val.toString()
 }
