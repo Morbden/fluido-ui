@@ -3,6 +3,12 @@ import { SwitcherProps_, Switcher_ } from './styled'
 
 export interface SwitcherProps extends SwitcherProps_ {}
 
-export const Switcher = Flui<'div', SwitcherProps>(({ children, ...props }) => {
-  return <Switcher_ {...props}>{children}</Switcher_>
-})
+export const Switcher = Flui<'div', SwitcherProps>(
+  ({ children, ...props }, ref) => {
+    return (
+      <Switcher_ ref={ref} {...props}>
+        {children}
+      </Switcher_>
+    )
+  },
+)

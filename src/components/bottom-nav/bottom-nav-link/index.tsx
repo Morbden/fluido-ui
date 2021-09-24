@@ -7,9 +7,9 @@ interface Props {
 }
 
 export const BottomNavLink = Flui<'div', Props>(
-  ({ children, icon, ...props }) => {
+  ({ children, icon, ...props }, ref) => {
     return (
-      <Stack p={2} {...props}>
+      <Stack p={2} ref={ref} {...props}>
         {icon && (
           <Center intrinsic andText>
             <Box bgColor='red' size={6}>
