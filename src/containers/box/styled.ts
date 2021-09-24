@@ -472,6 +472,9 @@ export interface BoxProps_ extends StyledProps {
   justifySelf?: string
   alignSelf?: string
   order?: string
+
+  boxShadow?: string
+  shadow?: Length
 }
 
 export const Box_ = styled('div')<BoxProps_>`
@@ -550,6 +553,25 @@ export const Box_ = styled('div')<BoxProps_>`
     ~$radiusR
   );
 
+  #if($boxShadow) {
+    box-shadow: #or($boxShadow);
+  }
+
+  #if($shadow) {
+    box-shadow: 0px calc(~$shadow / 8 * ($shadow / 2))
+        calc(~$shadow / 8 * ($shadow))
+        calc(~$shadow / 8 * ($shadow * -0.25))
+        rgb(0 0 0 / calc(0.12 + $shadow / 50)),
+      0px calc(~$shadow / 6 * ($shadow / 2 + 1))
+        calc(~$shadow / 6 * ($shadow * 1.25))
+        calc(~$shadow / 6 * ($shadow * -0.25))
+        rgb(0 0 0 / 0.12);
+      0px calc(~$shadow / 4 * ($shadow / 2))
+        calc(~$shadow / 4 * ($shadow * 1.25))
+        calc(~$shadow / 4 * ($shadow * -0.5))
+        rgb(0 0 0 / calc(0.12 - $shadow / 50));
+  }
+
   #if($textDecoration) {
     text-decoration-color: #or($textDecorationColor, currentColor);
     text-decoration-style: #or($textDecorationStyle, solid);
@@ -586,3 +608,17 @@ export const Box_ = styled('div')<BoxProps_>`
 
   display: #or($display, $d);
 `
+
+// sm
+// 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+// base
+// 0 1px 3px 0 rgba(0, 0, 0, 0.1)
+// 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+// 0 n/4*(n-1) n/4*(n) 0
+// 0 4/4 4/4+2 0
+
+// md:
+// 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+// 0 2px 4px -1px rgba(0, 0, 0, 0.06)
