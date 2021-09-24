@@ -1,6 +1,6 @@
 import { Text } from 'ui-components'
 import { Box, Center, Stack } from 'ui-containers'
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 
 interface Props {
   icon?: React.ReactNode

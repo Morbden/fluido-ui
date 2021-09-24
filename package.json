@@ -1,6 +1,6 @@
 {
   "name": "@fluido/ui",
-  "version": "0.4.0-beta.2",
+  "version": "0.4.1-beta.4",
   "description": "A framework for create front-end easy and fast",
   "keywords": [
     "fluido",
@@ -28,7 +28,7 @@
     "dev:tsc": "tsc -w",
     "dev:alias": "tsc-alias -w",
     "build": "run-s clear build:tsc build:alias",
-    "clear": "rimraf components containers contexts hooks settings styled types utilities",
+    "clear": "rimraf components containers hooks settings styled types utilities",
     "build:tsc": "tsc",
     "build:alias": "tsc-alias",
     "pub": "npm publish --access public",
@@ -42,7 +42,7 @@
     "@popperjs/core": "^2.10.1",
     "crypto-js": "^4.1.1",
     "csso": "^4.2.0",
-    "deep-equal": "^2.0.5",
+    "deep-is": "^0.1.4",
     "deepmerge": "^4.2.2",
     "react-hotkeys-hook": "^3.4.0",
     "react-popper": "^2.2.5",

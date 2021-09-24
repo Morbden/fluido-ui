@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { HeadingProps_, Heading_ } from './styled'
 
 export interface HeadingProps extends HeadingProps_ {

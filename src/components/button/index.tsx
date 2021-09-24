@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { Button_ } from './styled'
 
 interface Props {}

@@ -1,5 +1,4 @@
-import { TinyColor } from '@ctrl/tinycolor'
-import equal from 'deep-equal'
+import equal from 'deep-is'
 import deepmerge from 'deepmerge'
 import { createContext, useContext, useMemo, useRef } from 'react'
 import { getSheetTheme } from 'ui-styled/tools/get-sheet'

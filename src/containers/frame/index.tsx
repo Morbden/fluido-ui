@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { FrameProps_, Frame_ } from './styled'
 
 export interface FrameProps extends FrameProps_ {}

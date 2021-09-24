@@ -1,4 +1,4 @@
-import { Flui } from 'ui-utilities'
+import { Flui } from 'ui-styled'
 import { GridProps_, Grid_ } from './styled'
 
 export interface GridProps extends GridProps_ {}
