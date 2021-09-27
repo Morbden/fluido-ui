@@ -1,4 +1,4 @@
-import React from 'react'
+/// <reference types="react" />
 
 export * from './styled'
 export * from './utilities'
