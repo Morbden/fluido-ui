@@ -56,7 +56,7 @@ export const tryParseColorHSL = (val: string) => {
       ${Math.round(h * 100) / 100}
       ${Math.round(s * 10000) / 100}%
       ${Math.round(l * 10000) / 100}%
-      / ${Math.round(a * 100) / 100}`
+      / ${Math.round(a * 100) / 100})`
   }
   return val.toString()
 }

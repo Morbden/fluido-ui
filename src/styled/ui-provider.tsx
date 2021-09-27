@@ -1,10 +1,9 @@
-import React from 'react'
 import equal from 'deep-is'
 import deepmerge from 'deepmerge'
-import { createContext, useContext, useMemo, useRef } from 'react'
-import { getSheetTheme } from './tools/get-sheet'
+import React, { createContext, useContext, useRef } from 'react'
 import { BaseDefaultTheme, DefaultTheme, TypedMap } from '..'
-import { parseThemeSentence, THEME, tryParseColor } from '../utilities'
+import { parseThemeSentence, THEME, tryParseColorHSL } from '../utilities'
+import { getSheetTheme } from './tools/get-sheet'
 
 interface ProviderProps {
   theme?: BaseDefaultTheme
@@ -39,7 +38,7 @@ const themeParser = (
       list.push([base, aVal.map((s) => '"' + s + '"').join(',')])
     } else if (val) {
       // Tentar como cor
-      const sVal = tryParseColor(val.toString())
+      const sVal = tryParseColorHSL(val.toString())
       list.push([base, sVal])
     }
   }
@@ -48,24 +47,23 @@ const themeParser = (
 }
 
 export const FluiProvider: React.FC<ProviderProps> = ({ children, theme }) => {
-  const themeRef = useRef<BaseDefaultTheme>()
-  const diff = !equal(themeRef.current || {}, theme)
+  const themeRef = useRef<BaseDefaultTheme | undefined>(theme)
+  const vTheme = useRef<DefaultTheme>()
 
-  const validTheme = useMemo(() => {
+  const diff = !equal(themeRef.current || {}, theme || {})
+
+  if (diff || !vTheme.current) {
     themeRef.current = theme
-
-    return theme
+    vTheme.current = theme
       ? deepmerge(THEME, theme, { arrayMerge: arrayMergeReplace })
       : THEME
-  }, [diff])
 
-  if (diff) {
-    const parsed = themeParser(validTheme)
+    const parsed = themeParser(vTheme.current)
     const data =
       ':root{' + parsed.map<string>(([k, p]) => `${k}:${p};`).join('') + '}\n'
     const sheet = getSheetTheme()
     sheet.data = data
   }
 
-  return <Context.Provider value={validTheme}>{children}</Context.Provider>
+  return <Context.Provider value={vTheme.current}>{children}</Context.Provider>
 }
