@@ -1,4 +1,4 @@
-import { Breakpoints, Colors, DefaultTheme, Spaces, TypedMap } from 'ui-types'
+import { Breakpoints, Colors, DefaultTheme, Spaces, TypedMap } from '..'
 
 export const BREAKPOINTS: Breakpoints = {
   sm: '640px',

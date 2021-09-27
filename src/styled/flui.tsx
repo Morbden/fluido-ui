@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { FluiComponent, TagType, TypedMap } from 'ui-types'
+import { FluiComponent, TagType, TypedMap } from '..'
 
 export const Flui = <T extends TagType<any> = 'div', P extends TypedMap = {}>(
   component: (props: React.PropsWithChildren<P>, ref: any) => React.ReactNode,

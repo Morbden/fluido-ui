@@ -1,4 +1,4 @@
-import { TypedMap } from 'ui-types/generics'
+import { TypedMap } from '..'
 import { compile } from './tools/compile'
 import { hash } from './tools/hash'
 

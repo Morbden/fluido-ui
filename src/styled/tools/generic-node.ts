@@ -1,6 +1,4 @@
-interface TypedMap<T = any> {
-  [key: string]: T
-}
+import { TypedMap } from '../..'
 
 export class GenericNode {
   private _children: GenericNode[]

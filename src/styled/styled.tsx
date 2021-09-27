@@ -3,9 +3,9 @@ import {
   StyledComponentProps,
   TagType,
   TypedFunction,
-} from 'ui-types'
-import { TypedMap } from 'ui-types/generics'
-import { htmlElementAttributes } from 'ui-utilities/html-attrs'
+  TypedMap,
+} from '..'
+import { htmlElementAttributes } from '../utilities/html-attrs'
 import { cssBase } from './css'
 
 /**

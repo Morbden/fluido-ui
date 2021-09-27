@@ -1,5 +1,5 @@
 import { minify } from 'csso'
-import { TypedMap } from 'ui-types/generics'
+import { TypedMap } from '../..'
 import { cssReset } from './css-reset'
 import { getSheetFixed, getSheetTheme } from './get-sheet'
 

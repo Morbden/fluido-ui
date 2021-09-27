@@ -1,9 +1,9 @@
 import equal from 'deep-is'
 import deepmerge from 'deepmerge'
 import { createContext, useContext, useMemo, useRef } from 'react'
-import { getSheetTheme } from 'ui-styled/tools/get-sheet'
-import { BaseDefaultTheme, DefaultTheme, TypedMap } from 'ui-types'
-import { parseThemeSentence, THEME, tryParseColor } from 'ui-utilities'
+import { getSheetTheme } from './tools/get-sheet'
+import { BaseDefaultTheme, DefaultTheme, TypedMap } from '..'
+import { parseThemeSentence, THEME, tryParseColor } from '../utilities'
 
 interface ProviderProps {
   theme?: BaseDefaultTheme

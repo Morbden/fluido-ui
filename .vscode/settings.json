@@ -5,15 +5,6 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "components/**": true,
-    "containers/**": true,
-    "contexts/**": true,
-    "effects/**": true,
-    "hooks/**": true,
-    "settings/**": true,
-    "styled/**": true,
-    "types/**": true,
-    "utilities/**": true
+    "**/Thumbs.db": true
   }
 }

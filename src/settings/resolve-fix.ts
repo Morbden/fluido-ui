@@ -1,7 +1,7 @@
-import { Configuration } from 'webpack'
 import { join } from 'path'
+import { TypedMap } from '..'
 
-export function webpackPresetConfig(config: Configuration) {
+export function webpackPresetConfig(config: TypedMap) {
   const alias = {
     react: [join(process.cwd(), 'node_modules/react')],
     'react-dom': [join(process.cwd(), 'node_modules/react-dom')],

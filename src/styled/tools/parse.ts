@@ -1,4 +1,4 @@
-import { listClear, listTrim } from 'ui-utilities'
+import { listClear, listTrim } from '../../utilities'
 import { GenericNode } from './generic-node'
 import { prefix } from './prefix'
 

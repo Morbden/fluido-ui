@@ -1,4 +1,4 @@
-import { TypedMap } from 'ui-types'
+import { TypedMap } from '..'
 
 export const htmlElementAttributes: TypedMap<string[]> = {
   '*': [

@@ -1,2 +1,2 @@
 export * from './ssr-style'
-export * from './webpack-fix'
+export * from './resolve-fix'

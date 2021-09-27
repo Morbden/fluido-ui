@@ -1,5 +1,5 @@
 import sha256 from 'crypto-js/sha256'
-import { TypedMap } from 'ui-types/generics'
+import { TypedMap } from '../..'
 import { createClassName } from './classname'
 import { getSheetFixed } from './get-sheet'
 import { parseObjToString, parseStringToObj } from './parse'

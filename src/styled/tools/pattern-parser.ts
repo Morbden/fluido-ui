@@ -1,10 +1,10 @@
-import { TypedMap } from 'ui-types'
+import { TypedMap } from '../..'
 import {
   filterClearSame,
   parseThemeSentence,
   sortLengthOrder,
   tryParseColorHSL,
-} from 'ui-utilities'
+} from '../../utilities'
 import { GenericNode } from './generic-node'
 import { funcs, ifComparison } from './reserved-function'
 
@@ -357,4 +357,6 @@ export const patternParser = (tree: GenericNode, data: TypedMap) => {
   })
 
   treeShaker(tree)
+
+  console.log(tree.getMap())
 }
