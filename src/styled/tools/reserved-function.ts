@@ -1,6 +1,6 @@
-import { listTrim, filterClearSame } from '../../utilities'
 import stringMath from 'string-math'
 import { PatternFunction, TypedMap } from '../..'
+import { listTrim } from '../../utilities'
 
 const REGEX_IF_OPERATORS = /==|!=|>=?|<=?|&&|\|\|/g
 const OPERATORS = ['=', '!=', '>', '<', '||', '&&']
