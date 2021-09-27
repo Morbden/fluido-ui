@@ -1,6 +1,6 @@
 import equal from 'deep-is'
 import React, { createContext, useContext, useRef } from 'react'
-import { deepmerge } from 'utilities/deepmerge'
+import { deepmerge } from '../utilities/deepmerge'
 import { BaseDefaultTheme, DefaultTheme, TypedMap } from '..'
 import { parseThemeSentence, THEME, tryParseColorHSL } from '../utilities'
 import { getSheetTheme } from './tools/get-sheet'
