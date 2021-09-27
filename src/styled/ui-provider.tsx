@@ -1,5 +1,5 @@
-import equal from 'deep-is'
 import React, { createContext, useContext, useRef } from 'react'
+import { deepEqual } from '../utilities/deepis'
 import { deepmerge } from '../utilities/deepmerge'
 import { BaseDefaultTheme, DefaultTheme, TypedMap } from '..'
 import { parseThemeSentence, THEME, tryParseColorHSL } from '../utilities'
@@ -50,7 +50,7 @@ export const FluiProvider: React.FC<ProviderProps> = ({ children, theme }) => {
   const themeRef = useRef<BaseDefaultTheme | undefined>(theme)
   const vTheme = useRef<DefaultTheme>()
 
-  const diff = !equal(themeRef.current || {}, theme || {})
+  const diff = !deepEqual(themeRef.current || {}, theme || {})
 
   if (diff || !vTheme.current) {
     themeRef.current = theme
