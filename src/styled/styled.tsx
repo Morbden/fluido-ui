@@ -68,6 +68,6 @@ export const styled = <T extends TagType>(
           {children}
         </Node>
       )
-    } as FluiComponent<T, P> as any)
+    } as FluiComponent<T, P> as any) as FluiComponent<T, P>
   }
 }
