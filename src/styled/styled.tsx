@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import {
   FluiComponent,
   StyledComponentProps,
@@ -20,12 +20,10 @@ export const styled = <T extends TagType>(
     templates: TemplateStringsArray,
     ...args: (TypedFunction<P> | string)[]
   ) => {
-    return function StyledComponent({
-      as: asComp,
-      className,
-      children,
-      ...props
-    }) {
+    return forwardRef(function StyledComponent(
+      { as: asComp, className, children, ...props },
+      ref,
+    ) {
       const _props: TypedMap = props
       if (!('functions' in _props)) {
         _props.functions = opts?.functions
@@ -66,10 +64,10 @@ export const styled = <T extends TagType>(
       className && classes.push(className)
 
       return (
-        <Node className={classes.join(' ')} {..._props}>
+        <Node className={classes.join(' ')} ref={ref} {..._props}>
           {children}
         </Node>
       )
-    } as FluiComponent<T, P>
+    } as FluiComponent<T, P> as any)
   }
 }
