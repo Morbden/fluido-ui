@@ -10,7 +10,7 @@ export const parseThemeSentence = (val: string): string => {
 }
 
 // Filtros de lista
-export const filterClearSame = (e: any, i: number, l: any[]) =>
+export const filterClearSame = <T = any>(e: T, i: number, l: T[]) =>
   l.indexOf(e) === i
 // Ordenadores de lista
 export const sortLengthOrder =

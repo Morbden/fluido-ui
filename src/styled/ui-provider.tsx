@@ -1,3 +1,4 @@
+import React from 'react'
 import equal from 'deep-is'
 import deepmerge from 'deepmerge'
 import { createContext, useContext, useMemo, useRef } from 'react'

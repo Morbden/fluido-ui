@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { TypedMap } from '..'
+import { TypedMap } from '.'
 
 export function webpackPresetConfig(config: TypedMap) {
   const alias = {

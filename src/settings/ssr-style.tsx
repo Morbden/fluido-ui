@@ -1,3 +1,4 @@
+import React from 'react'
 import { STYLE_ID_FIXED, STYLE_ID_THEME } from '../styled/tools/get-sheet'
 
 interface Props {

@@ -1,4 +1,4 @@
-import { listTrim } from '../../utilities'
+import { listTrim, filterClearSame } from '../../utilities'
 import stringMath from 'string-math'
 import { PatternFunction, TypedMap } from '../..'
 
@@ -18,8 +18,19 @@ export const ifComparison = (value: string) => {
         const sc = s.trim()
         return sc === 'false' ? [sc, "''"] : [sc, `'${sc}'`]
       })
+      .filter((e, i, l) => l.findIndex((ee) => ee[0] === e[0]) === i)
 
-    const v = sp.reduce((p, c) => p.replace(c[0], c[1]), value)
+    const v = sp.reduce(
+      (p, c, i) =>
+        p.replace(
+          new RegExp(
+            c[0].replace(/[\(\)\{\}\[\]\.\$\^\+\-\*\\\/\?\|]/g, '\\$&'),
+            'g',
+          ),
+          c[1],
+        ),
+      value,
+    )
     return !!eval(v)
   } else {
     return !(value.trim() === 'false')
@@ -38,7 +49,6 @@ export const funcs: TypedMap<PatternFunction> = {
     return v || 'false'
   },
   select(compare, a, b) {
-    console.log(compare)
     const test = ifComparison(compare)
     const res = (test && a) || b || 'false'
     return res

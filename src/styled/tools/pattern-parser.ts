@@ -357,6 +357,4 @@ export const patternParser = (tree: GenericNode, data: TypedMap) => {
   })
 
   treeShaker(tree)
-
-  console.log(tree.getMap())
 }
