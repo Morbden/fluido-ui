@@ -161,4 +161,4 @@ export type FluiComponent<C extends TagType, P extends object = {}> = {
   contextTypes?: React.ValidationMap<any>
   defaultProps?: Partial<any>
   id?: string
-} & { [key: string]: React.FC | React.Component }
+}
