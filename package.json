@@ -1,6 +1,6 @@
 {
   "name": "@fluido/ui",
-  "version": "0.5.4-beta.18",
+  "version": "0.5.4-beta.19",
   "license": "MIT",
   "private": false,
   "description": "A framework for create front-end easy and fast",
@@ -23,9 +23,9 @@
     "type": "git",
     "url": "https://github.com/Morbden/fluido-ui"
   },
-  "main": "common/index.js",
+  "main": "dist/index.js",
   "module": "esm/index.js",
-  "types": "types/index.d.js",
+  "types": "dist/index.d.js",
   "scripts": {
     "dev": "run-p dev:common dev:esm",
     "dev:common": "tsc -w",
