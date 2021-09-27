@@ -8,7 +8,7 @@
 
 # development
 /src
-tsconfig.json
+tsconfig.*
 .gitignore
 *lock.json
 .vscode
