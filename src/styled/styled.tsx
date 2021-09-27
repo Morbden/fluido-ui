@@ -33,7 +33,7 @@ export const styled = <T extends TagType>(
       const cssClassName = cssBase({ p: _props }, templates, ...args)
 
       const purge: string =
-        (typeof asComp === 'string' && asComp) ||
+        (typeof tag === 'string' && typeof asComp === 'string' && asComp) ||
         (typeof tag === 'string' && !asComp && tag) ||
         ''
 
