@@ -12,9 +12,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES6",
-    "outDir": "common",
-    "baseUrl": "src",
-    "declarationDir": "types"
+    "outDir": "dist",
+    "baseUrl": "src"
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx"]

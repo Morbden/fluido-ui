@@ -3,7 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "declaration": true,
+    "declaration": false,
     "isolatedModules": true,
     "jsx": "react",
     "module": "ES2020",
@@ -13,8 +13,7 @@
     "strict": true,
     "target": "ES6",
     "outDir": "esm",
-    "baseUrl": "src",
-    "declarationDir": "types"
+    "baseUrl": "src"
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx"]
