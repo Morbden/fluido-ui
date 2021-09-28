@@ -5,8 +5,6 @@ export function deepEqual<T = number | any>(actual: T, expected: T) {
     return actual.getTime() === expected.getTime()
   } else if (isNumberNaN(actual)) {
     return isNumberNaN(expected)
-  } else if (typeof actual !== 'object' && typeof expected !== 'object') {
-    return actual === expected
   } else {
     return objEquiv(actual, expected)
   }
@@ -41,20 +39,19 @@ function objEquiv(a: any, b: any): boolean {
     return deepEqual(a, b)
   }
   try {
-    var ka = Object.keys(a),
-      kb = Object.keys(b),
-      key,
-      i
+    var ka = Object.keys(a)
+    var kb = Object.keys(b)
   } catch (e) {
-    //happens when one is a string literal and the other isn't
     return false
   }
-  // having the same number of owned properties (keys incorporates
-  // hasOwnProperty)
   if (ka.length != kb.length) return false
   //the same set of keys (although not necessarily the same order),
   ka.sort()
   kb.sort()
+
+  let key: string
+  let i: number
+
   //~~~cheap key test
   for (i = ka.length - 1; i >= 0; i--) {
     if (ka[i] != kb[i]) return false
