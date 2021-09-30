@@ -4,6 +4,7 @@ import { deepmerge } from '../utilities/deepmerge'
 import { BaseDefaultTheme, DefaultTheme, TypedMap } from '..'
 import { parseThemeSentence, THEME, tryParseColorHSL } from '../utilities'
 import { getSheetTheme } from './tools/get-sheet'
+import { cssReset } from './css-reset'
 
 interface ProviderProps {
   theme?: BaseDefaultTheme
@@ -62,7 +63,7 @@ export const FluiProvider: React.FC<ProviderProps> = ({ children, theme }) => {
     const data =
       ':root{' + parsed.map<string>(([k, p]) => `${k}:${p};`).join('') + '}\n'
     const sheet = getSheetTheme()
-    sheet.data = data
+    sheet.data = cssReset + data
   }
 
   return <Context.Provider value={vTheme.current}>{children}</Context.Provider>

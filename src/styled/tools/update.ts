@@ -1,6 +1,5 @@
 import { minify } from 'csso'
 import { TypedMap } from '../..'
-import { cssReset } from './css-reset'
 import { getSheetFixed, getSheetTheme } from './get-sheet'
 
 /**
@@ -22,7 +21,7 @@ export const extractCss = (theme: boolean = false) => {
  * In production mode or in browser, CSS will be minified
  */
 export const update = (cache: TypedMap<string>, sheet: Text) => {
-  const data = cssReset + Object.values(cache).join('')
+  const data = Object.values(cache).join('')
 
   if (
     typeof process !== 'object' ||

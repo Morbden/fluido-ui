@@ -62,9 +62,13 @@ export const styled = <T extends TagType>(
       const classes: string[] = []
       cssClassName && classes.push(cssClassName)
       className && classes.push(className)
+      const cName = classes.join(' ')
+      if (cName) {
+        _props.className = cName
+      }
 
       return (
-        <Node className={classes.join(' ')} ref={ref} {..._props}>
+        <Node ref={ref} {..._props}>
           {children}
         </Node>
       )
